@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 
-bool Ship::CheckIfSunk(void)
+bool Ship::checkIfSunk(void)
 {
 	for (int i = 0; i < size; i++)
 	{

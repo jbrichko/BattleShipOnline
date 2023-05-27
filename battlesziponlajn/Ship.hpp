@@ -20,7 +20,7 @@ public:
 	int locationX, locationY;
 	Orientation orientation;
 
-	bool CheckIfSunk();  //zmieniæ nazwê na ma³¹ literê
+	bool checkIfSunk();  //zmieniæ nazwê na ma³¹ literê
 	void randomPlace(int boardSize); 
 
 	Ship(int length);

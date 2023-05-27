@@ -23,6 +23,28 @@ void Board::print(const char* title)
 	std::cout << std::endl;
 }
 
+Board::Board()
+{
+	board = new FieldStatus * [size];
+
+	for (int i = 0; i < size; i++)
+	{
+		board[i] = new FieldStatus[size];
+
+		for (int j = 0; j < size; j++)
+			board[i][j] = empty;
+
+	}
+}
+
+Board::~Board()
+{
+	for (int i = 0; i < size; i++)
+		delete[] board[i];
+
+	delete[] board;
+}
+
 void PlayerBoard::print()
 {
 
@@ -39,7 +61,7 @@ int PlayerBoard::getShipsCount(void)
 
 	for (int i = 0; i < noOfShips; i++)
 	{
-		if (ships[i]->CheckIfSunk() == false) shipCount++; 
+		if (ships[i]->checkIfSunk() == false) shipCount++; 
 	}
 
 	return shipCount; 
@@ -96,6 +118,32 @@ void PlayerBoard::placeShips(void)
 
 		} while (isPlacementGood(i) == false);
 	}
+}
+
+PlayerBoard::PlayerBoard()
+{
+	noOfShips = NO_OF_BATTLESHIPS + NO_OF_CRUISERS + NO_OF_DESTROYERS;
+
+	ships = new Ship * [noOfShips];
+
+	int i = 0;
+	for (; i < NO_OF_BATTLESHIPS; i++)
+		ships[i] = new Battleship();
+
+	for (; i < NO_OF_BATTLESHIPS + NO_OF_CRUISERS; i++)
+		ships[i] = new Cruiser();
+
+	for (; i < noOfShips; i++)
+		ships[i] = new Destroyer();
+
+}
+
+PlayerBoard::~PlayerBoard()
+{
+	for (int i = 0; i < noOfShips; i++)
+		delete[] ships[i];
+
+	delete[] ships;
 }
 
 
