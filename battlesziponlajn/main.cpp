@@ -22,7 +22,7 @@ public:
 int main(void)
 {
 
-    std::ifstream file("cover-art.txt"); // Nazwa pliku .txt
+    std::ifstream file("resources/cover-art.txt"); // Nazwa pliku .txt
 
     if (file.is_open()) {
         std::string line;
@@ -38,7 +38,7 @@ int main(void)
     }
 
     // Odtwarzanie pliku MP3 w tle
-    PlaySound(TEXT("menu-soundtrack-01.wav"), NULL, SND_FILENAME | SND_ASYNC);
+    PlaySound(TEXT("resources/menu-soundtrack-01.wav"), NULL, SND_FILENAME | SND_ASYNC);
 
     char a;
     std::cin >> a;
