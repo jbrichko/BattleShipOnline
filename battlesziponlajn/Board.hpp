@@ -1,5 +1,7 @@
 #pragma once
 
+#define DEBUG
+
 #include "Ship.hpp"
 
 class Board
@@ -11,9 +13,11 @@ public:
 	enum FieldStatus : char
 	{
 		empty = '~',
-		shot = '*',
+		miss = '*',
 		hit = 'H',
-	};
+		sunk = 'X',
+		ship = 'S', 
+	}; 
 
 	FieldStatus** board;
 

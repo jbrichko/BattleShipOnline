@@ -47,10 +47,19 @@ Board::~Board()
 
 void PlayerBoard::print()
 {
+	int x, y; 
 
 
+	for (int i = 0; i < noOfShips; i++)
+	{
+		for (int j = 0; j < ships[i]->size; j++)
+		{
+			x = ships[i]->locationX + j * static_cast<int>(ships[i]->orientation); 
+			y = ships[i]->locationY + j * static_cast<int>(!ships[i]->orientation); 
 
-	
+			board[x][y] = static_cast<FieldStatus>( ships[i]->deck[j] ); 
+		}
+	}
 
 	Board::print("YOUR SHIPS: ");
 }
@@ -101,7 +110,7 @@ bool PlayerBoard::isPlacementGood(int currentShipID)
 		separatedX = (minX1 >= minX2 && maxX1 + 1 > minX2) || (minX2 > minX1 && maxX2 + 1 > minX1); 
 		separatedY = (minY1 >= minY2 && maxY1 + 1 > minY2) || (minY2 > minY1 && maxY2 + 1 > minY1); 
 
-		if (separatedX && separatedY == false) return false; 
+		if (separatedX || separatedY == false) return false; 
 	}
 
 	return true; 

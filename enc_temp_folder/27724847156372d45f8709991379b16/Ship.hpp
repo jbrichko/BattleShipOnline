@@ -10,8 +10,6 @@ public:
 	static const int CRUISER_SIZE = { 3 };
 	static const int DESTROYER_SIZE = { 2 };
 
-	static int srandInitCunt; //todo
-
 	enum Orientation : bool
 	{
 		horizontal = true,
@@ -24,8 +22,7 @@ public:
 	int locationX, locationY;
 	Orientation orientation;
 
-	bool checkIfSunk(); 
-
+	bool checkIfSunk();  //zmieniæ nazwê na ma³¹ literê
 	void randomPlace(int boardSize); 
 
 	Ship(int length);

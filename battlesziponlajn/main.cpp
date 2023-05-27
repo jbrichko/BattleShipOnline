@@ -4,6 +4,7 @@
 #include <fstream>
 #include <string>
 
+
 // sound
 #include <Windows.h>
 #include <mmsystem.h>
@@ -38,7 +39,7 @@ int main(void)
     }
 
     // Odtwarzanie pliku MP3 w tle
-    PlaySound(TEXT("resources/menu-soundtrack-01.wav"), NULL, SND_FILENAME | SND_ASYNC);
+    //PlaySound(TEXT("resources/menu-soundtrack-01.wav"), NULL, SND_FILENAME | SND_ASYNC);
 
     char a;
     std::cin >> a;
@@ -47,7 +48,16 @@ int main(void)
     PlayerBoard playerBoard; 
 
     enemyBoard.print(); 
+
+    playerBoard.placeShips(); 
     playerBoard.print();
+
+    std::cout << std::endl; 
+
+    for (int i = 0; i < playerBoard.noOfShips; i++)
+    {
+        std::cout << "id:  " << i << " x = " << playerBoard.ships[i]->locationX << " y = " << playerBoard.ships[i]->locationY << std::endl;
+    }
 
     std::cin >> a;
 

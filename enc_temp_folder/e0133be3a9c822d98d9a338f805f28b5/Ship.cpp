@@ -22,6 +22,7 @@ bool Ship::checkIfSunk(void)
 
 void Ship::randomPlace(int boardSize)
 {
+	srand(time(nullptr));
 
 	orientation = static_cast<Orientation>(rand() % 2); 
 
