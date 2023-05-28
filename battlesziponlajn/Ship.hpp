@@ -6,27 +6,27 @@ class Ship
 {
 public:
 
-	static const int BATTLESHIP_SIZE = { 4 };
-	static const int CRUISER_SIZE = { 3 };
-	static const int DESTROYER_SIZE = { 2 };
+	static const int BATTLESHIP_SIZE = { 4 };	//rozmiar statku 
+	static const int CRUISER_SIZE = { 3 };		//rozmiar statku
+	static const int DESTROYER_SIZE = { 2 };	//rozmiar statku
 
 	static int srandInitCunt; //todo
 
-	enum Orientation : bool
+	enum Orientation : bool						//orientacja statku na mapie - poziomo lub pionowo
 	{
 		horizontal = true,
 		vertical = false,
 	};
 
-	const int size;
-	char* deck;
+	const int size;								//d³ugoœæ statku
+	char* deck;									//informacja o stanie jednego pola statku - ca³y, trafiony i zatopiony
 
-	int locationX, locationY;
+	int locationX, locationY;					//wspó³rzêdne po³o¿enia pocz¹tku statku
 	Orientation orientation;
 
-	bool checkIfSunk(); 
+	bool checkIfSunk();							//funkcja sprawdza czy statek jest ca³y czy zatopiony	jak zwróci "true" to statek jest zatopiony
 
-	void randomPlace(int boardSize); 
+	void randomPlace(int boardSize);			//wylosowanie losowego po³o¿enia statku
 
 	Ship(int length);
 	~Ship();

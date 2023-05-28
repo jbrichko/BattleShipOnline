@@ -23,7 +23,7 @@ public:
 int main(void)
 {
 
-    std::ifstream file("resources/cover-art.txt"); // Nazwa pliku .txt
+    std::ifstream file("resources/cover-art.txt"); // nazwa pliku .txt
 
     if (file.is_open()) {
         std::string line;
@@ -35,7 +35,7 @@ int main(void)
         file.close();
     }
     else {
-        std::cout << "Nie mo¿na otworzyæ pliku.\n";
+        std::cout << "nie mo¿na otworzyæ pliku.\n";
     }
 
     // Odtwarzanie pliku MP3 w tle

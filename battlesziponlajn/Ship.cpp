@@ -14,10 +14,10 @@ bool Ship::checkIfSunk(void)
 {
 	for (int i = 0; i < size; i++)
 	{
-		if (deck[i] == false) return false;
+		if (deck[i] == 'S') return true;
 	}
 
-	return true;
+	return false;
 }
 
 void Ship::randomPlace(int boardSize)
