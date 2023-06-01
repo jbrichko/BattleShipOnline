@@ -31,7 +31,7 @@ class PlayerBoard : public Board					//klasa obs³uguj¹ca plansze ze statkami gra
 {
 public: 
 
-	static const int NO_OF_BATTLESHIPS = { 2 };		//iloœæ statków danego tyou
+	static const int NO_OF_BATTLESHIPS = { 2 };		//iloœæ statków danego typu
 	static const int NO_OF_CRUISERS = { 3 };		//
 	static const int NO_OF_DESTROYERS = { 4 };		//
 
