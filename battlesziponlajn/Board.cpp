@@ -122,7 +122,7 @@ bool PlayerBoard::isPlacementGood(int currentShipID)
 		separatedX = (minX1 <= minX2 && maxX1 + 1 < minX2) || (minX2 < minX1 && maxX2 + 1 < minX1); 
 		separatedY = (minY1 <= minY2 && maxY1 + 1 < minY2) || (minY2 < minY1 && maxY2 + 1 < minY1); 
 
-		if ( (separatedX == false) && (separatedY == false) ) return false; 
+		if ( !separatedX && !separatedY ) return false; 
 	}
 
 	return true; 
