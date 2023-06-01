@@ -16,6 +16,23 @@ class Game
 public: 
 };
 
+class Music
+{
+public: 
+
+    //const std::string menuMusicFilePath = "resources/menu-soundtrack-01.wav";
+
+    static void playMenuMuisc()
+    {
+        PlaySound(TEXT("resources/menu-soundtrack-01.wav"), nullptr, SND_FILENAME | SND_ASYNC);
+    }
+
+    static void stopMusic()
+    {
+        PlaySound(nullptr, nullptr, SND_FILENAME | SND_ASYNC);
+    }
+};
+
 
 
 
@@ -38,8 +55,7 @@ int main(void)
         std::cout << "nie mo¿na otworzyæ pliku.\n";
     }
 
-    // Odtwarzanie pliku MP3 w tle
-    //PlaySound(TEXT("resources/menu-soundtrack-01.wav"), nullptr, SND_FILENAME | SND_ASYNC);
+    Music::playMenuMuisc(); 
 
     char a;
     std::cin >> a;
