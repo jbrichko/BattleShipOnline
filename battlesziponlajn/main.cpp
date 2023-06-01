@@ -26,9 +26,15 @@ public:
     {
         std::cout << std::endl << "WHAT ARE COORDINATES OF YOUR SHOT? " << std::endl;
         std::cout << "X: ";
-        std::cin >> shootCoordX;
+        while (shootCoordX < PlayerBoard::size && shootCoordX >= 0)
+        {
+            std::cin >> shootCoordX;
+        }
         std::cout << " Y: ";
-        std::cin >> shootCoordY;
+        while (shootCoordY < PlayerBoard::size && shootCoordY >= 0)
+        {
+            std::cin >> shootCoordY;
+        }
     }
 
     static void playerShot()
@@ -88,13 +94,11 @@ int main(void)
 
     EnemyBoard enemyBoard; 
     PlayerBoard playerBoard; 
-    Actions akcja;
 
     enemyBoard.print(); 
 
     playerBoard.placeShips(); 
     playerBoard.print();
-    akcja.getShootCoords();
 
 
     std::cout << std::endl; 
