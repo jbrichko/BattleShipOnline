@@ -43,6 +43,24 @@ public:
     }
 };
 
+class NetworkManager
+{
+public:
+
+    static int ipAdress;
+    SOCKET socket;
+};
+
+class NetworkSlave : public NetworkManager
+{
+
+};
+
+class NetworkMaster : public NetworkManager
+{
+
+};
+
 class Music
 {
 public: 
