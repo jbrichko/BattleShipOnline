@@ -66,6 +66,8 @@ public:
 int main(void)
 {
 
+    char a;
+    /*
     std::ifstream file("resources/cover-art.txt"); // nazwa pliku .txt
 
     if (file.is_open()) {
@@ -80,11 +82,15 @@ int main(void)
     else {
         std::cout << "nie mo¿na otworzyæ pliku.\n";
     }
+    
 
-    //Music::playMenuMuisc(); 
+    Music::playMenuMuisc(); 
+    
 
-    char a;
+    
     std::cin >> a;
+    */
+
 
     EnemyBoard enemyBoard; 
     PlayerBoard playerBoard; 
