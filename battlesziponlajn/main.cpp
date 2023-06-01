@@ -60,7 +60,7 @@ int main(void)
         std::cout << "nie mo¿na otworzyæ pliku.\n";
     }
 
-    Music::playMenuMuisc(); 
+    //Music::playMenuMuisc(); 
 
     char a;
     std::cin >> a;
@@ -77,7 +77,10 @@ int main(void)
 
     for (int i = 0; i < playerBoard.noOfShips; i++)
     {
-        std::cout << "id:  " << i << " x = " << playerBoard.ships[i]->locationX << " y = " << playerBoard.ships[i]->locationY << std::endl;
+        std::cout << "main id:  " << i << " x = " << playerBoard.ships[i]->locationX 
+            << " y = " << playerBoard.ships[i]->locationY 
+            << " orientation: " << playerBoard.ships[i]->orientation 
+            << " len = " << playerBoard.ships[i]->size << std::endl;
     }
 
     std::cin >> a;

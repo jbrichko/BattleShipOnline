@@ -45,7 +45,9 @@ void Ship::randomPlace(int boardSize)
 	}
 
 #ifdef DEBUG
-	std::cout << "guess:  x = " << locationX << "  y = " << locationY << std::endl; 
+
+	std::cout << "guess:  x = " << locationX << "  y = " << locationY << "  orientation: " << orientation << std::endl;
+
 #endif // DEBUG
 
 }

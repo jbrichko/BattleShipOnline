@@ -1,6 +1,13 @@
 #include "Board.hpp"
 #include <iostream>
 
+#ifdef DEBUG
+
+#include <iostream>
+
+#endif // DEBUG
+
+
 
 void Board::print(const char* title)
 {
@@ -14,7 +21,7 @@ void Board::print(const char* title)
 
 		for (int j = 0; j < size; j++)
 		{
-			std::cout << board[i][j] << "  ";
+			std::cout << board[j][i] << "  ";
 		}
 
 		std::cout << std::endl;
@@ -81,8 +88,13 @@ bool PlayerBoard::isPlacementGood(int currentShipID)
 	int minX1, maxX1, minX2, maxX2, minY1, maxY1, minY2, maxY2;
 	bool separatedX, separatedY; 
 
-	minX1 = maxX1 = ships[currentShipID]->locationX; 
-	minY1 = maxY1 = ships[currentShipID]->locationY; 
+	minX1 = maxX1 = ships[currentShipID]->locationX;
+	minY1 = maxY1 = ships[currentShipID]->locationY;
+
+#ifdef DEBUG
+	std::cout << "placementGood:  id = " << currentShipID << std::endl; 
+#endif // DEBUG
+
 	
 	if (ships[currentShipID]->orientation == Ship::horizontal)
 	{
@@ -107,10 +119,10 @@ bool PlayerBoard::isPlacementGood(int currentShipID)
 			maxY2 += ships[i]->size - 1;
 		}
 
-		separatedX = (minX1 >= minX2 && maxX1 + 1 > minX2) || (minX2 > minX1 && maxX2 + 1 > minX1); 
-		separatedY = (minY1 >= minY2 && maxY1 + 1 > minY2) || (minY2 > minY1 && maxY2 + 1 > minY1); 
+		separatedX = (minX1 <= minX2 && maxX1 + 1 < minX2) || (minX2 < minX1 && maxX2 + 1 < minX1); 
+		separatedY = (minY1 <= minY2 && maxY1 + 1 < minY2) || (minY2 < minY1 && maxY2 + 1 < minY1); 
 
-		if (separatedX || separatedY == false) return false; 
+		if ( (separatedX == false) && (separatedY == false) ) return false; 
 	}
 
 	return true; 
