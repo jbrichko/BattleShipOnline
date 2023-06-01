@@ -24,12 +24,17 @@ public:
 
     static void playMenuMuisc()
     {
-        PlaySound(TEXT("resources/menu-soundtrack-01.wav"), nullptr, SND_FILENAME | SND_ASYNC);
+        PlaySound(TEXT("resources/menu-soundtrack-01.wav"), nullptr, SND_FILENAME | SND_LOOP | SND_ASYNC);
+    }
+
+    static void playGameMusic() 
+    {
+
     }
 
     static void stopMusic()
     {
-        PlaySound(nullptr, nullptr, SND_FILENAME | SND_ASYNC);
+        PlaySound(nullptr, nullptr, 0);
     }
 };
 
