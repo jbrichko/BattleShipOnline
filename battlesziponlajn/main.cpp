@@ -11,6 +11,10 @@
 
 #pragma comment(lib, "winmm.lib")
 
+// network
+#include <winsock2.h>
+#include <ws2tcpip.h>
+
 class Game
 {
 public: 
@@ -48,6 +52,7 @@ class NetworkManager
 public:
 
     static int ipAdress;
+    static int port; 
     SOCKET socket;
 };
 
