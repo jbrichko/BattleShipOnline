@@ -26,12 +26,12 @@ public:
     {
         std::cout << std::endl << "WHAT ARE COORDINATES OF YOUR SHOT? " << std::endl;
         std::cout << "X: ";
-        while (shootCoordX < PlayerBoard::size && shootCoordX >= 0)
+        while (shootCoordX < Board::size && shootCoordX >= 0)
         {
             std::cin >> shootCoordX;
         }
         std::cout << " Y: ";
-        while (shootCoordY < PlayerBoard::size && shootCoordY >= 0)
+        while (shootCoordY < Board::size && shootCoordY >= 0)
         {
             std::cin >> shootCoordY;
         }

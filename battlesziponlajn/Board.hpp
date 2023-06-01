@@ -8,7 +8,7 @@ class Board
 {
 public:
 
-	const int size = { 10 };						//d³ugoœæ mapy - sta³a wartoœæ równa 10
+	static const int size = { 10 };						//d³ugoœæ mapy - sta³a wartoœæ równa 10
 
 	enum FieldStatus : char							//status jednego pola mapy
 	{
