@@ -39,7 +39,7 @@ int main(void)
     }
 
     // Odtwarzanie pliku MP3 w tle
-    //PlaySound(TEXT("resources/menu-soundtrack-01.wav"), NULL, SND_FILENAME | SND_ASYNC);
+    //PlaySound(TEXT("resources/menu-soundtrack-01.wav"), nullptr, SND_FILENAME | SND_ASYNC);
 
     char a;
     std::cin >> a;
