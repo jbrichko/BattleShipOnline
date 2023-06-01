@@ -16,6 +16,27 @@ class Game
 public: 
 };
 
+class Actions
+{
+public:
+    static int shootCoordX;
+    static int shootCoordY;
+    
+    static void getShootCoords()
+    {
+        std::cout << std::endl << "WHAT ARE COORDINATES OF YOUR SHOT? " << std::endl;
+        std::cout << "X: ";
+        std::cin >> shootCoordX;
+        std::cout << " Y: ";
+        std::cin >> shootCoordY;
+    }
+
+    static void playerShot()
+    {
+
+    }
+};
+
 class Music
 {
 public: 
@@ -67,11 +88,14 @@ int main(void)
 
     EnemyBoard enemyBoard; 
     PlayerBoard playerBoard; 
+    Actions akcja;
 
     enemyBoard.print(); 
 
     playerBoard.placeShips(); 
     playerBoard.print();
+    akcja.getShootCoords();
+
 
     std::cout << std::endl; 
 
