@@ -118,8 +118,6 @@ bool PlayerBoard::isPlacementGood(int currentShipID)
 
 void PlayerBoard::placeShips(void)
 {
-	srand(time(0));
-
 	for (int i = 0; i < noOfShips; i++)
 	{
 		do
