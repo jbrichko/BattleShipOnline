@@ -3,9 +3,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-
-
-// sound
 #include <Windows.h>
 #include <mmsystem.h>
 
@@ -97,8 +94,6 @@ class NetworkMaster : public NetworkManager
 class Music
 {
 public: 
-
-    //const std::string menuMusicFilePath = "resources/menu-soundtrack-01.wav";
 
     static void playMenuMusic()
     {
