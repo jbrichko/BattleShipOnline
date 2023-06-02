@@ -28,6 +28,24 @@ public:
     {
         system("pause");
     }
+
+    static void loadMenuGraphic()
+    {
+        std::ifstream file("resources/cover-art-2.txt"); // nazwa pliku .txt
+
+        if (file.is_open()) {
+            std::string line;
+
+            while (std::getline(file, line)) {
+                std::cout << line << '\n';
+            }
+
+            file.close();
+        }
+        else {
+            std::cout << "nie mo¿na otworzyæ pliku.\n";
+        }
+    }
 };
 
 class Actions
@@ -104,36 +122,11 @@ public:
 
 int main(void)
 {
-
-    char a;
-    
-    std::ifstream file("resources/cover-art-1.txt"); // nazwa pliku .txt
-
-    if (file.is_open()) {
-        std::string line;
-
-        while (std::getline(file, line)) {
-            std::cout << line << '\n';
-        }
-
-        file.close();
-    }
-    else {
-        std::cout << "nie mo¿na otworzyæ pliku.\n";
-    }
-    
-
-    //Music::playMenuMuisc(); 
-    
-
-    
-    //std::cin >> a;
-    
-
-
     EnemyBoard enemyBoard; 
     PlayerBoard playerBoard;
 
+
+    Game::loadMenuGraphic();
     Music::playMenuMusic();
     Game::getButtonPress();
     Game::clearConsole();
@@ -156,7 +149,7 @@ int main(void)
             << " len = " << playerBoard.ships[i]->size << std::endl;
     }
 
-    std::cin >> a;
+    Game::getButtonPress();
 
 	return 0;
 }
