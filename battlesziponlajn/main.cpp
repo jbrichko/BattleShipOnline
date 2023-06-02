@@ -12,12 +12,22 @@
 #pragma comment(lib, "winmm.lib")
 
 // network
-#include <winsock2.h>
-#include <ws2tcpip.h>
+//#include <winsock2.h>
+//#include <ws2tcpip.h>
 
 class Game
 {
 public: 
+
+    static void clearConsole()
+    {
+        system("CLS");
+    }
+
+    static void getButtonPress()
+    {
+        system("pause");
+    }
 };
 
 class Actions
@@ -72,14 +82,14 @@ public:
 
     //const std::string menuMusicFilePath = "resources/menu-soundtrack-01.wav";
 
-    static void playMenuMuisc()
+    static void playMenuMusic()
     {
         PlaySound(TEXT("resources/menu-soundtrack-01.wav"), nullptr, SND_FILENAME | SND_LOOP | SND_ASYNC);
     }
 
     static void playGameMusic() 
     {
-
+        PlaySound(TEXT("resources/game-soundtrack-01.wav"), nullptr, SND_FILENAME | SND_LOOP | SND_ASYNC);
     }
 
     static void stopMusic()
@@ -96,8 +106,8 @@ int main(void)
 {
 
     char a;
-    /*
-    std::ifstream file("resources/cover-art.txt"); // nazwa pliku .txt
+    
+    std::ifstream file("resources/cover-art-1.txt"); // nazwa pliku .txt
 
     if (file.is_open()) {
         std::string line;
@@ -113,16 +123,22 @@ int main(void)
     }
     
 
-    Music::playMenuMuisc(); 
+    //Music::playMenuMuisc(); 
     
 
     
-    std::cin >> a;
-    */
+    //std::cin >> a;
+    
 
 
     EnemyBoard enemyBoard; 
-    PlayerBoard playerBoard; 
+    PlayerBoard playerBoard;
+
+    Music::playMenuMusic();
+    Game::getButtonPress();
+    Game::clearConsole();
+    Music::stopMusic();
+    Music::playGameMusic();
 
     enemyBoard.print(); 
 
