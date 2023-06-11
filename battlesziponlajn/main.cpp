@@ -8,9 +8,6 @@
 
 #pragma comment(lib, "winmm.lib")
 
-// network
-//#include <winsock2.h>
-//#include <ws2tcpip.h>
 
 class Game
 {
@@ -72,25 +69,6 @@ public:
     }
 };
 
-class NetworkManager
-{
-public:
-
-    static int ipAdress;
-    static int port; 
-    SOCKET socket;
-};
-
-class NetworkSlave : public NetworkManager
-{
-
-};
-
-class NetworkMaster : public NetworkManager
-{
-
-};
-
 class Music
 {
 public: 
@@ -113,10 +91,9 @@ public:
 
 
 
-
-
 int main(void)
 {
+    /*
     EnemyBoard enemyBoard; 
     PlayerBoard playerBoard;
 
@@ -143,6 +120,12 @@ int main(void)
             << " orientation: " << playerBoard.ships[i]->orientation 
             << " len = " << playerBoard.ships[i]->size << std::endl;
     }
+
+    */
+
+    NetworkManager network("10.10.3.100", 80); 
+
+    network.testing(); 
 
     Game::getButtonPress();
 
