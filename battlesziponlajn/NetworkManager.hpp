@@ -24,6 +24,7 @@ public:
 
     enum MessageType : uint16_t
     {
+        string, //for testing
         game_start,
         shot,
         shot_response,
@@ -32,7 +33,7 @@ public:
     struct MessageHeader
     {
         MessageType type;
-        uint16_t size;
+        uint16_t payloadSize;
     };
 
     struct ShotMessage
@@ -49,12 +50,12 @@ public:
         return socket.is_open();
     }
 
-    template <typename T>
-    bool send(T& message)
+    bool send(MessageHeader& header, std::vector<uint8_t>& message)
     {
         try
         {
-            asio::write(socket, asio::buffer(message, sizeof(T)));
+            asio::write(socket, asio::buffer(&header, sizeof(MessageHeader)));
+            asio::write(socket, asio::buffer(message));
         }
         catch (const std::exception& exception)
         {
@@ -66,53 +67,37 @@ public:
         return true;
     }
 
-    template <typename T>
-    T recive()
+    bool recive(MessageHeader& header, std::vector<uint8_t>& message)
     {
-        T message;
-        std::vector<uint8_t> buffer(sizeof(MessageHeader));
-
         try
         {
-            std::cout << "bytes recieved: " << asio::read(socket, asio::buffer(buffer, sizeof(MessageHeader)) << std::endl;
+            asio::read(socket, asio::buffer(&header, sizeof(MessageHeader)));
 
-            buffer
+            message.resize(header.payloadSize);
+            socket.wait(socket.wait_read);
 
-                std::cout << "bytes recieved: " << asio::read(socket, asio::buffer(buffer, )) << std::endl;
+            asio::read(socket, asio::buffer(message.data(), message.size()));
         }
         catch (const std::exception& exception)
         {
             std::cout << "Exception: " << exception.what() << std::endl;
 
-            return nullptr;
+            return false;
         }
 
-        return message;
+        return true;
     }
 
-    std::string receiveString()
+    void disconnect()
     {
-        std::string receivedString;
-
-        try {
-            // Receive the size of the string
-            std::size_t size;
-            std::cout << "bytes recieved: " << asio::read(socket, asio::buffer(&size, sizeof(std::size_t))) << std::endl;
-
-            // Create a buffer to hold the string data
-            std::vector<char> buffer(size);
-
-            // Receive the string data
-            std::cout << "bytes recieved: " << asio::read(socket, asio::buffer(buffer)) << std::endl;
-
-            // Create a string from the received data
-            receivedString = std::string(buffer.begin(), buffer.end());
+        try
+        {
+            socket.close();
         }
-        catch (const std::exception& ex) {
-            std::cout << "Exception while receiving string: " << ex.what() << std::endl;
+        catch (const std::exception& exception)
+        {
+            std::cout << "Exception: " << exception.what() << std::endl;
         }
-
-        return receivedString;
     }
 
 };
@@ -166,6 +151,11 @@ public:
             endpoint = asio::ip::tcp::endpoint(asio::ip::make_address_v4(hostIP), hostPort);
 
             socket.connect(endpoint);
+
+#ifdef DEBUG
+            std::cout << "Local port: " << socket.local_endpoint().port() << std::endl;
+#endif
+
         }
         catch (const std::exception& exception)
         {

@@ -123,10 +123,6 @@ int main(void)
 
     */
 
-    NetworkManager network("10.10.3.100", 80); 
-
-    network.testing(); 
-
     Game::getButtonPress();
 
 	return 0;
