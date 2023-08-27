@@ -33,6 +33,13 @@ public:
 
 };
 
+/*!	\class Ship
+*	\brief Jest to klasa, w której s¹ przechowywane najwa¿niejsze informacje o statkach.
+*
+*	Klasa ta zawiera wszelkie potrzebne informacje, które s¹ potrzebne do prawid³owego umieszczenia statku
+*	na planszy.
+*/
+
 
 class Battleship : public Ship
 {
