@@ -5,7 +5,6 @@
 
 /*!	\class Ship
 *	\brief Jest to klasa, w której s¹ przechowywane najwa¿niejsze informacje o statkach.
-*
 */
 
 class Ship
@@ -48,17 +47,40 @@ public:
 	/**
 	*	D³ugoœæ statku.
 	*/
-	const ShipSize size;						//d³ugoœæ statku
-	char* deck;									//informacja o stanie jednego pola statku - ca³y, trafiony i zatopiony
+	const ShipSize size;
+	
+	/**
+	*	Informacja o stanie jednego pola statku, czy jest ca³y, trafiony lub zatopiony.
+	*/
+	char* deck;
 
-	int locationX, locationY;					//wspó³rzêdne po³o¿enia pocz¹tku statku
+	/**
+	*	Wspó³rzêdne po³o¿enia pocz¹tku statku oraz jego orientacja na mapie.
+	*/
+	int locationX, locationY;
 	Orientation orientation;
 
-	bool checkIfSunk();							//funkcja sprawdza czy statek jest ca³y czy zatopiony	jak zwróci "true" to statek jest zatopiony
+	/**
+	*	\brief Jest to funkcja, która sprawdza czy dany statek nie zosta³ zatopiony.
+	*	\return Zwraca jedynkê w przypadku zatopionego statku.
+	*/
+	bool checkIfSunk();
 
-	void randomPlace(int boardSize);			//wylosowanie losowego po³o¿enia statku
+	/**
+	*	\brief Pseudolosowo dobiera wspó³rzêdne po³o¿enia pocz¹tku statku oraz jego orientacjê.
+	*	\param boardSize D³ugoœæ boku mapy.
+	*/
+	void randomPlace(int boardSize);
 
+	/**
+	*	\brief Konstruktor obiektów klasy Ship.
+	*	\param length D³ugoœæ statku.
+	*/
 	Ship(ShipSize length);
+
+	/**
+	*	\brief Dekonstruktor obiektów klasy Ship.
+	*/
 	~Ship();
 
 };
