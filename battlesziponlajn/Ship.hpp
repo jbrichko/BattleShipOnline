@@ -21,7 +21,7 @@ public:
 	*	\enum Ship_size
 	*	Enumerator opisuj¹cy d³ugoœæ statków. S¹ ich trzy rodzaje.
 	*/
-	enum ShipSize : int
+	enum ShipSize : unsigned int
 	{
 		BATTLESHIP_SIZE = 4,
 		CRUISER_SIZE = 3,
