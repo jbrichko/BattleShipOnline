@@ -14,7 +14,7 @@ bool Network::send(MessageHeader& header, std::vector<uint8_t>& message)
     }
     catch (const std::exception& exception)
     {
-        std::cout << "Exception: " << exception.what() << std::endl;
+        std::cerr << "Exception: " << exception.what() << std::endl;
 
         return false;
     }
@@ -35,7 +35,7 @@ bool Network::recive(MessageHeader& header, std::vector<uint8_t>& message)
     }
     catch (const std::exception& exception)
     {
-        std::cout << "Exception: " << exception.what() << std::endl;
+        std::cerr << "Exception: " << exception.what() << std::endl;
 
         return false;
     }
@@ -51,7 +51,7 @@ void Network::disconnect()
     }
     catch (const std::exception& exception)
     {
-        std::cout << "Exception: " << exception.what() << std::endl;
+        std::cerr << "Exception: " << exception.what() << std::endl;
     }
 }
 
@@ -72,7 +72,7 @@ bool NetworkHost::waitForConnection(uint16_t port = DEFAULT_HOST_PORT)
     }
     catch (const std::exception& exception)
     {
-        std::cout << "Exception: " << exception.what() << std::endl;
+        std::cerr << "Exception: " << exception.what() << std::endl;
 
         return false;
     }
@@ -95,7 +95,7 @@ bool NetworkGuest::connect(const std::string hostIP, uint16_t hostPort = DEFAULT
     }
     catch (const std::exception& exception)
     {
-        std::cout << "Exception: " << exception.what() << std::endl;
+        std::cerr << "Exception: " << exception.what() << std::endl;
 
         return false;
     }
