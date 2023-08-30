@@ -21,7 +21,7 @@ public:
 	*	\enum Ship_size
 	*	Enumerator opisuj¹cy d³ugoœæ statków. S¹ ich trzy rodzaje.
 	*/
-	enum Ship_size : int
+	enum ShipSize : int
 	{
 		BATTLESHIP_SIZE = 4,
 		CRUISER_SIZE = 3,
@@ -48,7 +48,7 @@ public:
 	/**
 	*	D³ugoœæ statku.
 	*/
-	const int size;								//d³ugoœæ statku
+	const ShipSize size;						//d³ugoœæ statku
 	char* deck;									//informacja o stanie jednego pola statku - ca³y, trafiony i zatopiony
 
 	int locationX, locationY;					//wspó³rzêdne po³o¿enia pocz¹tku statku
