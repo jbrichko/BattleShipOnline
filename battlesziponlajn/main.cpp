@@ -1,5 +1,7 @@
 #include "Board.hpp"
 #include "Ship.hpp"
+#include "NetworkManager.hpp"
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -91,7 +93,7 @@ public:
 
 
 
-int main(void)
+int main(int argc, char** argv)
 {
     /*
     EnemyBoard enemyBoard; 
@@ -123,7 +125,73 @@ int main(void)
 
     */
 
-    Game::getButtonPress();
+
+    char a;
+    std::string message;
+
+    if (argc > 1)
+    {
+        a = argv[1][0];
+        printf("%c\n", a);
+    }
+    else
+    {
+        std::cin >> a;
+    }
+
+
+    if (a == '1')
+    {
+        NetworkGuest guest;
+
+        if (guest.connect("127.0.0.1"))
+        {
+            std::cout << "Connected \n";
+
+            if (argc > 2)
+            {
+                message = argv[2];
+                std::cout << message << std::endl;
+            }
+            else
+            {
+                std::cin >> message;
+            }
+
+            std::vector<uint8_t> payload(message.begin(), message.end());
+            Network::MessageHeader header;
+
+            header.type = Network::string;
+            header.payloadSize = payload.size();
+
+            guest.send(header, payload);
+        }
+
+    }
+    else
+    {
+        NetworkHost host;
+
+        if (host.waitForConnection())
+        {
+            std::cout << "Connected \n";
+
+            std::vector<uint8_t> payload;
+            Network::MessageHeader header;
+
+            host.recive(header, payload);
+
+            message.resize(static_cast<size_t>(payload.size()));
+
+            std::copy(payload.begin(), payload.end(), message.begin());
+
+            //for(int i = 0; i < payload.size(); i++) printf("%c", payload[i]);
+
+            std::cout << message << std::endl;
+        }
+
+    }
+
 
 	return 0;
 }
