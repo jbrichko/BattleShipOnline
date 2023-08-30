@@ -45,60 +45,10 @@ public:
 
     Network() : socket(context) {}
 
-    bool isConnected()
-    {
-        return socket.is_open();
-    }
-
-    bool send(MessageHeader& header, std::vector<uint8_t>& message)
-    {
-        try
-        {
-            asio::write(socket, asio::buffer(&header, sizeof(MessageHeader)));
-            asio::write(socket, asio::buffer(message));
-        }
-        catch (const std::exception& exception)
-        {
-            std::cout << "Exception: " << exception.what() << std::endl;
-
-            return false;
-        }
-
-        return true;
-    }
-
-    bool recive(MessageHeader& header, std::vector<uint8_t>& message)
-    {
-        try
-        {
-            asio::read(socket, asio::buffer(&header, sizeof(MessageHeader)));
-
-            message.resize(header.payloadSize);
-            socket.wait(socket.wait_read);
-
-            asio::read(socket, asio::buffer(message.data(), message.size()));
-        }
-        catch (const std::exception& exception)
-        {
-            std::cout << "Exception: " << exception.what() << std::endl;
-
-            return false;
-        }
-
-        return true;
-    }
-
-    void disconnect()
-    {
-        try
-        {
-            socket.close();
-        }
-        catch (const std::exception& exception)
-        {
-            std::cout << "Exception: " << exception.what() << std::endl;
-        }
-    }
+    bool isConnected();
+    bool send(MessageHeader& header, std::vector<uint8_t>& message); 
+    bool recive(MessageHeader& header, std::vector<uint8_t>& message);
+    void disconnect(); 
 
 };
 
@@ -110,60 +60,16 @@ public:
 
     std::string getLocalIP();
 
-    bool waitForConnection(uint16_t port = DEFAULT_HOST_PORT) {
+    bool waitForConnection(uint16_t port = DEFAULT_HOST_PORT);
 
-        try
-        {
-            endpoint = asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port);
-
-            acceptor.bind(endpoint);
-            acceptor.listen();
-
-            std::cout << "Waiting for connection on port " << port << std::endl;
-
-            socket = asio::ip::tcp::socket(context);
-            acceptor.accept(socket);
-        }
-        catch (const std::exception& exception)
-        {
-            std::cout << "Exception: " << exception.what() << std::endl;
-
-            return false;
-        }
-
-        return true;
-    }
-
-    NetworkHost() : acceptor(context, asio::ip::tcp::v4())
-    {
-        acceptor.set_option(asio::ip::tcp::acceptor::reuse_address(true));
-    }
+    NetworkHost();
 
 };
 
 class NetworkGuest : public Network
 {
 public:
-    bool connect(const std::string hostIP, uint16_t hostPort = DEFAULT_HOST_PORT)
-    {
-        try
-        {
-            endpoint = asio::ip::tcp::endpoint(asio::ip::make_address_v4(hostIP), hostPort);
 
-            socket.connect(endpoint);
+    bool connect(const std::string hostIP, uint16_t hostPort = DEFAULT_HOST_PORT);
 
-#ifdef DEBUG
-            std::cout << "Local port: " << socket.local_endpoint().port() << std::endl;
-#endif
-
-        }
-        catch (const std::exception& exception)
-        {
-            std::cout << "Exception: " << exception.what() << std::endl;
-
-            return false;
-        }
-
-        return true;
-    }
 };
