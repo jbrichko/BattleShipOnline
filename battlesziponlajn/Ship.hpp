@@ -58,7 +58,7 @@ public:
 
 	void randomPlace(int boardSize);			//wylosowanie losowego po³o¿enia statku
 
-	Ship(int length);
+	Ship(ShipSize length);
 	~Ship();
 
 };

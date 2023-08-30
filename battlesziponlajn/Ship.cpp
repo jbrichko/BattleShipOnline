@@ -52,12 +52,12 @@ void Ship::randomPlace(int boardSize)
 
 }
 
-Ship::Ship(int length)
+Ship::Ship(ShipSize length)
 	: size(length)
 {
-	deck = new	char[size];
+	deck = new	char[static_cast<int>(size)];
 
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < static_cast<int>(size); i++)
 		deck[i] = 'S'; 
 
 	locationX = -1;
