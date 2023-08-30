@@ -80,6 +80,11 @@ bool NetworkHost::waitForConnection(uint16_t port = DEFAULT_HOST_PORT)
     return true;
 }
 
+NetworkHost::NetworkHost() : acceptor(context, asio::ip::tcp::v4())
+{
+    acceptor.set_option(asio::ip::tcp::acceptor::reuse_address(true));
+}
+
 bool NetworkGuest::connect(const std::string hostIP, uint16_t hostPort = DEFAULT_HOST_PORT)
 {
     try
@@ -101,9 +106,4 @@ bool NetworkGuest::connect(const std::string hostIP, uint16_t hostPort = DEFAULT
     }
 
     return true;
-}
-
-NetworkHost::NetworkHost() : acceptor(context, asio::ip::tcp::v4())
-{
-    acceptor.set_option(asio::ip::tcp::acceptor::reuse_address(true));
 }
