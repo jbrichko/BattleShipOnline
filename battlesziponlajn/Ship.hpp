@@ -18,13 +18,14 @@ public:
 	*/
 
 	/**
-	*	Templatka opisuj¹cy d³ugoœæ statków. S¹ ich trzy rodzaje. Je
+	*	\enum Ship_size
+	*	Enumerator opisuj¹cy d³ugoœæ statków. S¹ ich trzy rodzaje.
 	*/
 	enum Ship_size : int
 	{
-		BATTLESHIP_SIZE = 4;
-		CRUISER_SIZE = 3;
-		DESTROYER_SIZE = 2;
+		BATTLESHIP_SIZE = 4,
+		CRUISER_SIZE = 3,
+		DESTROYER_SIZE = 2,
 	};
 
 	//static const int BATTLESHIP_SIZE = { 4 };
