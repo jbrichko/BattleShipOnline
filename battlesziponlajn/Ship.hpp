@@ -6,7 +6,6 @@
 /*!	\class Ship
 *	\brief Jest to klasa, w której s¹ przechowywane najwa¿niejsze informacje o statkach.
 */
-
 class Ship
 {
 public:
@@ -27,9 +26,6 @@ public:
 		DESTROYER_SIZE = 2,
 	};
 
-	//static const int BATTLESHIP_SIZE = { 4 };
-	//static const int CRUISER_SIZE = { 3 };
-	//static const int DESTROYER_SIZE = { 2 };
 
 	static int srandInitCunt; //todo
 
@@ -86,9 +82,16 @@ public:
 };
 
 
+/*!	\class Battleship
+*	\brief Jest to klasa pochodna od klasy Ship. 
+*/
 class Battleship : public Ship
 {
 public:
+
+	/**
+	*	Klasa pochodna, która konstruuje obiekt Ship, ale o d³ugoœci statku typu: Battleship.
+	*/
 
 	Battleship()
 		: Ship(BATTLESHIP_SIZE)
@@ -96,9 +99,16 @@ public:
 	}
 };
 
+/*!	\class Cruiser
+*	\brief Jest to klasa pochodna od klasy Ship.
+*/
 class Cruiser : public Ship
 {
 public:
+
+	/**
+	*	Klasa pochodna, która konstruuje obiekt Ship, ale o d³ugoœci statku typu: Cruiser.
+	*/
 
 	Cruiser()
 		: Ship(CRUISER_SIZE)
@@ -106,9 +116,16 @@ public:
 	}
 };
 
+/*!	\class Destroyer
+*	\brief Jest to klasa pochodna od klasy Ship.
+*/
 class Destroyer : public Ship
 {
 public:
+
+	/**
+	*	Klasa pochodna, która konstruuje obiekt Ship, ale o d³ugoœci statku typu: Destroyer.
+	*/
 
 	Destroyer()
 		: Ship(DESTROYER_SIZE)
