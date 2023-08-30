@@ -2,22 +2,51 @@
 
 #define DEBUG
 
+
+/*!	\class Ship
+*	\brief Jest to klasa, w której s¹ przechowywane najwa¿niejsze informacje o statkach.
+*
+*/
+
 class Ship
 {
 public:
 
-	static const int BATTLESHIP_SIZE = { 4 };	//rozmiar statku 
-	static const int CRUISER_SIZE = { 3 };		//rozmiar statku
-	static const int DESTROYER_SIZE = { 2 };	//rozmiar statku
+	/**
+	*	Klasa ta zawiera wszelkie potrzebne informacje, które s¹ potrzebne do prawid³owego umieszczenia statku
+	*	na planszy.
+	*/
+
+	/**
+	*	Templatka opisuj¹cy d³ugoœæ statków. S¹ ich trzy rodzaje. Je
+	*/
+	enum Ship_size : int
+	{
+		BATTLESHIP_SIZE = 4;
+		CRUISER_SIZE = 3;
+		DESTROYER_SIZE = 2;
+	};
+
+	//static const int BATTLESHIP_SIZE = { 4 };
+	//static const int CRUISER_SIZE = { 3 };
+	//static const int DESTROYER_SIZE = { 2 };
 
 	static int srandInitCunt; //todo
 
-	enum Orientation : bool						//orientacja statku na mapie - poziomo lub pionowo
+	/**
+	*	\enum Orientation
+	*	Enumerator s³uz¹cy do okreœlenia orientacji statku na mapie - poziomo lub pionowo.
+	* 
+	*/
+	enum Orientation : bool
 	{
 		horizontal = true,
 		vertical = false,
 	};
 
+	/**
+	*	D³ugoœæ statku.
+	*/
 	const int size;								//d³ugoœæ statku
 	char* deck;									//informacja o stanie jednego pola statku - ca³y, trafiony i zatopiony
 
@@ -32,13 +61,6 @@ public:
 	~Ship();
 
 };
-
-/*!	\class Ship
-*	\brief Jest to klasa, w której s¹ przechowywane najwa¿niejsze informacje o statkach.
-*
-*	Klasa ta zawiera wszelkie potrzebne informacje, które s¹ potrzebne do prawid³owego umieszczenia statku
-*	na planszy.
-*/
 
 
 class Battleship : public Ship
