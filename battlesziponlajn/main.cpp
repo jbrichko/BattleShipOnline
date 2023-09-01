@@ -10,21 +10,37 @@
 
 #pragma comment(lib, "winmm.lib")
 
-
+/*! \class Game
+*   \brief Jest to klasa odpowiedzialna za g³ówn¹ pêtlê gry.
+*/
 class Game
 {
 public: 
 
+    /**
+    *   Klasa posiada metody obs³uguj¹ce konsolê takie jak: ³adowanie grafiki lub czyszczenie widoku w konsoli.
+    *   Równie¿ klasa odpowiada za prawid³owy przebieg rozgrywki - jest w niej g³ówna pêtla gry.
+    */
+
+    /**
+    *   \brief Czyœci konsolê z informacji na niej wyœwietlanych.
+    */
     static void clearConsole()
     {
         system("CLS");
     }
 
+    /**
+    *   \brief Pauzuje grê do momentu wciœniêcia jakiegokolwiek przycisku.
+    */
     static void getButtonPress()
     {
         system("pause");
     }
 
+    /**
+    *   \brief £aduje grafikê ASCII w konsoli.
+    */
     static void loadMenuGraphic()
     {
         std::ifstream file("resources/cover-art-2.txt"); // nazwa pliku .txt
@@ -44,21 +60,39 @@ public:
     }
 };
 
+/*! \class Action
+*   \brief Jest to klasa odpowiedzialna za podstawowe akcje wykorzystywane w rozgrywce.
+*/
 class Actions
 {
 public:
+
+    /** 
+    *   W klasie tej znajduj¹ siê metody, które odpowiadaj¹ za prawid³owy sposób gry w statki.
+    */  
+
+    /**
+    *   Wspó³rzêdne strza³u gracza.
+    */
     static int shootCoordX;
     static int shootCoordY;
     
+    /**
+    *   Pobiera od gracza wspó³rzêdne strza³u za pomoc¹ klawiatury. Iteracje nastêpuj¹ do momentu otrzymania od gracza
+    *   prawid³owych danych. Wspo³rzêdna musi byæ wiêksza, równa 0 i mniejsza ni¿ d³ugoœæ boku planszy. 
+    */
     static void getShootCoords()
     {
+        /// Estetyka rozgrywki.
         std::cout << std::endl << "WHAT ARE COORDINATES OF YOUR SHOT? " << std::endl;
         std::cout << "X: ";
+        /// Podanie wspó³rzêdnej X.
         while (shootCoordX < Board::size && shootCoordX >= 0)
         {
             std::cin >> shootCoordX;
         }
         std::cout << " Y: ";
+        /// Podanie wspó³rzêdnej Y.
         while (shootCoordY < Board::size && shootCoordY >= 0)
         {
             std::cin >> shootCoordY;
@@ -71,20 +105,32 @@ public:
     }
 };
 
+/*! \class Music
+*   \brief Jest to klasa odpowiedzialna za muzykê s³yszan¹ w tle podczas rozgrywki.
+*/
 class Music
 {
 public: 
 
+    /**
+    *   W³¹cznie muzyki menu gry.
+    */
     static void playMenuMusic()
     {
         PlaySound(TEXT("resources/menu-soundtrack-01.wav"), nullptr, SND_FILENAME | SND_LOOP | SND_ASYNC);
     }
 
+    /**
+    *   W³¹czenie muzyki w trakcie rozgrwyki.
+    */
     static void playGameMusic() 
     {
         PlaySound(TEXT("resources/game-soundtrack-01.wav"), nullptr, SND_FILENAME | SND_LOOP | SND_ASYNC);
     }
 
+    /**
+    *   Wy³¹czenie muzyki.
+    */
     static void stopMusic()
     {
         PlaySound(nullptr, nullptr, 0);
