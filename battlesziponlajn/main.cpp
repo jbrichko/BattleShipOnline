@@ -171,6 +171,7 @@ int main(int argc, char** argv)
 
     */
 
+    /*
 
     char a;
     std::string message;
@@ -201,7 +202,8 @@ int main(int argc, char** argv)
             }
             else
             {
-                std::cin >> message;
+                std::cin.ignore();
+                std::getline(std::cin, message);
             }
 
             std::vector<uint8_t> payload(message.begin(), message.end());
@@ -238,6 +240,10 @@ int main(int argc, char** argv)
 
     }
 
+    */
+
+    NetworkHost host; 
+    host.getLocalIP(); 
 
 	return 0;
 }

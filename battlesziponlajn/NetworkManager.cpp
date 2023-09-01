@@ -55,6 +55,36 @@ void Network::disconnect()
     }
 }
 
+std::string NetworkHost::getLocalIP()
+{
+    try
+    {
+        std::string host_name = asio::ip::host_name();
+        std::cout << "Host name: " << host_name << std::endl;
+
+        asio::ip::tcp::resolver resolver(context);
+        asio::ip::tcp::resolver::query query(asio::ip::tcp::v4(), host_name, "");
+        asio::ip::tcp::resolver::iterator endpoints = resolver.resolve(query);
+
+        std::vector<asio::ip::tcp::endpoint> ip_addresses;
+        for (asio::ip::tcp::resolver::iterator it = endpoints; it != asio::ip::tcp::resolver::iterator(); ++it) {
+            ip_addresses.push_back(*it);
+        }
+
+        for (const asio::ip::tcp::endpoint& endpoint : ip_addresses) {
+            std::cout << "IP Address: " << endpoint.address().to_string() << std::endl;
+        }
+    }
+    catch (const std::exception& exception)
+    {
+        std::cerr << "Exception: " << exception.what() << std::endl;
+
+        return nullptr;
+    }
+
+    return nullptr; 
+}
+
 bool NetworkHost::waitForConnection(uint16_t port)
 {
 
