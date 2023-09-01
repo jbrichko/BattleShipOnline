@@ -138,6 +138,39 @@ public:
 };
 
 
+// funkcja testowa
+void sendText(Network *netObject, std::string message)
+{
+    std::vector<uint8_t> payload(message.begin(), message.end());
+    Network::MessageHeader header;
+
+    header.type = Network::string;
+    header.payloadSize = payload.size();
+
+    netObject->send(header, payload);
+}
+
+
+// funkcja testowa
+void recieveText(Network *netObject)
+{
+    std::string message;
+
+    std::vector<uint8_t> payload;
+    Network::MessageHeader header;
+
+    netObject->recive(header, payload);
+
+    message.resize(static_cast<size_t>(payload.size()));
+
+    std::copy(payload.begin(), payload.end(), message.begin());
+
+    //for(int i = 0; i < payload.size(); i++) printf("%c", payload[i]);
+
+    std::cout << message << std::endl;
+}
+
+
 
 int main(int argc, char** argv)
 {
@@ -205,13 +238,9 @@ int main(int argc, char** argv)
                 std::getline(std::cin, message);
             }
 
-            std::vector<uint8_t> payload(message.begin(), message.end());
-            Network::MessageHeader header;
+            sendText(&guest, message);
 
-            header.type = Network::string;
-            header.payloadSize = payload.size();
-
-            guest.send(header, payload);
+            recieveText(&guest);
         }
 
     }
@@ -225,18 +254,12 @@ int main(int argc, char** argv)
         {
             std::cout << "Connected \n";
 
-            std::vector<uint8_t> payload;
-            Network::MessageHeader header;
+            recieveText(&host);
 
-            host.recive(header, payload);
+            std::cin.ignore();
+            std::getline(std::cin, message);
 
-            message.resize(static_cast<size_t>(payload.size()));
-
-            std::copy(payload.begin(), payload.end(), message.begin());
-
-            //for(int i = 0; i < payload.size(); i++) printf("%c", payload[i]);
-
-            std::cout << message << std::endl;
+            sendText(&host, message); 
         }
 
     }
