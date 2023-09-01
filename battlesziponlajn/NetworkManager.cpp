@@ -5,11 +5,11 @@ bool Network::isConnected()
     return socket.is_open();
 }
 
-bool Network::send(MessageHeader& header, std::vector<uint8_t>& message)
+bool Network::send(Message::Header& header, std::vector<uint8_t>& message)
 {
     try
     {
-        asio::write(socket, asio::buffer(&header, sizeof(MessageHeader)));
+        asio::write(socket, asio::buffer(&header, sizeof(Message::Header)));
         asio::write(socket, asio::buffer(message));
     }
     catch (const std::exception& exception)
@@ -22,11 +22,11 @@ bool Network::send(MessageHeader& header, std::vector<uint8_t>& message)
     return true;
 }
 
-bool Network::recive(MessageHeader& header, std::vector<uint8_t>& message)
+bool Network::recive(Message::Header& header, std::vector<uint8_t>& message)
 {
     try
     {
-        asio::read(socket, asio::buffer(&header, sizeof(MessageHeader)));
+        asio::read(socket, asio::buffer(&header, sizeof(Message::Header)));
 
         message.resize(header.payloadSize);
         socket.wait(socket.wait_read);
@@ -130,4 +130,40 @@ bool NetworkGuest::connect(const std::string hostIP, uint16_t hostPort)
     }
 
     return true;
+}
+
+
+void Message::setType(Type type)
+{
+    header.type = type; 
+}
+
+Message::Type Message::getType()
+{
+    return header.type; 
+}
+
+Message::Header Message::getHeader()
+{
+    return header; 
+}
+
+void Message::setPayload(std::vector<uint8_t>& payload)
+{
+
+}
+
+std::vector<uint8_t> Message::getPayload()
+{
+    if (payload == nullptr)
+    {
+        return std::vector<uint8_t>(); 
+    }
+
+    if (header.type == string)
+    {
+        return std::vector<uint8_t>(reinterpret_cast<StringPayload*>(payload)->string.begin(), reinterpret_cast<StringPayload*>(payload)->string.end());
+    }
+
+    return std::vector<uint8_t>(reinterpret_cast<uint8_t*>(payload), reinterpret_cast<uint8_t*>(payload) + header.payloadSize);
 }

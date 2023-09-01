@@ -33,48 +33,6 @@ public:
     asio::ip::tcp::socket socket;
 
 
-    /**
-    *	\enum MessageType
-    *	Enumerator opisuj¹cy dane jakie mog¹ zostaæ wys³ane pomiêdzy graczami.
-    *   Typem danych jest unsigned integer 16-bit. 
-    */
-    enum MessageType : uint16_t
-    {
-        /// string - dla testów i komunikacji miêdzy graczami (to do)
-        string,
-        /// game_start - informacja o rozpoczêciu gry
-        game_start,
-        /// shot - informacja o strzale gracza
-        shot,
-        /// shot_response - informacja o efekcie strza³u (pud³o lub trafienie)
-        shot_response,
-    };
-
-    /*!
-    *   \struct MessageHeader
-    *   \brief Header wysy³anej lub odbieranej informacji.
-    */
-    struct MessageHeader
-    {
-        /// Typ informacji.
-        MessageType type;
-        /// Rozmiar informacji.
-        uint16_t payloadSize;
-    };
-
-    /*!
-    *   \struct ShotMessage
-    *   \brief Struktura posiadaj¹ca wszelkie dane by wys³aæ lub odczytaæ informacje o strzale.
-    */
-    struct ShotMessage
-    {
-        /// Header strza³u.
-        MessageHeader header = { shot, sizeof(ShotMessage) };
-        /// Wspó³rzêdna X strza³u.
-        uint8_t x;
-        /// Wspó³rzêdna Y strza³u.
-        uint8_t y;
-    };
 
     Network() : socket(context) {}
 
@@ -87,12 +45,12 @@ public:
     *	\brief Wysy³a informacje do innego gracza.
     *	\return Zwraca inforamcjê czy informacja zosta³a wys³ana.
     */
-    bool send(MessageHeader& header, std::vector<uint8_t>& message);
+    bool send(Message::Header& header, std::vector<uint8_t>& message);
     /**
     *	\brief Odbiera informacje od innego gracza.
     *	\return Zwraca inforamcjê czy informacja zosta³a odebrana.
      */
-    bool recive(MessageHeader& header, std::vector<uint8_t>& message);
+    bool recive(Message::Header& header, std::vector<uint8_t>& message);
     /**
      *	\brief Zamyka po³¹czenie pomiêdzy graczami.
      */
@@ -126,5 +84,68 @@ class NetworkGuest : public Network
 public:
 
     bool connect(const std::string hostIP, uint16_t hostPort = DEFAULT_HOST_PORT);
+
+};
+
+class Message
+{
+public: 
+    /**
+    *	\enum Type
+    *	Enumerator opisuj¹cy dane jakie mog¹ zostaæ wys³ane pomiêdzy graczami.
+    *   Typem danych jest unsigned integer 16-bit.
+    */
+    enum Type : uint16_t
+    {
+        empty, 
+        /// string - dla testów i komunikacji miêdzy graczami (to do)
+        string,
+        /// game_start - informacja o rozpoczêciu gry
+        game_start,
+        /// shot - informacja o strzale gracza
+        shot,
+        /// shot_response - informacja o efekcie strza³u (pud³o lub trafienie)
+        shot_response,
+    };
+
+    /*!
+    *   \struct Header
+    *   \brief Header wysy³anej lub odbieranej informacji.
+    */
+    struct Header
+    {
+        /// Typ informacji.
+        Type type = empty;
+        /// Rozmiar informacji.
+        uint16_t payloadSize = 0;
+    };
+
+    virtual struct Payload {};
+
+    struct StringPayload : Payload
+    {
+        std::string string; 
+    };
+
+    /*!
+    *   \struct ShotPayload
+    *   \brief Struktura posiadaj¹ca wszelkie dane by wys³aæ lub odczytaæ informacje o strzale.
+    */
+    struct ShotPayload : Payload
+    {
+        /// Wspó³rzêdna X strza³u.
+        uint8_t x;
+        /// Wspó³rzêdna Y strza³u.
+        uint8_t y;
+    };
+
+    Header header; 
+    Payload* payload = nullptr; 
+
+    void setType(Type type); 
+    Type getType(); 
+    Header getHeader();
+    void setPayload(std::vector<uint8_t>& payload);
+    std::vector<uint8_t> getPayload();
 
 };

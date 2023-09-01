@@ -142,9 +142,9 @@ public:
 void sendText(Network *netObject, std::string message)
 {
     std::vector<uint8_t> payload(message.begin(), message.end());
-    Network::MessageHeader header;
+    Message::Header header;
 
-    header.type = Network::string;
+    header.type = Message::string;
     header.payloadSize = payload.size();
 
     netObject->send(header, payload);
@@ -157,7 +157,7 @@ void recieveText(Network *netObject)
     std::string message;
 
     std::vector<uint8_t> payload;
-    Network::MessageHeader header;
+    Message::Header header;
 
     netObject->recive(header, payload);
 
