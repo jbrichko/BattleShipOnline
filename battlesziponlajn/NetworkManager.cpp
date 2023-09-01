@@ -57,32 +57,26 @@ void Network::disconnect()
 
 std::string NetworkHost::getLocalIP()
 {
+    std::string localIP; 
+
     try
     {
-        std::string host_name = asio::ip::host_name();
-        std::cout << "Host name: " << host_name << std::endl;
-
+        std::string hostName = asio::ip::host_name();
         asio::ip::tcp::resolver resolver(context);
-        asio::ip::tcp::resolver::query query(asio::ip::tcp::v4(), host_name, "");
+        asio::ip::tcp::resolver::query query(asio::ip::tcp::v4(), hostName, "");
         asio::ip::tcp::resolver::iterator endpoints = resolver.resolve(query);
+        asio::ip::tcp::endpoint ipAddr = *endpoints; 
 
-        std::vector<asio::ip::tcp::endpoint> ip_addresses;
-        for (asio::ip::tcp::resolver::iterator it = endpoints; it != asio::ip::tcp::resolver::iterator(); ++it) {
-            ip_addresses.push_back(*it);
-        }
-
-        for (const asio::ip::tcp::endpoint& endpoint : ip_addresses) {
-            std::cout << "IP Address: " << endpoint.address().to_string() << std::endl;
-        }
+        localIP = ipAddr.address().to_string();
     }
     catch (const std::exception& exception)
     {
         std::cerr << "Exception: " << exception.what() << std::endl;
 
-        return nullptr;
+        return std::string();
     }
 
-    return nullptr; 
+    return localIP; 
 }
 
 bool NetworkHost::waitForConnection(uint16_t port)

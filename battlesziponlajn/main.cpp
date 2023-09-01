@@ -171,7 +171,6 @@ int main(int argc, char** argv)
 
     */
 
-    /*
 
     char a;
     std::string message;
@@ -220,6 +219,8 @@ int main(int argc, char** argv)
     {
         NetworkHost host;
 
+        std::cout << "Your local IP address is: " << host.getLocalIP() << std::endl; 
+ 
         if (host.waitForConnection())
         {
             std::cout << "Connected \n";
@@ -240,10 +241,6 @@ int main(int argc, char** argv)
 
     }
 
-    */
-
-    NetworkHost host; 
-    host.getLocalIP(); 
 
 	return 0;
 }
