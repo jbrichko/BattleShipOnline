@@ -1,0 +1,36 @@
+{
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "C/C++: g++ build active file",
+            "command": "/usr/bin/g++",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "${workspaceFolder}/battlesziponlajn/Board.cpp", // Add all your source files here
+                "${workspaceFolder}/battlesziponlajn/main.cpp",
+                "${workspaceFolder}/battlesziponlajn/NetworkManager.cpp",
+                "${workspaceFolder}/battlesziponlajn/Ship.cpp",
+                // Add all other source files here"-o",
+                "-o",
+                "${workspaceFolder}/battleszipgame",
+                "-I",
+                "${workspaceFolder}/battlesziponlajn/asio-1.28.0/include", // Include path for ASIO
+                "-lpthread", // Add the pthread library for threading support
+                "-std=c++17" // Set C++17 standard (modify according to your project's requirements)
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Compile-only task for C/C++ code"
+        }
+    ],
+    "version": "2.0.0"
+}
