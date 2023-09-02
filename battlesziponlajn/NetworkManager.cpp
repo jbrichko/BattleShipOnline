@@ -113,14 +113,14 @@ bool NetworkHost::waitForConnection(uint16_t port)
         bool timerExpired = false;
 
         timer.async_wait([&](const asio::error_code& error)
+        {
+            if (!error)
             {
-                if (!error)
-                {
-                    std::cerr << "Waiting time exceeded." << std::endl;
-                    timerExpired = true;
-                    acceptor.cancel();
-                }
-            });
+                std::cerr << "Waiting time exceeded." << std::endl;
+                timerExpired = true;
+                acceptor.cancel();
+            }
+         });
 
         context.run();
 
