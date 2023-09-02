@@ -12,9 +12,16 @@ bool Network::send(Message::Header& header, std::vector<uint8_t>& message)
         asio::write(socket, asio::buffer(&header, sizeof(Message::Header)));
         asio::write(socket, asio::buffer(message));
     }
-    catch (const std::exception& exception)
+    catch (const asio::system_error& error)
     {
-        std::cerr << "Exception: " << exception.what() << std::endl;
+        if (error.code() == asio::error::broken_pipe)
+        {
+            std::cerr << "The connection is lost." << std::endl;
+        }
+        else
+        {
+            std::cerr << "Exception: " << error.what() << std::endl;
+        }
 
         return false;
     }
@@ -33,9 +40,16 @@ bool Network::recive(Message::Header& header, std::vector<uint8_t>& message)
 
         asio::read(socket, asio::buffer(message.data(), message.size()));
     }
-    catch (const std::exception& exception)
+    catch (const asio::system_error& error)
     {
-        std::cerr << "Exception: " << exception.what() << std::endl;
+        if (error.code() == asio::error::eof)
+        {
+            std::cerr << "The connection is lost." << std::endl;
+        }
+        else
+        {
+            std::cerr << "Exception: " << error.what() << std::endl;
+        }
 
         return false;
     }
@@ -92,6 +106,29 @@ bool NetworkHost::waitForConnection(uint16_t port)
         std::cout << "Waiting for connection on port " << port << std::endl;
 
         socket = asio::ip::tcp::socket(context);
+
+        asio::steady_timer timer(context);
+        timer.expires_from_now(std::chrono::minutes(7));
+
+        bool timerExpired = false;
+
+        timer.async_wait([&](const asio::error_code& error)
+            {
+                if (!error)
+                {
+                    std::cerr << "Waiting time exceeded." << std::endl;
+                    timerExpired = true;
+                    acceptor.cancel();
+                }
+            });
+
+        context.run();
+
+        if (timerExpired)
+        {
+            return false;
+        }
+
         acceptor.accept(socket);
     }
     catch (const std::exception& exception)
