@@ -1,12 +1,8 @@
 #include "Ship.hpp"
+
 #include <cstdlib>
 #include <ctime>
-
-#ifdef DEBUG
-
 #include <iostream>
-
-#endif // DEBUG
 
 
 ///	Funkcja sprawdzaj¹ca czy statek jest zatopiony

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cinttypes> //only needed for scanf of uint_8 (can be later removed) 
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -277,7 +278,7 @@ int main(int argc, char** argv)
             recieveText(&host);
 
             std::cout << "Send cords: "; 
-            scanf("%u %u", &x, &y); 
+            scanf_s("%" SCNu8 " %" SCNu8, &x, &y);
 
             Message::send(&host, x, y); 
         }

@@ -1,13 +1,6 @@
 #include "Board.hpp"
 #include <iostream>
 
-#ifdef DEBUG
-
-#include <iostream>
-
-#endif // DEBUG
-
-
 
 ///	Ogólny szablon planszy. Jest to wzór, który w klasach pochodnych zostanie tak zmodyfikowany
 ///	by odpowiednio i czytelnie wyœwietlane by³y obie plansze.

@@ -107,6 +107,7 @@ bool NetworkHost::waitForConnection(uint16_t port)
 
         socket = asio::ip::tcp::socket(context);
 
+        /*
         asio::steady_timer timer(context);
         timer.expires_from_now(std::chrono::minutes(7));
 
@@ -128,6 +129,8 @@ bool NetworkHost::waitForConnection(uint16_t port)
         {
             return false;
         }
+
+        */
 
         acceptor.accept(socket);
     }
