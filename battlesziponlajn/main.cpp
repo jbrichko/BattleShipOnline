@@ -5,25 +5,31 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+
+#ifdef _WIN32
 #include <Windows.h>
 #include <mmsystem.h>
 
 #pragma comment(lib, "winmm.lib")
+#endif
+
+
+#ifdef _WIN32
 
 /*! \class Game
-*   \brief Jest to klasa odpowiedzialna za g³ówn¹ pêtlê gry.
+*   \brief Jest to klasa odpowiedzialna za gï¿½ï¿½wnï¿½ pï¿½tlï¿½ gry.
 */
 class Game
 {
 public: 
 
     /**
-    *   Klasa posiada metody obs³uguj¹ce konsolê takie jak: ³adowanie grafiki lub czyszczenie widoku w konsoli.
-    *   Równie¿ klasa odpowiada za prawid³owy przebieg rozgrywki - jest w niej g³ówna pêtla gry.
+    *   Klasa posiada metody obsï¿½ugujï¿½ce konsolï¿½ takie jak: ï¿½adowanie grafiki lub czyszczenie widoku w konsoli.
+    *   Rï¿½wnieï¿½ klasa odpowiada za prawidï¿½owy przebieg rozgrywki - jest w niej gï¿½ï¿½wna pï¿½tla gry.
     */
 
     /**
-    *   \brief Czyœci konsolê z informacji na niej wyœwietlanych.
+    *   \brief Czyï¿½ci konsolï¿½ z informacji na niej wyï¿½wietlanych.
     */
     static void clearConsole()
     {
@@ -31,7 +37,7 @@ public:
     }
 
     /**
-    *   \brief Pauzuje grê do momentu wciœniêcia jakiegokolwiek przycisku.
+    *   \brief Pauzuje grï¿½ do momentu wciï¿½niï¿½cia jakiegokolwiek przycisku.
     */
     static void getButtonPress()
     {
@@ -39,7 +45,7 @@ public:
     }
 
     /**
-    *   \brief £aduje grafikê ASCII w konsoli.
+    *   \brief ï¿½aduje grafikï¿½ ASCII w konsoli.
     */
     static void loadMenuGraphic()
     {
@@ -55,10 +61,12 @@ public:
             file.close();
         }
         else {
-            std::cout << "nie mo¿na otworzyæ pliku.\n";
+            std::cout << "nie moï¿½na otworzyï¿½ pliku.\n";
         }
     }
 };
+
+#endif
 
 /*! \class Action
 *   \brief Jest to klasa odpowiedzialna za podstawowe akcje wykorzystywane w rozgrywce.
@@ -68,31 +76,31 @@ class Actions
 public:
 
     /** 
-    *   W klasie tej znajduj¹ siê metody, które odpowiadaj¹ za prawid³owy sposób gry w statki.
+    *   W klasie tej znajdujï¿½ siï¿½ metody, ktï¿½re odpowiadajï¿½ za prawidï¿½owy sposï¿½b gry w statki.
     */  
 
     /**
-    *   Wspó³rzêdne strza³u gracza.
+    *   Wspï¿½rzï¿½dne strzaï¿½u gracza.
     */
     static int shootCoordX;
     static int shootCoordY;
     
     /**
-    *   Pobiera od gracza wspó³rzêdne strza³u za pomoc¹ klawiatury. Iteracje nastêpuj¹ do momentu otrzymania od gracza
-    *   prawid³owych danych. Wspo³rzêdna musi byæ wiêksza, równa 0 i mniejsza ni¿ d³ugoœæ boku planszy. 
+    *   Pobiera od gracza wspï¿½rzï¿½dne strzaï¿½u za pomocï¿½ klawiatury. Iteracje nastï¿½pujï¿½ do momentu otrzymania od gracza
+    *   prawidï¿½owych danych. Wspoï¿½rzï¿½dna musi byï¿½ wiï¿½ksza, rï¿½wna 0 i mniejsza niï¿½ dï¿½ugoï¿½ï¿½ boku planszy. 
     */
     static void getShootCoords()
     {
         /// Estetyka rozgrywki.
         std::cout << std::endl << "WHAT ARE COORDINATES OF YOUR SHOT? " << std::endl;
         std::cout << "X: ";
-        /// Podanie wspó³rzêdnej X.
+        /// Podanie wspï¿½rzï¿½dnej X.
         while (shootCoordX < Board::size && shootCoordX >= 0)
         {
             std::cin >> shootCoordX;
         }
         std::cout << " Y: ";
-        /// Podanie wspó³rzêdnej Y.
+        /// Podanie wspï¿½rzï¿½dnej Y.
         while (shootCoordY < Board::size && shootCoordY >= 0)
         {
             std::cin >> shootCoordY;
@@ -105,15 +113,18 @@ public:
     }
 };
 
+
+#ifdef _WIN32
+
 /*! \class Music
-*   \brief Jest to klasa odpowiedzialna za muzykê s³yszan¹ w tle podczas rozgrywki.
+*   \brief Jest to klasa odpowiedzialna za muzykï¿½ sï¿½yszanï¿½ w tle podczas rozgrywki.
 */
 class Music
 {
 public: 
 
     /**
-    *   W³¹cznie muzyki menu gry.
+    *   Wï¿½ï¿½cznie muzyki menu gry.
     */
     static void playMenuMusic()
     {
@@ -121,7 +132,7 @@ public:
     }
 
     /**
-    *   W³¹czenie muzyki w trakcie rozgrwyki.
+    *   Wï¿½ï¿½czenie muzyki w trakcie rozgrwyki.
     */
     static void playGameMusic() 
     {
@@ -129,7 +140,7 @@ public:
     }
 
     /**
-    *   Wy³¹czenie muzyki.
+    *   Wyï¿½ï¿½czenie muzyki.
     */
     static void stopMusic()
     {
@@ -137,18 +148,7 @@ public:
     }
 };
 
-
-// funkcja testowa
-void sendText(Network *netObject, std::string message)
-{
-    std::vector<uint8_t> payload(message.begin(), message.end());
-    Message::Header header;
-
-    header.type = Message::string;
-    header.payloadSize = payload.size();
-
-    netObject->send(header, payload);
-}
+#endif
 
 
 // funkcja testowa
@@ -170,7 +170,26 @@ void recieveText(Network *netObject)
     std::cout << message << std::endl;
 }
 
+//funkcja testowa
+void recieveShot(Network *netObject)
+{
+    std::vector<uint8_t> payload;
+    Message::Header header;
 
+    netObject->recive(header, payload);
+
+    if(header.type == Message::shot && header.payloadSize == sizeof(Message::ShotPayload))
+    {
+        Message::ShotPayload recStruct; 
+        std::copy(payload.begin(), payload.end(), reinterpret_cast<uint8_t*>(&recStruct)); 
+
+        printf("Cords: x= %d, y= %d \n", recStruct.x, recStruct.y); 
+    }
+    else
+    {
+        printf("Chuj ci w kasztan, nie wiem co to jest! \n"); 
+    }
+}
 
 int main(int argc, char** argv)
 {
@@ -207,6 +226,7 @@ int main(int argc, char** argv)
 
     char a;
     std::string message;
+    uint8_t x, y; 
 
     if (argc > 1)
     {
@@ -219,7 +239,7 @@ int main(int argc, char** argv)
     }
 
 
-    if (a == '1')
+    if (a == 'g')
     {
         NetworkGuest guest;
 
@@ -238,9 +258,9 @@ int main(int argc, char** argv)
                 std::getline(std::cin, message);
             }
 
-            sendText(&guest, message);
+            Message::send(&guest, message);
 
-            recieveText(&guest);
+            recieveShot(&guest);
         }
 
     }
@@ -256,10 +276,10 @@ int main(int argc, char** argv)
 
             recieveText(&host);
 
-            std::cin.ignore();
-            std::getline(std::cin, message);
+            std::cout << "Send cords: "; 
+            scanf("%u %u", &x, &y); 
 
-            sendText(&host, message); 
+            Message::send(&host, x, y); 
         }
 
     }

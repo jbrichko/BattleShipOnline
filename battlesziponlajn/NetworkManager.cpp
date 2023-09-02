@@ -170,9 +170,48 @@ bool NetworkGuest::connect(const std::string hostIP, uint16_t hostPort)
 }
 
 
+bool Message::send(Network *netObject, std::string &string)
+{
+    Header header;
+    header.type = Message::string;
+
+    std::vector<uint8_t> payload(string.begin(), string.end());
+    header.payloadSize = payload.size();
+
+    return netObject->send(header, payload);
+}
+
+bool Message::send(Network *netObject, uint8_t x, uint8_t y)
+{
+    Header header;
+    header.type = Message::shot;
+    header.payloadSize= sizeof(ShotPayload);
+
+    ShotPayload payloadStruct; 
+    payloadStruct.x = x; 
+    payloadStruct.y = y; 
+
+    std::vector<uint8_t> payload(header.payloadSize);
+    std::copy(reinterpret_cast<uint8_t*>(&payloadStruct), reinterpret_cast<uint8_t*>(&payloadStruct) + header.payloadSize, payload.begin());
+
+    return netObject->send(header, payload);
+}
+
+#ifdef MESSSAGE_TEST_IMPLEMENTATION
+
 void Message::setType(Type type)
 {
     header.type = type; 
+
+    switch (type)
+    {
+    case string:
+
+        break;
+    
+    default:
+        break;
+    }
 }
 
 Message::Type Message::getType()
@@ -204,3 +243,15 @@ std::vector<uint8_t> Message::getPayload()
 
     return std::vector<uint8_t>(reinterpret_cast<uint8_t*>(payload), reinterpret_cast<uint8_t*>(payload) + header.payloadSize);
 }
+
+Message::Payload *Message::getStruct()
+{
+    return payload;
+}
+
+Message::~Message()
+{
+    free(payload);
+}
+
+#endif
