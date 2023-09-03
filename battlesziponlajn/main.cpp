@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "Board.hpp"
 #include "Ship.hpp"
 #include "NetworkManager.hpp"
@@ -6,12 +8,14 @@
 #include <fstream>
 #include <string>
 #include <cinttypes> //only needed for scanf of uint_8 (can be later removed) 
+#include <cstdio>
 
 #ifdef _WIN32
 #include <Windows.h>
 #include <mmsystem.h>
 
 #pragma comment(lib, "winmm.lib")
+
 #endif
 
 
@@ -225,39 +229,61 @@ int main(int argc, char** argv)
     */
 
 
-    char a;
+    char hostSelect;
     std::string message;
+    std::string ipAddr = "127.0.0.1";
+
     uint8_t x, y; 
 
-    if (argc > 1)
+    
+    if (argc > 1 && (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--host") == 0))
     {
-        a = argv[1][0];
-        printf("%c\n", a);
+        hostSelect = 'h';
+    }
+    else if (argc > 1 && (strcmp(argv[1], "-g") == 0 || strcmp(argv[1], "--guest") == 0))
+    {
+        hostSelect = 'g';
     }
     else
     {
-        std::cin >> a;
+        std::cout << "Select host [h] or guest [g]: ";
+        std::cin >> hostSelect;
+        std::cin.ignore();
     }
 
 
-    if (a == 'g')
+    if (hostSelect == 'g')
     {
         NetworkGuest guest;
+        std::string tempIP;
 
-        if (guest.connect("127.0.0.1"))
+        if (argc > 2)
         {
-            std::cout << "Connected \n";
+            tempIP = argv[2];
+            std::cout << argv[2] << std::endl;
+        }
+        else
+        {
+            std::cout << "Host IP address [127.0.0.1]: ";
+            std::getline(std::cin, tempIP);
+        }
 
-            if (argc > 2)
-            {
-                message = argv[2];
-                std::cout << message << std::endl;
-            }
-            else
-            {
-                std::cin.ignore();
-                std::getline(std::cin, message);
-            }
+        try
+        {
+            asio::ip::make_address_v4(tempIP);
+
+            ipAddr = tempIP;
+        }
+        catch (const std::exception& exception)
+        {
+            std::cout << "Bad IP Address, reverting to default. \n";
+        }
+
+        if (guest.connect(ipAddr))
+        {
+            std::cout << "Connected to " << ipAddr << std::endl;
+
+            std::getline(std::cin, message);
 
             Message::send(&guest, message);
 
@@ -265,7 +291,7 @@ int main(int argc, char** argv)
         }
 
     }
-    else
+    else if (hostSelect == 'h')
     {
         NetworkHost host;
 
@@ -278,11 +304,15 @@ int main(int argc, char** argv)
             recieveText(&host);
 
             std::cout << "Send cords: "; 
-            scanf_s("%" SCNu8 " %" SCNu8, &x, &y);
+            scanf("%" SCNu8 " %" SCNu8, &x, &y);
 
             Message::send(&host, x, y); 
         }
 
+    }
+    else
+    {
+        std::cout << "Bad argument, exiting. \n"; 
     }
 
 
