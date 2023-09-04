@@ -31,7 +31,7 @@ public:
 	static void recieveText(Network* netObject); 
     static void recieveShot(Network* netObject);
 
-    void hostGuestScenario(); 
+    void hostSelector ();
     void hostRunner();
     void guestRunner(); 
 
