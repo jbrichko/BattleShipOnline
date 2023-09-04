@@ -139,6 +139,7 @@
     <ClInclude Include="Board.hpp" />
     <ClInclude Include="NetworkManager.hpp" />
     <ClInclude Include="Ship.hpp" />
+    <ClInclude Include="Testing.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="..\..\resources\menu-soundtrack-01.mp3" />

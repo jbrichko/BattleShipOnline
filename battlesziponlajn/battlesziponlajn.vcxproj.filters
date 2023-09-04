@@ -38,6 +38,9 @@
     <ClInclude Include="NetworkManager.hpp">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
+    <ClInclude Include="Testing.hpp">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Media Include="..\..\resources\menu-soundtrack-01.mp3">

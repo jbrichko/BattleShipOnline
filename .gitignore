@@ -6,6 +6,10 @@
 # Project-specific Linux executable
 battleszipgame
 
+# Machine-specific automation scripts
+push.sh
+pull.sh
+
 # User-specific files
 *.rsuser
 *.suo
