@@ -5,7 +5,7 @@
 
 #include "Board.hpp"
 #include "Ship.hpp"
-#include "NetworkManager.hpp"
+#include "NetworkManager.hpp"   
 
 
 #include <string>
@@ -34,6 +34,8 @@ public:
     void communicationScenario();
     void hostRunner();
     void guestRunner(); 
+
+    static void gameStartScenario();
 
     Testing(int argc, char** argv) 
     : argCount(argc), argStrings(argv) {}

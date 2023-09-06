@@ -126,3 +126,34 @@ void Testing::guestRunner()
         Testing::recieveShot(&guest);
     }
 }
+
+Testing::gameStartScenario(void)
+{
+    EnemyBoard enemyBoard;
+    PlayerBoard playerBoard;
+
+
+    Game::loadMenuGraphic();
+    Music::playMenuMusic();
+    Game::getButtonPress();
+    Game::clearConsole();
+    Music::stopMusic();
+    Music::playGameMusic();
+
+    enemyBoard.print();
+
+    playerBoard.placeShips();
+    playerBoard.print();
+
+
+    std::cout << std::endl;
+
+    for (int i = 0; i < playerBoard.noOfShips; i++)
+    {
+        std::cout << "main id:  " << i << " x = " << playerBoard.ships[i]->locationX
+            << " y = " << playerBoard.ships[i]->locationY
+            << " orientation: " << playerBoard.ships[i]->orientation
+            << " len = " << playerBoard.ships[i]->size << std::endl;
+    }
+
+}
