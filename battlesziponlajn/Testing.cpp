@@ -84,7 +84,7 @@ void Testing::hostRunner()
         std::cout << "Send cords: ";
         scanf("%" SCNu8 " %" SCNu8, &x, &y);
 
-        Message::send(&host, x, y);
+        Message::sendShot(&host, x, y);
     }
 }
 
@@ -121,7 +121,7 @@ void Testing::guestRunner()
 
         std::getline(std::cin, message);
 
-        Message::send(&guest, message);
+        Message::sendString(&guest, message);
 
         Testing::recieveShot(&guest);
     }

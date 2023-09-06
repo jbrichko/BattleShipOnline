@@ -11,6 +11,8 @@
 #include <asio/ts/buffer.hpp>
 #include <asio/ts/internet.hpp>
 
+#include "Board.hpp"
+
 // forward declaration of Network class to solve circular dependencies
 class Network; 
 
@@ -32,7 +34,7 @@ public:
         /// shot - informacja o strzale gracza
         shot,
         /// shot_response - informacja o efekcie strza�u (pud�o lub trafienie)
-        shot_response,
+        response,
         end_game,
     };
 
@@ -67,9 +69,17 @@ public:
         uint8_t y;
     };
 
+    struct Response : Payload
+    {
+        Board::FieldStatus status; 
+        std::vector<uint8_t> cordsX;
+        std::vector<uint8_t> cordsY; 
+    };
 
-    static bool send(Network *netObject, std::string& string);
-    static bool send(Network *netObject, uint8_t x, uint8_t y);  
+
+    static bool sendString(Network *netObject, std::string& string);
+    static bool sendShot(Network *netObject, uint8_t x, uint8_t y);  
+    static bool sendResponse(Network* netObject, Board::FieldStatus status, std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY); 
 
 #ifdef MESSSAGE_TEST_IMPLEMENTATION
 

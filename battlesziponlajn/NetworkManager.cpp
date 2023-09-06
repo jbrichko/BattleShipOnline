@@ -173,7 +173,7 @@ bool NetworkGuest::connect(const std::string hostIP, uint16_t hostPort)
 }
 
 
-bool Message::send(Network *netObject, std::string &string)
+bool Message::sendString(Network *netObject, std::string &string)
 {
     Header header;
     header.type = Message::string;
@@ -184,7 +184,7 @@ bool Message::send(Network *netObject, std::string &string)
     return netObject->send(header, payload);
 }
 
-bool Message::send(Network *netObject, uint8_t x, uint8_t y)
+bool Message::sendShot(Network *netObject, uint8_t x, uint8_t y)
 {
     Header header;
     header.type = Message::shot;
