@@ -270,15 +270,15 @@ bool Message::sendResponse(Network* netObject, Board::FieldStatus status, std::v
     header.type = Message::response;
 
     header.payloadSize = sizeof(Board::FieldStatus) + cordsX.size() + cordsY.size(); 
-    std::vector<uint8_t> payload;
+    std::vector<uint8_t> payload(header.payloadSize);
+    std::vector<uint8_t>::iterator it = payload.begin(); 
     
-    std::copy(reinterpret_cast<uint8_t*>(&status), reinterpret_cast<uint8_t*>(&status) + sizeof(Board::FieldStatus), payload.begin());
+    std::copy(reinterpret_cast<uint8_t*>(&status), reinterpret_cast<uint8_t*>(&status) + sizeof(Board::FieldStatus), it);
     
     if (cordsX.size() == cordsY.size() && cordsX.size() > 0)
     {
-        payload.insert(payload.end(), cordsX.begin(), cordsX.end());
-        payload.insert(payload.end(), cordsY.begin(), cordsY.end());
-
+        std::copy(cordsX.begin(), cordsX.end(), it += sizeof(Board::FieldStatus)); 
+        std::copy(cordsY.begin(), cordsY.end(), it += cordsX.size());
     }
 
     return netObject->send(header, payload);

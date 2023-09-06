@@ -84,7 +84,7 @@ void Testing::hostRunner()
 
         if (Message::reciveResponse(&host, status, cordsX, cordsY))
         {
-            std::cout << "Status: " << status << std::endl;
+            std::cout << "Status: " << static_cast<char>(status) << std::endl;
 
             for (unsigned int i = 0; i < cordsX.size(); i++)
             {
@@ -141,7 +141,6 @@ void Testing::guestRunner()
         while (true)
         {
             std::getline(std::cin, message);
-            std::cin.ignore(); 
 
             if (sscanf(message.c_str(), "%" SCNu8 " %" SCNu8, &x, &y) != 2)
             {
