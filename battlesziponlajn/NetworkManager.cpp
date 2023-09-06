@@ -1,5 +1,6 @@
 #include "NetworkManager.hpp"
 
+/// Sprwadzenie po³¹czenia.
 bool Network::isConnected()
 {
     return socket.is_open();
@@ -7,16 +8,20 @@ bool Network::isConnected()
 
 bool Network::send(Message::Header& header)
 {
+    /// Wysy³anie samego headera
     try
     {
         asio::write(socket, asio::buffer(&header, sizeof(Message::Header)));
     }
+    /// £apanie b³êdów
     catch (const asio::system_error& error)
     {
+        /// B³¹d braku po³¹cznia.
         if (error.code() == asio::error::broken_pipe)
         {
             std::cerr << "The connection is lost." << std::endl;
         }
+        /// Pozosta³e
         else
         {
             std::cerr << "Exception: " << error.what() << std::endl;
@@ -30,17 +35,21 @@ bool Network::send(Message::Header& header)
 
 bool Network::send(Message::Header& header, std::vector<uint8_t>& message)
 {
+    /// Wysy³anie headera wraz z jak¹œ wiadomoœci¹.
     try
     {
         asio::write(socket, asio::buffer(&header, sizeof(Message::Header)));
         asio::write(socket, asio::buffer(message));
     }
+    /// £apanie b³êdów
     catch (const asio::system_error& error)
     {
+        /// B³¹d braku po³¹cznia.
         if (error.code() == asio::error::broken_pipe)
         {
             std::cerr << "The connection is lost." << std::endl;
         }
+        /// Pozosta³e.
         else
         {
             std::cerr << "Exception: " << error.what() << std::endl;
@@ -54,16 +63,20 @@ bool Network::send(Message::Header& header, std::vector<uint8_t>& message)
 
 bool Network::recive(Message::Header& header)
 {
+    /// Otrzymanie headera.
     try
     {
         asio::read(socket, asio::buffer(&header, sizeof(Message::Header)));
     }
+    /// £apanie b³êdów.
     catch (const asio::system_error& error)
     {
+        /// B³¹d braku po³¹czenia.
         if (error.code() == asio::error::eof)
         {
             std::cerr << "The connection is lost." << std::endl;
         }
+        /// Pozosta³e.
         else
         {
             std::cerr << "Exception: " << error.what() << std::endl;
@@ -77,6 +90,7 @@ bool Network::recive(Message::Header& header)
 
 bool Network::recive(Message::Header& header, std::vector<uint8_t>& message)
 {
+    /// Otrzymanie headera i jakiejœ wiadomoœci.
     try
     {
         asio::read(socket, asio::buffer(&header, sizeof(Message::Header)));
@@ -86,12 +100,15 @@ bool Network::recive(Message::Header& header, std::vector<uint8_t>& message)
 
         asio::read(socket, asio::buffer(message.data(), message.size()));
     }
+    /// £apanie b³êdów.
     catch (const asio::system_error& error)
     {
+        /// B³¹d braku po³¹czenia.
         if (error.code() == asio::error::eof)
         {
             std::cerr << "The connection is lost." << std::endl;
         }
+        /// Pozosta³e.
         else
         {
             std::cerr << "Exception: " << error.what() << std::endl;
@@ -105,10 +122,12 @@ bool Network::recive(Message::Header& header, std::vector<uint8_t>& message)
 
 void Network::disconnect()
 {
+    /// Roz³¹czenie.
     try
     {
         socket.close();
     }
+    /// £apanie b³êdów.
     catch (const std::exception& exception)
     {
         std::cerr << "Exception: " << exception.what() << std::endl;
@@ -117,18 +136,25 @@ void Network::disconnect()
 
 std::string NetworkHost::getLocalIP()
 {
+    /// Zmienna przechowuj¹ca IP.
     std::string localIP; 
 
     try
     {
+        /// Dostanie nazwy komputera u¿ytkownika.
         std::string hostName = asio::ip::host_name();
+        /// Odpalenie resolvera.
         asio::ip::tcp::resolver resolver(context);
+        /// Wy³uskanie adresów IP komputera. Stworzenie zapytanie do resolvera.
         asio::ip::tcp::resolver::query query(asio::ip::tcp::v4(), hostName, "");
         asio::ip::tcp::resolver::iterator endpoints = resolver.resolve(query);
+        /// Zapis pierwszego wy³uskanego adresu IP do naszej zmiennej.
         asio::ip::tcp::endpoint ipAddr = *endpoints; 
 
+        /// Zamiana na string.
         localIP = ipAddr.address().to_string();
     }
+    /// £apanie b³êdów.
     catch (const std::exception& exception)
     {
         std::cerr << "Exception: " << exception.what() << std::endl;
@@ -141,45 +167,25 @@ std::string NetworkHost::getLocalIP()
 
 bool NetworkHost::waitForConnection(uint16_t port)
 {
-
+    /// Czekanie na po³¹czenie pomiêdzy Hostem a Guestem.
     try
     {
+        /// Przypisanie portu i wszystkich adresów IP do endpoint'a
         endpoint = asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port);
 
+        /// Bindowanie endpoint'a do akceptora po³¹czeñ.
         acceptor.bind(endpoint);
+        /// Uruchomienie akceptora.
         acceptor.listen();
 
         std::cout << "Waiting for connection on port " << port << std::endl;
 
+        /// Tworzenie socket'u, do którego póŸniej zostanie przypisane po³¹czenie.
         socket = asio::ip::tcp::socket(context);
-
-        /*
-        asio::steady_timer timer(context);
-        timer.expires_from_now(std::chrono::minutes(7));
-
-        bool timerExpired = false;
-
-        timer.async_wait([&](const asio::error_code& error)
-        {
-            if (!error)
-            {
-                std::cerr << "Waiting time exceeded." << std::endl;
-                timerExpired = true;
-                acceptor.cancel();
-            }
-         });
-
-        context.run();
-
-        if (timerExpired)
-        {
-            return false;
-        }
-
-        */
-
+        /// Czekanie na nawi¹zanie po³¹czenia.
         acceptor.accept(socket);
     }
+    /// £apanie b³êdów.
     catch (const std::exception& exception)
     {
         std::cerr << "Exception: " << exception.what() << std::endl;
@@ -192,11 +198,13 @@ bool NetworkHost::waitForConnection(uint16_t port)
 
 NetworkHost::NetworkHost() : acceptor(context, asio::ip::tcp::v4())
 {
+    /// Ustawia opdowiednio opcje akceptora.
     acceptor.set_option(asio::ip::tcp::acceptor::reuse_address(true));
 }
 
 bool NetworkGuest::connect(const std::string hostIP, uint16_t hostPort)
 {
+    /// Nawi¹zuje po³¹czenie.
     try
     {
         endpoint = asio::ip::tcp::endpoint(asio::ip::make_address_v4(hostIP), hostPort);
@@ -208,6 +216,7 @@ bool NetworkGuest::connect(const std::string hostIP, uint16_t hostPort)
 #endif
 
     }
+    /// £apanie b³êdów.
     catch (const std::exception& exception)
     {
         std::cerr << "Exception: " << exception.what() << std::endl;

@@ -26,8 +26,9 @@ public:
     */
     enum Type : uint16_t
     {
+        /// empty - pusta informacja, nic
         empty, 
-        /// string - dla test�w i komunikacji mi�dzy graczami (to do)
+        /// string - tekst
         string,
         /// game_start - informacja o rozpocz�ciu gry
         game_start,
@@ -35,6 +36,7 @@ public:
         shot,
         /// shot_response - informacja o efekcie strza�u (pud�o lub trafienie)
         response,
+        /// end_game - informacja o końcu gry
         end_game,
     };
 
@@ -52,8 +54,13 @@ public:
 
     struct Payload {};
 
+    /*!
+  *   \struct StringPayload
+  *   \brief Struktura posiadaj�ca wszelkie dane by wys�a� lub odczyta� informacje tekstowe.
+  */
     struct StringPayload : Payload
     {
+        /// Przetwarzany tekst.
         std::string string; 
     };
 
@@ -69,44 +76,94 @@ public:
         uint8_t y;
     };
 
+    /*!
+    *   \struct ResponsePayload
+    *   \brief Struktura posiadaj�ca wszelkie dane by wys�a� lub odczyta� informacje o skutku strzału.
+    */
     struct ResponsePayload : Payload
     {
+        /// Aktualny status danego pola planszy.
         Board::FieldStatus status; 
+        /// Współrzędna X pola planszy.
         std::vector<uint8_t> cordsX;
+        /// Współrzędna Y pola planszy.
         std::vector<uint8_t> cordsY; 
     };
 
-
+    /**
+    *   \brief Wysyłanie pustej wiadomości.
+    *   \param netObject Wskaźnik do obiektu klasy Network.
+    */
     static bool sendEmpty(Network* netObject);
+    /**
+    *   \brief Wysyłanie wiadomości tekstowej.
+    *   \param netObject Wskaźnik do obiektu klasy Network.
+    *   \param string Wysyłany tekst.
+    */
     static bool sendString(Network *netObject, std::string& string);
+    /**
+    *   \brief Wysyłanie informacji o rozpoczęciu gry.
+    *   \param netObject Wskaźnik do obiektu klasy Network.
+    */
     static bool sendGameStart(Network* netObject);
-    static bool sendShot(Network *netObject, uint8_t x, uint8_t y);  
+    /**
+    *   \brief Wysyłanie współrzędnych strzału.
+    *   \param netObject Wskaźnik do obiektu klasy Network.
+    *   \param x Współrzędna X.
+    *   \param y Współrzędna Y.
+    */
+    static bool sendShot(Network *netObject, uint8_t x, uint8_t y);
+    /**
+    *   \brief Wysyłanie odpowiedzi po strzale.
+    *   \param netObject Wskaźnik do obiektu klasy Network.
+    *   \param status Aktualny stan danego pola planszy.
+    *   \param cordsX Współrzędna X pola planszy.
+    *   \param cordsY Współrzędna Y pola planszy.
+    */
     static bool sendResponse(Network* netObject, Board::FieldStatus status, std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY); 
+    /**
+    *   \brief Wysyłanie informacji o zakończeniu gry.
+    *   \param netObject Wskaźnik do obiektu klasy Network.
+    */
     static bool sendEndGame(Network* netObject);
 
+
+    /**
+    *   \brief Otrzymanie pustej wiadomości.
+    *   \param netObject Wskaźnik do obiektu klasy Network.
+    */
     static bool reciveEmpty(Network* netObject);
+    /**
+    *   \brief Otrzymanie wiadomości tekstowej.
+    *   \param netObject Wskaźnik do obiektu klasy Network.
+    *   \param string Otrzymany tekst.
+    */
     static bool reciveString(Network* netObject, std::string& string);
+    /**
+    *   \brief Otrzymanie informacji o rozpoczęciu gry.
+    *   \param netObject Wskaźnik do obiektu klasy Network.
+    */
     static bool reciveGameStart(Network* netObject);
+    /**
+   *   \brief Otrzymanie współrzędnych strzału.
+   *   \param netObject Wskaźnik do obiektu klasy Network.
+   *   \param x Współrzędna X.
+   *   \param y Współrzędna Y.
+   */
     static bool reciveShot(Network* netObject, uint8_t& x, uint8_t& y);
+    /**
+   *   \brief Otrzymanie odpowiedzi po strzale.
+   *   \param netObject Wskaźnik do obiektu klasy Network.
+   *   \param status Aktualny stan danego pola planszy.
+   *   \param cordsX Współrzędna X pola planszy.
+   *   \param cordsY Współrzędna Y pola planszy.
+   */
     static bool reciveResponse(Network* netObject, Board::FieldStatus& status, std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY);
+    /**
+    *   \brief Otrzymanie informacji o zakończeniu gry.
+    *   \param netObject Wskaźnik do obiektu klasy Network.
+    */
     static bool reciveEndGame(Network* netObject);
-
-#ifdef MESSSAGE_TEST_IMPLEMENTATION
-
-
-    Header header; 
-    Payload* payload = nullptr; 
-
-    void setType(Type type); 
-    Type getType(); 
-    Header getHeader();
-    void setPayload(std::vector<uint8_t>& payload);
-    std::vector<uint8_t> getPayload();
-    Payload* getStruct(); 
-
-    ~Message(); 
-
-#endif
 
 }; 
 
@@ -126,6 +183,7 @@ public:
     *   operacji wej�cia/wyj�cia, co jest kluczowe dla wydajnej komunikacji sieciowej w grze.
     */
 
+    /// Domyślny port służący do bycia hostem.
     const static uint32_t DEFAULT_HOST_PORT = { 62137 };
 
     asio::io_context context;
@@ -173,11 +231,18 @@ public:
     /**
     *	\brief Odbiera informacje od innego gracza.
     *	\return Zwraca inforamcj� czy informacja zosta�a odebrana.
-     */
+    */
     std::string getLocalIP();
 
+    /**
+    *	\brief Czeka na uzyskanie połączenia.
+    *	\return Zwraca inforamcj� czy zostało nawiązane połączenie.
+    */
     bool waitForConnection(uint16_t port = DEFAULT_HOST_PORT);
 
+    /**
+    *	\brief Domyślny konstruktor.
+    */
     NetworkHost();
 
 };
@@ -186,6 +251,10 @@ class NetworkGuest : public Network
 {
 public:
 
+    /**
+    *	\brief Nawiązuje połącznie z hostem.
+    *	\return Zwraca inforamcj� czy zostało nawiązane połączenie.
+    */
     bool connect(const std::string hostIP, uint16_t hostPort = DEFAULT_HOST_PORT);
 
 };
