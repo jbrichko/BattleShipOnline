@@ -77,9 +77,19 @@ public:
     };
 
 
+    static bool sendEmpty(Network* netObject);
     static bool sendString(Network *netObject, std::string& string);
+    static bool sendGameStart(Network* netObject);
     static bool sendShot(Network *netObject, uint8_t x, uint8_t y);  
     static bool sendResponse(Network* netObject, Board::FieldStatus status, std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY); 
+    static bool sendEndGame(Network* netObject);
+
+    static bool reciveEmpty(Network* netObject);
+    static bool reciveString(Network* netObject, std::string& string);
+    static bool reciveGameStart(Network* netObject);
+    static bool reciveShot(Network* netObject, uint8_t x, uint8_t y);
+    static bool reciveResponse(Network* netObject, Board::FieldStatus status, std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY);
+    static bool reciveEndGame(Network* netObject);
 
 #ifdef MESSSAGE_TEST_IMPLEMENTATION
 
