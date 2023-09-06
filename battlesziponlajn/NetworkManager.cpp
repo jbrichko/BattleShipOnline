@@ -277,8 +277,10 @@ bool Message::sendResponse(Network* netObject, Board::FieldStatus status, std::v
     
     if (cordsX.size() == cordsY.size() && cordsX.size() > 0)
     {
-        std::copy(cordsX.begin(), cordsX.end(), it += sizeof(Board::FieldStatus)); 
-        std::copy(cordsY.begin(), cordsY.end(), it += cordsX.size());
+        it += sizeof(Board::FieldStatus);
+        std::copy(cordsX.begin(), cordsX.end(), it + 1); 
+        it += cordsX.size(); 
+        std::copy(cordsY.begin(), cordsY.end(), it + 1);
     }
 
     return netObject->send(header, payload);
@@ -393,17 +395,19 @@ bool Message::reciveResponse(Network* netObject, Board::FieldStatus& status, std
     }
 
     size_t vecSize = (header.payloadSize - sizeof(Board::FieldStatus)) / 2; 
-    cordsX.clear();
-    cordsY.clear();
+    cordsX.resize(vecSize);
+    cordsY.resize(vecSize);
 
     std::vector<uint8_t>::iterator it = payload.begin();
 
-    std::copy(it, it += sizeof(Board::FieldStatus), reinterpret_cast<uint8_t*>(&status));
+    std::copy(it, it + sizeof(Board::FieldStatus), reinterpret_cast<uint8_t*>(&status));
 
     if (vecSize > 0)
     {
-        cordsX.insert(cordsX.end(), it, it += vecSize);
-        cordsY.insert(cordsY.end(), it, it += vecSize);
+        it += sizeof(Board::FieldStatus); 
+        std::copy(it + 1, it + vecSize, cordsX.begin());
+        it += vecSize; 
+        std::copy(it + 1, it + vecSize, cordsY.begin());
     }
     
     return true; 
