@@ -200,6 +200,23 @@ bool Message::sendShot(Network *netObject, uint8_t x, uint8_t y)
     return netObject->send(header, payload);
 }
 
+bool Message::sendResponse(Network* netObject, Board::FieldStatus status, std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY)
+{
+    Header header;
+    header.type = Message::response;
+
+    ResponsePayload payloadStruct;
+    payloadStruct.status = status; 
+    payloadStruct.cordsX = cordsX; 
+    payloadStruct.cordsY = cordsY; 
+
+    header.payloadSize = sizeof(Board::FieldStatus) + cordsX.size() + cordsY.size(); 
+    std::vector<uint8_t> payload(header.payloadSize);
+    std::copy(reinterpret_cast<uint8_t*>(&payloadStruct), reinterpret_cast<uint8_t*>(&payloadStruct) + header.payloadSize, payload.begin());
+
+    return netObject->send(header, payload);
+}
+
 #ifdef MESSSAGE_TEST_IMPLEMENTATION
 
 void Message::setType(Type type)

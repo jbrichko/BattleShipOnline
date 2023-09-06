@@ -69,7 +69,7 @@ public:
         uint8_t y;
     };
 
-    struct Response : Payload
+    struct ResponsePayload : Payload
     {
         Board::FieldStatus status; 
         std::vector<uint8_t> cordsX;
