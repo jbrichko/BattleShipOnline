@@ -173,6 +173,11 @@ bool NetworkGuest::connect(const std::string hostIP, uint16_t hostPort)
 }
 
 
+bool Message::sendEmpty(Network* netObject)
+{
+
+}
+
 bool Message::sendString(Network *netObject, std::string &string)
 {
     Header header;
@@ -182,6 +187,11 @@ bool Message::sendString(Network *netObject, std::string &string)
     header.payloadSize = payload.size();
 
     return netObject->send(header, payload);
+}
+
+bool Message::sendGameStart(Network* netObject)
+{
+
 }
 
 bool Message::sendShot(Network *netObject, uint8_t x, uint8_t y)
@@ -215,4 +225,39 @@ bool Message::sendResponse(Network* netObject, Board::FieldStatus status, std::v
     std::copy(reinterpret_cast<uint8_t*>(&payloadStruct), reinterpret_cast<uint8_t*>(&payloadStruct) + header.payloadSize, payload.begin());
 
     return netObject->send(header, payload);
+}
+
+bool Message::sendEndGame(Network* netObject)
+{
+
+}
+
+bool Message::reciveEmpty(Network* netObject)
+{
+
+}
+
+bool Message::reciveString(Network* netObject, std::string& string)
+{
+
+}
+
+bool Message::reciveGameStart(Network* netObject)
+{
+
+}
+
+bool Message::reciveShot(Network* netObject, uint8_t x, uint8_t y)
+{
+
+}
+
+bool reciveResponse(Network* netObject, Board::FieldStatus status, std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY)
+{
+
+}
+
+bool Message::reciveEndGame(Network* netObject)
+{
+
 }
