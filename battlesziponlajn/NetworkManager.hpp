@@ -87,8 +87,8 @@ public:
     static bool reciveEmpty(Network* netObject);
     static bool reciveString(Network* netObject, std::string& string);
     static bool reciveGameStart(Network* netObject);
-    static bool reciveShot(Network* netObject, uint8_t x, uint8_t y);
-    static bool reciveResponse(Network* netObject, Board::FieldStatus status, std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY);
+    static bool reciveShot(Network* netObject, uint8_t& x, uint8_t& y);
+    static bool reciveResponse(Network* netObject, Board::FieldStatus& status, std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY);
     static bool reciveEndGame(Network* netObject);
 
 #ifdef MESSSAGE_TEST_IMPLEMENTATION
@@ -152,6 +152,7 @@ public:
     *	\brief Odbiera informacje od innego gracza.
     *	\return Zwraca inforamcj� czy informacja zosta�a odebrana.
      */
+    bool recive(Message::Header& header); 
     bool recive(Message::Header& header, std::vector<uint8_t>& message);
     /**
      *	\brief Zamyka po��czenie pomi�dzy graczami.

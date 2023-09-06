@@ -25,7 +25,6 @@ private:
     char hostSelect;
     std::string message;
     std::string ipAddr = "127.0.0.1";
-    uint8_t x, y; 
     int argCount; 
     char** argStrings; 
 

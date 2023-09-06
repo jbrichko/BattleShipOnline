@@ -52,6 +52,29 @@ bool Network::send(Message::Header& header, std::vector<uint8_t>& message)
     return true;
 }
 
+bool Network::recive(Message::Header& header)
+{
+    try
+    {
+        asio::read(socket, asio::buffer(&header, sizeof(Message::Header)));
+    }
+    catch (const asio::system_error& error)
+    {
+        if (error.code() == asio::error::eof)
+        {
+            std::cerr << "The connection is lost." << std::endl;
+        }
+        else
+        {
+            std::cerr << "Exception: " << error.what() << std::endl;
+        }
+
+        return false;
+    }
+
+    return true;
+}
+
 bool Network::recive(Message::Header& header, std::vector<uint8_t>& message)
 {
     try
@@ -246,14 +269,17 @@ bool Message::sendResponse(Network* netObject, Board::FieldStatus status, std::v
     Header header;
     header.type = Message::response;
 
-    ResponsePayload payloadStruct;
-    payloadStruct.status = status; 
-    payloadStruct.cordsX = cordsX; 
-    payloadStruct.cordsY = cordsY; 
-
     header.payloadSize = sizeof(Board::FieldStatus) + cordsX.size() + cordsY.size(); 
-    std::vector<uint8_t> payload(header.payloadSize);
-    std::copy(reinterpret_cast<uint8_t*>(&payloadStruct), reinterpret_cast<uint8_t*>(&payloadStruct) + header.payloadSize, payload.begin());
+    std::vector<uint8_t> payload;
+    
+    std::copy(reinterpret_cast<uint8_t*>(&status), reinterpret_cast<uint8_t*>(&status) + sizeof(Board::FieldStatus), payload.begin());
+    
+    if (cordsX.size() == cordsY.size() && cordsX.size() > 0)
+    {
+        payload.insert(payload.end(), cordsX.begin(), cordsX.end());
+        payload.insert(payload.end(), cordsY.begin(), cordsY.end());
+
+    }
 
     return netObject->send(header, payload);
 }
@@ -269,30 +295,134 @@ bool Message::sendEndGame(Network* netObject)
 
 bool Message::reciveEmpty(Network* netObject)
 {
+    Header header;
 
+    if (netObject->recive(header) != true)
+    {
+        return false; 
+    }
+
+    if (header.type != Message::empty)
+    {
+        std::cerr << "Received message does not match expected type. \n"; 
+        return false; 
+    }
+
+    return true;
 }
 
 bool Message::reciveString(Network* netObject, std::string& string)
 {
+    Header header;
+    std::vector<uint8_t> payload;
 
+    if (netObject->recive(header, payload) != true)
+    {
+        return false;
+    }
+
+    if (header.type != Message::string)
+    {
+        std::cerr << "Received message does not match expected type. \n";
+        return false;
+    }
+
+    string.resize(static_cast<size_t>(payload.size())); 
+    std::copy(payload.begin(), payload.end(), string.begin());
+
+    return true;
 }
 
 bool Message::reciveGameStart(Network* netObject)
 {
+    Header header;
 
+    if (netObject->recive(header) != true)
+    {
+        return false;
+    }
+
+    if (header.type != Message::game_start)
+    {
+        std::cerr << "Received message does not match expected type. \n";
+        return false;
+    }
+
+    return true;
 }
 
-bool Message::reciveShot(Network* netObject, uint8_t x, uint8_t y)
+bool Message::reciveShot(Network* netObject, uint8_t& x, uint8_t& y)
 {
+    Header header;
+    std::vector<uint8_t> payload;
 
+    if (netObject->recive(header, payload) != true)
+    {
+        return false;
+    }
+
+    if (header.type != Message::shot || header.payloadSize != sizeof(ShotPayload))
+    {
+        std::cerr << "Received message does not match expected type. \n";
+        return false;
+    }
+
+    ShotPayload recStruct; 
+    std::copy(payload.begin(), payload.end(), reinterpret_cast<uint8_t*>(&recStruct));
+
+    x = recStruct.x; 
+    y = recStruct.y; 
+
+    return true;
 }
 
-bool reciveResponse(Network* netObject, Board::FieldStatus status, std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY)
+bool Message::reciveResponse(Network* netObject, Board::FieldStatus& status, std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY)
 {
+    Header header;
+    std::vector<uint8_t> payload;
 
+    if (netObject->recive(header, payload) != true)
+    {
+        return false;
+    }
+
+    if (header.type != Message::response || header.payloadSize < sizeof(Board::FieldStatus))
+    {
+        std::cerr << "Received message does not match expected type. \n";
+        return false;
+    }
+
+    size_t vecSize = (header.payloadSize - sizeof(Board::FieldStatus)) / 2; 
+    cordsX.clear();
+    cordsY.clear();
+
+    std::vector<uint8_t>::iterator it = payload.begin();
+
+    std::copy(it, it += sizeof(Board::FieldStatus), reinterpret_cast<uint8_t*>(&status));
+
+    if (vecSize > 0)
+    {
+        cordsX.insert(cordsX.end(), it, it += vecSize);
+        cordsY.insert(cordsY.end(), it, it += vecSize);
+    }
+    
+    return true; 
 }
 
 bool Message::reciveEndGame(Network* netObject)
 {
+    Header header;
 
+    if (netObject->recive(header) != true)
+    {
+        return false;
+    }
+
+    if (header.type != Message::end_game)
+    {
+        std::cerr << "Received message does not match expected type. \n";
+        return false;
+    }
+
+    return true;
 }

@@ -77,14 +77,24 @@ void Testing::hostRunner()
 
     if (host.waitForConnection())
     {
+        std::vector<uint8_t> cordsX, cordsY;
+        Board::FieldStatus status; 
+
         std::cout << "Connected \n";
 
-        Testing::recieveText(&host);
+        if (Message::reciveResponse(&host, status, cordsX, cordsY))
+        {
+            std::cout << "Status: " << status << std::endl;
 
-        std::cout << "Send cords: ";
-        scanf("%" SCNu8 " %" SCNu8, &x, &y);
-
-        Message::sendShot(&host, x, y);
+            for (unsigned int i = 0; i < cordsX.size(); i++)
+            {
+                printf("x = %u  y = %u \n", cordsX[i], cordsY[i]);
+            }
+        }
+        else
+        {
+            std::cout << "Chyba cos nie ta \n"; 
+        }
     }
 }
 
@@ -117,13 +127,32 @@ void Testing::guestRunner()
 
     if (guest.connect(ipAddr))
     {
+        uint8_t x, y;
+        std::vector<uint8_t> cordsX, cordsY; 
+        Board::FieldStatus status; 
+        char statusChar; 
+
         std::cout << "Connected to " << ipAddr << std::endl;
 
-        std::getline(std::cin, message);
+        std::cin >> statusChar; 
+        std::cin.ignore(); 
+        status = static_cast<Board::FieldStatus>(statusChar);
 
-        Message::sendString(&guest, message);
+        while (true)
+        {
+            std::getline(std::cin, message);
+            std::cin.ignore(); 
 
-        Testing::recieveShot(&guest);
+            if (sscanf(message.c_str(), "%" SCNu8 " %" SCNu8, &x, &y) != 2)
+            {
+                break;
+            }
+
+            cordsX.push_back(x); 
+            cordsY.push_back(y); 
+        }
+
+        Message::sendResponse(&guest, status, cordsX, cordsY);
     }
 }
 
