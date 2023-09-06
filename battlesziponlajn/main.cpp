@@ -190,7 +190,7 @@ int main(int argc, char** argv)
 
    Testing testing(argc, argv); 
 
-   testing.hostSelector(); 
+   testing.communicationScenario();
 
 
 

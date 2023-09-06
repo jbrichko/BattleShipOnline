@@ -38,7 +38,7 @@ void Testing::recieveShot(Network *netObject)
     }
 }
 
-void Testing::hostSelector()
+void Testing::communicationScenario()
 {
     if (argCount > 1 && (strcmp(argStrings[1], "-h") == 0 || strcmp(argStrings[1], "--host") == 0))
     {
