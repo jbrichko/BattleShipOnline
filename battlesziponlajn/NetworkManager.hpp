@@ -146,6 +146,7 @@ public:
     *	\brief Wysy�a informacje do innego gracza.
     *	\return Zwraca inforamcj� czy informacja zosta�a wys�ana.
     */
+    bool send(Message::Header& header);
     bool send(Message::Header& header, std::vector<uint8_t>& message);
     /**
     *	\brief Odbiera informacje od innego gracza.

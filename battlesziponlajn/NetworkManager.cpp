@@ -5,6 +5,29 @@ bool Network::isConnected()
     return socket.is_open();
 }
 
+bool Network::send(Message::Header& header)
+{
+    try
+    {
+        asio::write(socket, asio::buffer(&header, sizeof(Message::Header)));
+    }
+    catch (const asio::system_error& error)
+    {
+        if (error.code() == asio::error::broken_pipe)
+        {
+            std::cerr << "The connection is lost." << std::endl;
+        }
+        else
+        {
+            std::cerr << "Exception: " << error.what() << std::endl;
+        }
+
+        return false;
+    }
+
+    return true;
+}
+
 bool Network::send(Message::Header& header, std::vector<uint8_t>& message)
 {
     try
@@ -175,7 +198,11 @@ bool NetworkGuest::connect(const std::string hostIP, uint16_t hostPort)
 
 bool Message::sendEmpty(Network* netObject)
 {
-
+    Header header; 
+    header.type = Message::empty; 
+    header.payloadSize = 0; 
+    
+    return netObject->send(header); 
 }
 
 bool Message::sendString(Network *netObject, std::string &string)
@@ -191,7 +218,11 @@ bool Message::sendString(Network *netObject, std::string &string)
 
 bool Message::sendGameStart(Network* netObject)
 {
+    Header header;
+    header.type = Message::game_start;
+    header.payloadSize = 0;
 
+    return netObject->send(header);
 }
 
 bool Message::sendShot(Network *netObject, uint8_t x, uint8_t y)
@@ -229,7 +260,11 @@ bool Message::sendResponse(Network* netObject, Board::FieldStatus status, std::v
 
 bool Message::sendEndGame(Network* netObject)
 {
+    Header header;
+    header.type = Message::end_game;
+    header.payloadSize = 0;
 
+    return netObject->send(header);
 }
 
 bool Message::reciveEmpty(Network* netObject)
