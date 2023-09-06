@@ -37,6 +37,7 @@ public:
     void guestRunner(); 
 
     static void gameStartScenario();
+    static void convertResponseScenario();
 
     Testing(int argc, char** argv) 
     : argCount(argc), argStrings(argv) {}

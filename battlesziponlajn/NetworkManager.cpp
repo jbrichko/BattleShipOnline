@@ -278,9 +278,9 @@ bool Message::sendResponse(Network* netObject, Board::FieldStatus status, std::v
     if (cordsX.size() == cordsY.size() && cordsX.size() > 0)
     {
         it += sizeof(Board::FieldStatus);
-        std::copy(cordsX.begin(), cordsX.end(), it + 1); 
-        it += cordsX.size(); 
-        std::copy(cordsY.begin(), cordsY.end(), it + 1);
+        std::copy(cordsX.begin(), cordsX.end(), it);
+        it += cordsX.size();
+        std::copy(cordsY.begin(), cordsY.end(), it);
     }
 
     return netObject->send(header, payload);
@@ -404,10 +404,10 @@ bool Message::reciveResponse(Network* netObject, Board::FieldStatus& status, std
 
     if (vecSize > 0)
     {
-        it += sizeof(Board::FieldStatus); 
-        std::copy(it + 1, it + vecSize, cordsX.begin());
-        it += vecSize; 
-        std::copy(it + 1, it + vecSize, cordsY.begin());
+        it += sizeof(Board::FieldStatus);
+        std::copy(it, it + vecSize, cordsX.begin());
+        it += vecSize;
+        std::copy(it, it + vecSize, cordsY.begin());
     }
     
     return true; 

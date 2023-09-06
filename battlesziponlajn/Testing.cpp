@@ -84,7 +84,7 @@ void Testing::hostRunner()
 
         if (Message::reciveResponse(&host, status, cordsX, cordsY))
         {
-            std::cout << "Status: " << static_cast<char>(status) << std::endl;
+            std::cout << "Status: " << status << std::endl;
 
             for (unsigned int i = 0; i < cordsX.size(); i++)
             {
@@ -152,6 +152,83 @@ void Testing::guestRunner()
         }
 
         Message::sendResponse(&guest, status, cordsX, cordsY);
+    }
+}
+
+void Testing::convertResponseScenario()
+{
+    std::vector<uint8_t> payload;
+    Message::Header header;
+
+
+    {
+        uint8_t x, y;
+        std::vector<uint8_t> cordsX, cordsY;
+        Board::FieldStatus status;
+        char statusChar;
+        std::string message;
+
+        std::cin >> statusChar;
+        std::cin.ignore();
+        status = static_cast<Board::FieldStatus>(statusChar);
+
+        while (true)
+        {
+            std::getline(std::cin, message);
+
+            if (sscanf(message.c_str(), "%" SCNu8 " %" SCNu8, &x, &y) != 2)
+            {
+                break;
+            }
+
+            cordsX.push_back(x);
+            cordsY.push_back(y);
+        }
+
+
+        header.type = Message::response;
+
+        header.payloadSize = sizeof(Board::FieldStatus) + cordsX.size() + cordsY.size();
+        payload.resize(header.payloadSize);
+        std::vector<uint8_t>::iterator it = payload.begin();
+
+        std::copy(reinterpret_cast<uint8_t*>(&status), reinterpret_cast<uint8_t*>(&status) + sizeof(Board::FieldStatus), it);
+
+
+            it += sizeof(Board::FieldStatus);
+            std::copy(cordsX.begin(), cordsX.end(), it);
+            it += cordsX.size();
+            std::copy(cordsY.begin(), cordsY.end(), it);
+    }
+    
+
+
+    {
+        std::vector<uint8_t> cordsX, cordsY;
+        Board::FieldStatus status;
+
+        size_t vecSize = (header.payloadSize - sizeof(Board::FieldStatus)) / 2;
+        cordsX.resize(vecSize);
+        cordsY.resize(vecSize);
+
+        std::vector<uint8_t>::iterator it = payload.begin();
+
+        std::copy(it, it + sizeof(Board::FieldStatus), reinterpret_cast<uint8_t*>(&status));
+
+        if (vecSize > 0)
+        {
+            it += sizeof(Board::FieldStatus);
+            std::copy(it, it + vecSize, cordsX.begin());
+            it += vecSize;
+            std::copy(it, it + vecSize, cordsY.begin());
+        }
+
+        std::cout << "Status: " << status << std::endl;
+
+        for (unsigned int i = 0; i < cordsX.size(); i++)
+        {
+            printf("x = %u  y = %u \n", cordsX[i], cordsY[i]);
+        }
     }
 }
 
