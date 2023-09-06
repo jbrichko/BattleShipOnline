@@ -127,7 +127,7 @@ void Testing::guestRunner()
     }
 }
 
-Testing::gameStartScenario(void)
+void Testing::gameStartScenario()
 {
     EnemyBoard enemyBoard;
     PlayerBoard playerBoard;
