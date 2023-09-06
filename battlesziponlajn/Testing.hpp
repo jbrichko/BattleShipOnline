@@ -6,6 +6,8 @@
 #include "Board.hpp"
 #include "Ship.hpp"
 #include "NetworkManager.hpp"   
+#include "Game.hpp"
+#include "Actions.hpp"
 
 
 #include <string>
