@@ -137,7 +137,9 @@
     <ClCompile Include="Testing.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actions.hpp" />
     <ClInclude Include="Board.hpp" />
+    <ClInclude Include="Game.hpp" />
     <ClInclude Include="NetworkManager.hpp" />
     <ClInclude Include="Ship.hpp" />
     <ClInclude Include="Testing.hpp" />
