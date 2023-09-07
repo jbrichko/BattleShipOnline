@@ -42,7 +42,7 @@ Board::Board()
 	shipsRemaining = PlayerBoard::NO_OF_BATTLESHIPS + PlayerBoard::NO_OF_CRUISERS + PlayerBoard::NO_OF_DESTROYERS; 
 }
 
-///	Usuniêcie z pamiêci planszy. Definicja dekonstruktora klasy.
+///	Usuniêcie z pamiêci planszy. Definicja destruktora klasy.
 Board::~Board()
 {
 	for (int i = 0; i < size; i++)
@@ -87,6 +87,22 @@ int PlayerBoard::getShipsCount(void)
 
 	///	Zwraca iloœæ statków niezatopionych.
 	return shipCount; 
+}
+
+///	Ustawia statki na planszy.
+void PlayerBoard::placeShips(void)
+{
+	///	Pêtla for przechodz¹ca po wszystkich dostêpnych statkach.
+	for (int i = 0; i < noOfShips; i++)
+	{
+		///	Pêtla do-while, która losuje po³o¿enie statku do momentu spe³nienia warunków 
+		///	prawid³owego rozmieszczenia
+		do
+		{
+			ships[i]->randomPlace(size);
+
+		} while (isPlacementGood(i) == false);
+	}
 }
 
 bool PlayerBoard::isPlacementGood(int currentShipID)
@@ -145,22 +161,6 @@ bool PlayerBoard::isPlacementGood(int currentShipID)
 
 	///	Jeœli wszystkie iteracje siê powiod³y to zwraca true.
 	return true; 
-}
-
-///	Ustawia statki na planszy.
-void PlayerBoard::placeShips(void)
-{
-	///	Pêtla for przechodz¹ca po wszystkich dostêpnych statkach.
-	for (int i = 0; i < noOfShips; i++)
-	{
-		///	Pêtla do-while, która losuje po³o¿enie statku do momentu spe³nienia warunków 
-		///	prawid³owego rozmieszczenia
-		do
-		{
-			ships[i]->randomPlace(size);
-
-		} while (isPlacementGood(i) == false);
-	}
 }
 
 void PlayerBoard::checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY)
@@ -257,7 +257,7 @@ PlayerBoard::PlayerBoard()
 		ships[i] = new Destroyer();
 
 }
-///	Domyœlny dekonstruktor klasy PlayerBoard. Niszczone s¹ w nim stworzone statki.
+///	Domyœlny destruktor klasy PlayerBoard. Niszczone s¹ w nim stworzone statki.
 PlayerBoard::~PlayerBoard()
 {
 	for (int i = 0; i < noOfShips; i++)
