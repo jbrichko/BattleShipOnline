@@ -18,7 +18,7 @@ Game::~Game()
     delete netObject; 
 }
 
-void Game::mainLoop(int argCount, char** argStrings)
+void Game::run(int argCount, char** argStrings)
 {
     netRoleSelector(argCount, argStrings);
 

@@ -20,24 +20,13 @@ private:
 
     bool isPlayerTurn = false;
 
-public:
-
-    /**
-    *   Klasa posiada metody obs�uguj�ce konsol� takie jak: �adowanie grafiki lub czyszczenie widoku w konsoli.
-    *   R�wnie� klasa odpowiada za prawid�owy przebieg rozgrywki - jest w niej g��wna p�tla gry.
-    */
-
-    ~Game(); 
-
-    void mainLoop(int argCount, char** argStrings);
-
     void netRoleSelector(int argCount, char** argStrings);
 
     bool hostConnectDialog();
     bool guestConnectDialog(int argCount, char** argStrings);
 
     void playerTurn();
-    void enemyTurn(); 
+    void enemyTurn();
     void inputShootCords(uint8_t& shootCoordX, uint8_t& shootCoordY);
 
     bool isEndingCondition();
@@ -45,7 +34,7 @@ public:
     /**
     *   \brief Czy�ci konsol� z informacji na niej wy�wietlanych.
     */
-    static void clearConsole(); 
+    static void clearConsole();
 
     /**
     *   \brief Pauzuje gr� do momentu wci�ni�cia jakiegokolwiek przycisku.
@@ -56,5 +45,16 @@ public:
     *   \brief �aduje grafik� ASCII w konsoli.
     */
     static void loadMenuGraphic();
+
+public:
+
+    /**
+    *   Klasa posiada metody obs�uguj�ce konsol� takie jak: �adowanie grafiki lub czyszczenie widoku w konsoli.
+    *   R�wnie� klasa odpowiada za prawid�owy przebieg rozgrywki - jest w niej g��wna p�tla gry.
+    */
+
+    ~Game(); 
+
+    void run(int argCount, char** argStrings);
 };
 
