@@ -41,6 +41,8 @@ public:
 	*/
 	FieldStatus** board;
 
+	int shipsRemaining; 
+
 	/**
 	*	\brief Drukuje planszê.
 	*	\param title Tytu³ danej planszy, "YOUR SHIPS" lub "YOUR SHOTS".
@@ -86,7 +88,7 @@ public:
 	Ship** ships;
 
 	/**
-	*	Sumaryczna iloœæ statków jednego gracza.
+	*	Sumaryczna iloœæ statków jednego gracza wraz z zatopionymi.
 	*/
 	int noOfShips;
 

@@ -38,6 +38,8 @@ Board::Board()
 		for (int j = 0; j < size; j++)
 			board[i][j] = empty;
 	}
+
+	shipsRemaining = PlayerBoard::NO_OF_BATTLESHIPS + PlayerBoard::NO_OF_CRUISERS + PlayerBoard::NO_OF_DESTROYERS; 
 }
 
 ///	Usuniêcie z pamiêci planszy. Definicja dekonstruktora klasy.

@@ -19,6 +19,20 @@ void Testing::shootingOverNetScenario()
         {
             youWait();
         }
+
+        if (playerBoard.shipsRemaining <= 0)
+        {
+            std::cout << "You lose! \n"; 
+
+            return; 
+        }
+
+        if (enemyBoard.shipsRemaining <= 0)
+        {
+            std::cout << "You win! Congratulations! \n";
+
+            return;
+        }
     }
 }
 
@@ -64,6 +78,8 @@ void Testing::yourTurn()
         std::cout << "Hit! \n";
         break;
     case Board::FieldStatus::sunk:
+        enemyBoard.shipsRemaining--; 
+
         std::cout << "Sunk! \n";
         break;
     }
@@ -90,6 +106,8 @@ void Testing::youWait()
         std::cout << "Your ship got hit! \n";
         break;
     case Board::FieldStatus::sunk:
+        playerBoard.shipsRemaining--;
+
         std::cout << "One ship less! \n";
         break;
     }
