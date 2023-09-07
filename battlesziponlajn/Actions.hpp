@@ -36,16 +36,17 @@ public:
         std::cout << std::endl << "WHAT ARE COORDINATES OF YOUR SHOT? " << std::endl;
         std::cout << "X: ";
         /// Podanie wsp�rz�dnej X.
-        while (shootCoordX < Board::size && shootCoordX >= 0)
+        do
         {
             std::cin >> x;
-        }
+        } while (x >= Board::size); 
+
         std::cout << " Y: ";
         /// Podanie wsp�rz�dnej Y.
-        while (shootCoordY < Board::size && shootCoordY >= 0)
+        do
         {
             std::cin >> y;
-        }
+        } while (y >= Board::size); 
 
         shootCoordX = static_cast<uint8_t>(x); 
         shootCoordY = static_cast<uint8_t>(y); 

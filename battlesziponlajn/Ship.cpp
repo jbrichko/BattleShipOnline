@@ -63,14 +63,14 @@ Ship::Ship(ShipSize length)
 
 	///	Iteruje po d³ugoœci statku.
 	for (int i = 0; i < size; i++)
-		deck[i] = 'S'; 
+		deck[i] = Board::FieldStatus::ship; 
 
 	///	Przypisuje wartoœci, które s¹ nieprawid³owe w kontekœcie planszy gry.
 	locationX = -1;
 	locationY = -1;
 }
 
-///	Domyœlny dekonstruktor klasy Ship.
+///	Domyœlny destruktor klasy Ship.
 Ship::~Ship()
 {
 	delete[] deck;

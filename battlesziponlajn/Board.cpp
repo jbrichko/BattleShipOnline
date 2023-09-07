@@ -198,6 +198,8 @@ void PlayerBoard::checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cor
 
 			return; 
 		}
+
+		hitShipID++; 
 	}
 
 	if (ships[hitShipID]->deck[hitDeckID] != FieldStatus::ship)
@@ -238,7 +240,7 @@ PlayerBoard::PlayerBoard()
 {
 	noOfShips = NO_OF_BATTLESHIPS + NO_OF_CRUISERS + NO_OF_DESTROYERS;
 
-	ships = new Ship * [noOfShips];
+	ships = new Ship* [noOfShips];
 
 	int i = 0;
 	for (; i < NO_OF_BATTLESHIPS; i++)
@@ -255,7 +257,7 @@ PlayerBoard::PlayerBoard()
 PlayerBoard::~PlayerBoard()
 {
 	for (int i = 0; i < noOfShips; i++)
-		delete[] ships[i];
+		delete ships[i];
 
 	delete[] ships;
 }

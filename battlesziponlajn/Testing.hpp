@@ -35,6 +35,7 @@ private:
 
 public: 
     void shootingOverNetScenario();
+    void communicationScenario(); 
     void yourTurn();
     void youWait();
     void roleSelector();

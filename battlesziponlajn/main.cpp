@@ -9,6 +9,7 @@ int main(int argc, char** argv)
 {
     Testing testing(argc, argv);
 	testing.shootingOverNetScenario();
+	//testing.communicationScenario(); 
 
 	return 0;
 }

@@ -23,6 +23,25 @@ void Testing::shootingOverNetScenario()
 
 }
 
+void Testing::communicationScenario()
+{
+    uint8_t x, y; 
+
+    roleSelector();
+
+    if (myTurn)
+    {
+        Actions::getShootCoords(x, y);
+        Message::sendShot(netObject, x, y);
+        netObject->disconnect(); 
+    }
+    else
+    {
+        Message::reciveShot(netObject, x, y);
+        printf("x= %u, y= %u \n", x, y); 
+    }
+}
+
 void Testing::yourTurn()
 {
     std::vector<uint8_t> resCoordX(1), resCoordY(1);
@@ -32,7 +51,7 @@ void Testing::yourTurn()
     Message::sendShot(netObject, resCoordX[0], resCoordY[0]);
 
     Message::reciveResponse(netObject, fieldStatus, resCoordX, resCoordY); 
-
+    
     enemyBoard.update(fieldStatus, resCoordX, resCoordY);
 
     switch (fieldStatus)
@@ -47,17 +66,17 @@ void Testing::yourTurn()
         std::cout << "Sunk! \n";
         break;
     }
+    
 }
 
 void Testing::youWait()
 {
-    uint8_t x, y;
     std::vector<uint8_t> resCoordX(1), resCoordY(1);
     Board::FieldStatus fieldStatus;
 
     Message::reciveShot(netObject, resCoordX[0], resCoordY[0]);
 
-    playerBoard.checkShotStatus(fieldStatus, resCoordX, resCoordY); 
+    playerBoard.checkShotStatus(fieldStatus, resCoordX, resCoordY);
 
     switch (fieldStatus)
     {
@@ -72,7 +91,7 @@ void Testing::youWait()
         break;
     }
 
-    Message::sendResponse(netObject, fieldStatus, resCoordX, resCoordY); 
+    Message::sendResponse(netObject, fieldStatus, resCoordX, resCoordY);
 }
 
 void Testing::roleSelector()
