@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "NetworkManager.hpp"
+#include "Board.hpp"
 
 /*! \class Game
 *   \brief Jest to klasa odpowiedzialna za g��wn� p�tl� gry.
@@ -11,6 +12,11 @@ private:
     Network::NetRole netRole; 
     Network* netObject; 
 
+    bool isPlayerTurn = false; 
+
+    EnemyBoard enemyBoard;
+    PlayerBoard playerBoard;
+
 public:
 
     /**
@@ -20,12 +26,17 @@ public:
 
     ~Game(); 
 
-    void mainLoop();
+    void mainLoop(int argCount, char** argStrings);
 
     void netRoleSelector(int argCount, char** argStrings);
 
     bool hostConnectDialog();
     bool guestConnectDialog(int argCount, char** argStrings);
+
+    void playerTurn();
+    void enemyTurn(); 
+    
+    bool isEndingCondition();
 
     /**
     *   \brief Czy�ci konsol� z informacji na niej wy�wietlanych.

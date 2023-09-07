@@ -18,9 +18,29 @@ Game::~Game()
     delete netObject; 
 }
 
-void Game::mainLoop()
+void Game::mainLoop(int argCount, char** argStrings)
 {
+    netRoleSelector(argCount, argStrings);
 
+    playerBoard.placeShips();
+
+    while (true)
+    {
+        enemyBoard.print();
+        playerBoard.print();
+
+        if (isPlayerTurn)
+        {
+            playerTurn();
+        }
+        else
+        {
+            enemyTurn(); 
+        }
+
+        if (isEndingCondition())  
+            return; 
+    }
 }
 
 void Game::netRoleSelector(int argCount, char** argStrings)
@@ -124,6 +144,35 @@ bool Game::guestConnectDialog(int argCount, char** argStrings)
     delete guest;
 
     return false;
+}
+
+void Game::playerTurn()
+{
+
+}
+
+void Game::enemyTurn() 
+{
+
+}
+
+bool Game::isEndingCondition()
+{
+    if (playerBoard.shipsRemaining <= 0)
+    {
+        std::cout << "You lost! \n";
+
+        return true;
+    }
+
+    if (enemyBoard.shipsRemaining <= 0)
+    {
+        std::cout << "You won! Congratulations! \n";
+
+        return true;
+    }
+
+    return false; 
 }
 
 void Game::clearConsole()
