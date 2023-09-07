@@ -168,6 +168,8 @@ void PlayerBoard::checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cor
 		std::cerr << "Bad shot size \n"; 
 	}
 
+	board[cordsX[0]][cordsY[0]] = FieldStatus::miss; 
+
 	unsigned int hitShipID = 0;
 	int hitDeckID = 0; 
 
@@ -182,7 +184,7 @@ void PlayerBoard::checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cor
 
 		if (ships[hitShipID]->orientation == Ship::Orientation::horizontal && ships[hitShipID]->locationY == cordsY[0])
 		{
-			hitDeckID = ships[hitShipID]->locationX - cordsX[0]; 
+			hitDeckID = static_cast<int>(cordsX[0]) - ships[hitShipID]->locationX;
 
 			if (hitDeckID >= 0 && hitDeckID < ships[hitShipID]->size)
 			{
@@ -191,7 +193,7 @@ void PlayerBoard::checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cor
 		}
 		else if (ships[hitShipID]->orientation == Ship::Orientation::vertical && ships[hitShipID]->locationX == cordsX[0])
 		{
-			hitDeckID = ships[hitShipID]->locationY - cordsY[0];
+			hitDeckID = static_cast<int>(cordsY[0]) - ships[hitShipID]->locationY;
 
 			if (hitDeckID >= 0 && hitDeckID < ships[hitShipID]->size)
 			{

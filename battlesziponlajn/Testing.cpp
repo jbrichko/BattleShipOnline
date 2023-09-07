@@ -6,21 +6,20 @@ void Testing::shootingOverNetScenario()
 
     playerBoard.placeShips();
 
-    enemyBoard.print();
-    playerBoard.print();
-
-    if (myTurn)
+    while (true)
     {
-        yourTurn(); 
-    }
-    else
-    {
-        youWait(); 
-    }
+        enemyBoard.print();
+        playerBoard.print();
 
-    enemyBoard.print();
-    playerBoard.print();
-
+        if (myTurn)
+        {
+            yourTurn();
+        }
+        else
+        {
+            youWait();
+        }
+    }
 }
 
 void Testing::communicationScenario()
@@ -56,13 +55,15 @@ void Testing::yourTurn()
 
     switch (fieldStatus)
     {
-    case Board::FieldStatus::miss : 
+    case Board::FieldStatus::miss:
+        myTurn = false; 
+
         std::cout << "Missed! \n"; 
         break;
-    case Board::FieldStatus::hit :
+    case Board::FieldStatus::hit:
         std::cout << "Hit! \n";
         break;
-    case Board::FieldStatus::sunk :
+    case Board::FieldStatus::sunk:
         std::cout << "Sunk! \n";
         break;
     }
@@ -81,6 +82,8 @@ void Testing::youWait()
     switch (fieldStatus)
     {
     case Board::FieldStatus::miss:
+        myTurn = true; 
+
         std::cout << "Without a scrach! \n";
         break;
     case Board::FieldStatus::hit:
