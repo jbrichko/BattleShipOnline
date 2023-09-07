@@ -4,19 +4,25 @@
 #include <ctime>
 #include <iostream>
 
+#include "Board.hpp"
 
-///	Funkcja sprawdzaj¹ca czy statek jest zatopiony
-bool Ship::checkIfSunk(void)
+
+bool Ship::checkIfSinking(void)
 {
-	///	Iteracja po wszystkich polach statku, która sprawdza czy któraœ z nich jest oznaczona liter¹ "S", co oznacza,
-	///	¿e statek jest zatopiony.
-	for (int i = 0; i < size; i++)
+	for (unsigned int i = 0; i < size; i++)
 	{
-		///	Zwraca true jeœli jest zatopiony.
-		if (deck[i] == 'X') return true;
+		if (deck[i] == Board::FieldStatus::ship)
+		{
+			return false; 
+		}
 	}
-	/// Zwraca false jeœli nie jest zatopiony.
-	return false;
+
+	for (unsigned int i = 0; i < size; i++)
+	{
+		deck[i] = Board::FieldStatus::sunk; 
+	}
+
+	return true;
 }
 
 ///	Funkcja losuj¹ca pseudolosowe wspó³rzêdne pocz¹tku statku.
@@ -46,12 +52,6 @@ void Ship::randomPlace(int boardSize)
 		locationY = rand() % (boardSize - size + 1);
 		locationX = rand() % boardSize;
 	}
-
-#ifdef DEBUG
-
-	std::cout << "guess:  x = " << locationX << "  y = " << locationY << "  orientation: " << orientation << std::endl;
-
-#endif // DEBUG
 
 }
 

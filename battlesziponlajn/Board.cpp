@@ -80,7 +80,7 @@ int PlayerBoard::getShipsCount(void)
 	///	Pêtla for przechodz¹ca po statkach i sprawdzaj¹ca ich status.
 	for (int i = 0; i < noOfShips; i++)
 	{
-		if (ships[i]->checkIfSunk() == false) shipCount++; 
+		if (ships[i]->checkIfSinking() == false) shipCount++; 
 	}
 
 	///	Zwraca iloœæ statków niezatopionych.
@@ -161,6 +161,78 @@ void PlayerBoard::placeShips(void)
 	}
 }
 
+void PlayerBoard::checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY)
+{
+	if (cordsX.size() != 1 || cordsY.size() != 1)
+	{
+		std::cerr << "Bad shot size \n"; 
+	}
+
+	unsigned int hitShipID = 0;
+	int hitDeckID = 0; 
+
+	while (true)
+	{
+		if (ships[hitShipID]->orientation == Ship::Orientation::horizontal && ships[hitShipID]->locationY == cordsY[0])
+		{
+			hitDeckID = ships[hitShipID]->locationX - cordsX[0]; 
+
+			if (hitDeckID >= 0 && hitDeckID < ships[hitShipID]->size)
+			{
+				break; 
+			}
+		}
+		else if (ships[hitShipID]->orientation == Ship::Orientation::vertical && ships[hitShipID]->locationX == cordsX[0])
+		{
+			hitDeckID = ships[hitShipID]->locationY - cordsY[0];
+
+			if (hitDeckID >= 0 && hitDeckID < ships[hitShipID]->size)
+			{
+				break; 
+			}
+		}
+
+		if (hitShipID >= noOfShips)
+		{
+			status = FieldStatus::miss; 
+
+			return; 
+		}
+	}
+
+	if (ships[hitShipID]->deck[hitDeckID] != FieldStatus::ship)
+	{
+		status = FieldStatus::miss; 
+		cordsX.clear();
+		cordsY.clear(); 
+
+		return; 
+	}
+
+	ships[hitShipID]->deck[hitDeckID] = FieldStatus::hit; 
+
+	if (ships[hitShipID]->checkIfSinking())
+	{
+		status = FieldStatus::sunk;
+
+		cordsX[0] = ships[hitShipID]->locationX;
+		cordsY[0] = ships[hitShipID]->locationY; 
+
+		for (unsigned int i = 1; i < ships[hitShipID]->size; i++)
+		{
+			cordsX.push_back(cordsX[0] + i * ships[hitShipID]->orientation);
+			cordsY.push_back(cordsY[0] + i * (!ships[hitShipID]->orientation));
+		}
+
+		return; 
+	}
+
+	status = FieldStatus::hit;
+
+	return; 
+}
+
+
 ///	Domyœlny konstruktor klasy PlayerBoard. Tworzone s¹ w nim kolejne obiekty - statki.
 PlayerBoard::PlayerBoard()
 {
@@ -194,4 +266,10 @@ void EnemyBoard::print()
 	Board::print("YOUR SHOTS: ");
 }
 
-
+void EnemyBoard::update(FieldStatus status, std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY)
+{
+	for (unsigned int i = 0; i < cordsX.size(); i++)
+	{
+		board[cordsX[i]][cordsY[i]] = status;
+	}
+}

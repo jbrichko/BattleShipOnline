@@ -1,44 +1,81 @@
 #include "Testing.hpp"
 
-void Testing::recieveText(Network *netObject)
+void Testing::shootingOverNetScenario()
 {
-    std::string message;
+    roleSelector(); 
 
-    std::vector<uint8_t> payload;
-    Message::Header header;
+    playerBoard.placeShips();
 
-    netObject->recive(header, payload);
+    enemyBoard.print();
+    playerBoard.print();
 
-    message.resize(static_cast<size_t>(payload.size()));
-
-    std::copy(payload.begin(), payload.end(), message.begin());
-
-    // for(int i = 0; i < payload.size(); i++) printf("%c", payload[i]);
-
-    std::cout << message << std::endl;
-}
-
-void Testing::recieveShot(Network *netObject)
-{
-    std::vector<uint8_t> payload;
-    Message::Header header;
-
-    netObject->recive(header, payload);
-
-    if (header.type == Message::shot && header.payloadSize == sizeof(Message::ShotPayload))
+    if (myTurn)
     {
-        Message::ShotPayload recStruct;
-        std::copy(payload.begin(), payload.end(), reinterpret_cast<uint8_t *>(&recStruct));
-
-        printf("Cords: x= %d, y= %d \n", recStruct.x, recStruct.y);
+        yourTurn(); 
     }
     else
     {
-        printf("Chuj ci w kasztan, nie wiem co to jest! \n");
+        youWait(); 
+    }
+
+    enemyBoard.print();
+    playerBoard.print();
+
+}
+
+void Testing::yourTurn()
+{
+    std::vector<uint8_t> resCoordX, resCoordY; 
+    Board::FieldStatus fieldStatus; 
+
+    Actions::getShootCoords(); 
+    Message::sendShot(netObject, Actions::shootCoordX, Actions::shootCoordY); 
+
+    Message::reciveResponse(netObject, fieldStatus, resCoordX, resCoordY); 
+
+    enemyBoard.update(fieldStatus, resCoordX, resCoordY);
+
+    switch (fieldStatus)
+    {
+    case Board::FieldStatus::miss : 
+        std::cout << "Missed! \n"; 
+        break;
+    case Board::FieldStatus::hit :
+        std::cout << "Hit! \n";
+        break;
+    case Board::FieldStatus::sunk :
+        std::cout << "Sunk! \n";
+        break;
     }
 }
 
-void Testing::communicationScenario()
+void Testing::youWait()
+{
+    uint8_t x, y;
+    std::vector<uint8_t> resCoordX(1), resCoordY(1);
+    Board::FieldStatus fieldStatus;
+
+    Message::reciveShot(netObject, resCoordX[0], resCoordY[0]);
+
+    playerBoard.checkShotStatus(fieldStatus, resCoordX, resCoordY); 
+
+    switch (fieldStatus)
+    {
+    case Board::FieldStatus::miss:
+        std::cout << "Without a scrach! \n";
+        break;
+    case Board::FieldStatus::hit:
+        std::cout << "Your ship got hit! \n";
+        break;
+    case Board::FieldStatus::sunk:
+        std::cout << "One ship less! \n";
+        break;
+    }
+
+    Message::sendResponse(netObject, fieldStatus, resCoordX, resCoordY); 
+}
+
+void Testing::roleSelector()
 {
     if (argCount > 1 && (strcmp(argStrings[1], "-h") == 0 || strcmp(argStrings[1], "--host") == 0))
     {
@@ -69,38 +106,30 @@ void Testing::communicationScenario()
     }
 }
 
-void Testing::hostRunner()
+bool Testing::hostRunner()
 {
-    NetworkHost host;
+    NetworkHost* host = new NetworkHost; 
+    netObject = host; 
 
-    std::cout << "Your local IP address is: " << host.getLocalIP() << std::endl;
+    std::cout << "Your local IP address is: " << host->getLocalIP() << std::endl;
 
-    if (host.waitForConnection())
+    if (host->waitForConnection())
     {
-        std::vector<uint8_t> cordsX, cordsY;
-        Board::FieldStatus status; 
-
         std::cout << "Connected \n";
 
-        if (Message::reciveResponse(&host, status, cordsX, cordsY))
-        {
-            std::cout << "Status: " << status << std::endl;
-
-            for (unsigned int i = 0; i < cordsX.size(); i++)
-            {
-                printf("x = %u  y = %u \n", cordsX[i], cordsY[i]);
-            }
-        }
-        else
-        {
-            std::cout << "Chyba cos nie ta \n"; 
-        }
+        return true;
     }
+
+    delete host; 
+
+    return false; 
 }
 
-void Testing::guestRunner()
+bool Testing::guestRunner()
 {
-    NetworkGuest guest;
+    NetworkGuest* guest = new NetworkGuest;
+    netObject = guest; 
+
     std::string tempIP;
 
     if (argCount > 2)
@@ -125,34 +154,18 @@ void Testing::guestRunner()
         std::cout << "Bad IP Address, reverting to default. \n";
     }
 
-    if (guest.connect(ipAddr))
+    if (guest->connect(ipAddr))
     {
-        uint8_t x, y;
-        std::vector<uint8_t> cordsX, cordsY; 
-        Board::FieldStatus status; 
-        char statusChar; 
-
         std::cout << "Connected to " << ipAddr << std::endl;
 
-        std::cin >> statusChar; 
-        std::cin.ignore(); 
-        status = static_cast<Board::FieldStatus>(statusChar);
+        myTurn = true; 
 
-        while (true)
-        {
-            std::getline(std::cin, message);
-
-            if (sscanf(message.c_str(), "%" SCNu8 " %" SCNu8, &x, &y) != 2)
-            {
-                break;
-            }
-
-            cordsX.push_back(x); 
-            cordsY.push_back(y); 
-        }
-
-        Message::sendResponse(&guest, status, cordsX, cordsY);
+        return true; 
     }
+
+    delete guest; 
+
+    return false; 
 }
 
 void Testing::convertResponseScenario()

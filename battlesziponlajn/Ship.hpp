@@ -1,8 +1,5 @@
 #pragma once
 
-#define DEBUG
-
-
 /*!	\class Ship
 *	\brief Jest to klasa, w której s¹ przechowywane najwa¿niejsze informacje o statkach.
 */
@@ -60,7 +57,7 @@ public:
 	*	\brief Jest to funkcja, która sprawdza czy dany statek nie zosta³ zatopiony.
 	*	\return Zwraca jedynkê w przypadku zatopionego statku.
 	*/
-	bool checkIfSunk();
+	bool checkIfSinking();
 
 	/**
 	*	\brief Pseudolosowo dobiera wspó³rzêdne po³o¿enia pocz¹tku statku oraz jego orientacjê.

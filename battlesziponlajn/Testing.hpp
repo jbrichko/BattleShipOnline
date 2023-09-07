@@ -22,23 +22,34 @@
 class Testing
 {
 private: 
+    Network* netObject; 
     char hostSelect;
     std::string message;
     std::string ipAddr = "127.0.0.1";
     int argCount; 
     char** argStrings; 
+    bool myTurn = false; 
+
+    EnemyBoard enemyBoard;
+    PlayerBoard playerBoard;
 
 public: 
-	static void recieveText(Network* netObject); 
-    static void recieveShot(Network* netObject);
-
-    void communicationScenario();
-    void hostRunner();
-    void guestRunner(); 
+    void shootingOverNetScenario();
+    void yourTurn();
+    void youWait();
+    void roleSelector();
+    bool hostRunner();
+    bool guestRunner(); 
+    
 
     static void gameStartScenario();
     static void convertResponseScenario();
 
     Testing(int argc, char** argv) 
     : argCount(argc), argStrings(argv) {}
+
+    ~Testing()
+    {
+        delete netObject; 
+    }
 };

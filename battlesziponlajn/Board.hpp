@@ -1,6 +1,6 @@
 #pragma once
 
-#define DEBUG
+#include <vector>
 
 #include "Ship.hpp"
 
@@ -113,6 +113,8 @@ public:
 	*	\return Zwraca "false" w przypadku b³êdnego umieszczenia.
 	*/
 	bool isPlacementGood(int currentShipID);
+
+	void checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY);
 	
 	/**
 	*	Domyœlny konstruktor obiektów tej klasy.
@@ -136,4 +138,6 @@ public:
 	*	Drukuje w terminalu planszê ze statkami wroga - strza³ami gracza.
 	*/
 	void print(); 
+
+	void update(FieldStatus status, std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY); 
 };

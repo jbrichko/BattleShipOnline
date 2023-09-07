@@ -27,8 +27,8 @@ public:
     /**
     *   Wsp�rz�dne strza�u gracza.
     */
-    static int shootCoordX;
-    static int shootCoordY;
+    static unsigned int shootCoordX;
+    static unsigned int shootCoordY;
 
     /**
     *   Pobiera od gracza wsp�rz�dne strza�u za pomoc� klawiatury. Iteracje nast�puj� do momentu otrzymania od gracza
