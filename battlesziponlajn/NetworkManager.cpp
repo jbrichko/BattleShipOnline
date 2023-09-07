@@ -475,8 +475,6 @@ bool NetworkHost::waitForConnection(uint16_t port)
         /// Uruchomienie akceptora.
         acceptor.listen();
 
-        std::cout << "Waiting for connection on port " << port << std::endl;
-
         /// Tworzenie socket'u, do którego póŸniej zostanie przypisane po³¹czenie.
         socket = asio::ip::tcp::socket(context);
         /// Czekanie na nawi¹zanie po³¹czenia.
