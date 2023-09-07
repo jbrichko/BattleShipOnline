@@ -72,7 +72,7 @@ public:
 	Ship(ShipSize length);
 
 	/**
-	*	\brief Dekonstruktor obiektów klasy Ship.
+	*	\brief Destruktor obiektów klasy Ship.
 	*/
 	~Ship();
 

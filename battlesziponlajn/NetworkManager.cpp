@@ -2,60 +2,88 @@
 
 bool Message::sendEmpty(Network* netObject)
 {
+    /// Tworzenie headera wiadomoœci.
     Header header;
+    /// Wybranie typu headera - empty.
     header.type = Message::empty;
+    /// Okreœlenie rozmiaru headera - 0.
     header.payloadSize = 0;
 
+    /// Wys³anie pustej wiadomoœci.
     return netObject->send(header);
 }
 
 bool Message::sendString(Network* netObject, std::string& string)
 {
+    /// Tworzenie headera wiadomoœci.
     Header header;
+    /// Wybranie typu headera - string.
     header.type = Message::string;
-
+    /// Zamiana stringa na wektor.
     std::vector<uint8_t> payload(string.begin(), string.end());
+    /// Okreœlenie rozmiaru nowego wektora przechowuj¹cego wiadomoœæ.
     header.payloadSize = payload.size();
 
+    /// Wys³anie wiadomoœci "string".
     return netObject->send(header, payload);
 }
 
 bool Message::sendGameStart(Network* netObject)
 {
+    /// Tworzenie headera.
     Header header;
+    /// Wybranie typu headera - game_start
     header.type = Message::game_start;
+    /// Okreœlenie rozmiaru headera - 0. 
     header.payloadSize = 0;
 
+    /// Wys³anie informacji - game_start.
     return netObject->send(header);
 }
 
 bool Message::sendShot(Network* netObject, uint8_t x, uint8_t y)
 {
+    /// Tworzenie headera.
     Header header;
+    /// Wybranie typu headera - shot.
     header.type = Message::shot;
+    /// Okreœlenie rozmiaru headera - zgodnie z rozmiarem struktruty ShotPayload.
     header.payloadSize = sizeof(ShotPayload);
 
+    /// Inicjacja struktuty ShotPayload.
     ShotPayload payloadStruct;
+    /// Przypisanie wartoœci wspó³rzêdnej X do struktury.
     payloadStruct.x = x;
+    /// Przypisanie wartoœci wspó³rzêdnej Y do struktury.
     payloadStruct.y = y;
 
+    /// Tworzenie wektora o okreœlonym rozmiarze.
     std::vector<uint8_t> payload(header.payloadSize);
+    /// Kopiowanie informacji ze struktury do wektora.
     std::copy(reinterpret_cast<uint8_t*>(&payloadStruct), reinterpret_cast<uint8_t*>(&payloadStruct) + header.payloadSize, payload.begin());
 
+    /// Wysy³anie wspó³rzêdnych strza³u.
     return netObject->send(header, payload);
 }
 
 bool Message::sendResponse(Network* netObject, Board::FieldStatus status, std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY)
 {
+    /// Tworzenie headera.
     Header header;
+    /// Wybranie typu headera - response.
     header.type = Message::response;
 
+    /// Okreœlenie rozmiaru headera - informacja o statusie pola planszy + wspó³rzêdne tego pola.
     header.payloadSize = sizeof(Board::FieldStatus) + cordsX.size() + cordsY.size();
+    /// Tworzenie wektora o okreœlonym rozmiarze.
     std::vector<uint8_t> payload(header.payloadSize);
+    /// Tworzenie iteratora "it" dla wektora i ustawienie go na jego pocz¹tku.
     std::vector<uint8_t>::iterator it = payload.begin();
 
+    /// Kopiowanie do wektora inforamcji o statusie pola planszy.
     std::copy(reinterpret_cast<uint8_t*>(&status), reinterpret_cast<uint8_t*>(&status) + sizeof(Board::FieldStatus), it);
 
+    /// Kopiowanie do wektora wspó³rzêdnych pola planszy.
     if (cordsX.size() == cordsY.size() && cordsX.size() > 0)
     {
         it += sizeof(Board::FieldStatus);
@@ -64,15 +92,20 @@ bool Message::sendResponse(Network* netObject, Board::FieldStatus status, std::v
         std::copy(cordsY.begin(), cordsY.end(), it);
     }
 
+    /// Wys³anie odpowiedzi.
     return netObject->send(header, payload);
 }
 
 bool Message::sendEndGame(Network* netObject)
 {
+    /// Tworzenie headera.
     Header header;
+    /// Wybranie typu headera - end_game.
     header.type = Message::end_game;
+    /// Okreœlenie rozmiaru headera - 0.
     header.payloadSize = 0;
 
+    /// Wys³anie informacji o zakoñczeniu gry.
     return netObject->send(header);
 }
 

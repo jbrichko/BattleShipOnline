@@ -57,7 +57,7 @@ public:
 	Board();
 
 	/**
-	*	Domy�lny dekonstruktor obiekt�w tej klasy.
+	*	Domy�lny destruktor obiekt�w tej klasy.
 	*/
 	~Board();
 };
@@ -117,15 +117,21 @@ public:
 	*/
 	bool isPlacementGood(int currentShipID);
 
+	/**
+	*	\brief 
+	*	\param status
+	*	\param cordsX
+	*	\param cordsY
+	*/
 	void checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY);
 	
 	/**
-	*	Domy�lny konstruktor obiekt�w tej klasy.
+	*	\brief Domy�lny konstruktor obiekt�w tej klasy.
 	*/
 	PlayerBoard();
 
 	/**
-	*	Domy�lny dekonstruktor obiekt�w tej klasy.
+	*	\brief Domy�lny destruktor obiekt�w tej klasy.
 	*/
 	~PlayerBoard();
 };
@@ -138,9 +144,15 @@ class EnemyBoard : public Board
 public: 
 
 	/**
-	*	Drukuje w terminalu plansz� ze statkami wroga - strza�ami gracza.
+	*	\brief Drukuje w terminalu plansz� ze statkami wroga - strza�ami gracza.
 	*/
 	void print(); 
 
+	/**
+	*	\brief Zmienia status danego pola planszy.
+	*	\param status
+	*	\param cordsX
+	*	\param cordsY
+	*/
 	void update(FieldStatus status, std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY); 
 };
