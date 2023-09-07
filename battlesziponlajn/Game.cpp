@@ -152,6 +152,30 @@ void Game::playerTurn()
 {
     messageCoordX.resize(1);
     messageCoordY.resize(1);
+
+    inputShootCords(messageCoordX[0], messageCoordY[0]);
+    Message::sendShot(netObject, messageCoordX[0], messageCoordY[0]);
+
+    Message::reciveResponse(netObject, messageFieldStatus, messageCoordX, messageCoordY);
+
+    enemyBoard.update(messageFieldStatus, messageCoordX, messageCoordY);
+
+    switch (messageFieldStatus)
+    {
+    case Board::FieldStatus::miss:
+        isPlayerTurn = false;
+
+        std::cout << "Missed! \n";
+        break;
+    case Board::FieldStatus::hit:
+        std::cout << "Hit! \n";
+        break;
+    case Board::FieldStatus::sunk:
+        enemyBoard.shipsRemaining--;
+
+        std::cout << "Sunk! \n";
+        break;
+    }
 }
 
 void Game::enemyTurn() 
