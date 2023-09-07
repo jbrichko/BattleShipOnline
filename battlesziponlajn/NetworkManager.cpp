@@ -282,15 +282,18 @@ bool Message::reciveEndGame(Network* netObject)
 
 bool Network::isValidIP(std::string ip)
 {
+    /// Sprawdzenie poprawnoœci adresu IP
     try
     {
         asio::ip::make_address_v4(ip);
     }
+    /// £apanie b³êdu.
     catch (const std::exception& exception)
     {
         return false; 
     }
 
+    /// Podanie prawid³owego adresu IP.
     return true;
 }
 
