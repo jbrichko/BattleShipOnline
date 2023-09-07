@@ -74,12 +74,20 @@ void Game::netRoleSelector(int argCount, char** argStrings)
 
 void Game::clearConsole()
 {
+#ifdef _WIN32
+    /// Dla systemu Windows.
     system("CLS");
+#else
+    /// Dla systemu Linux.
+    system("clear");
+#endif
 }
 
 void Game::getButtonPress()
 {
-    system("pause");
+    std::cout << "Press Enter to continue...";
+    /// Oczekiwanie na Enter.
+    std::cin.get();
 }
 
 void Game::loadMenuGraphic()
