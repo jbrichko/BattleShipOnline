@@ -1,10 +1,16 @@
 ﻿#pragma once
 
+#include "NetworkManager.hpp"
+
 /*! \class Game
 *   \brief Jest to klasa odpowiedzialna za g��wn� p�tl� gry.
 */
 class Game
 {
+private: 
+    Network::NetRole netRole; 
+    Network* netObject; 
+
 public:
 
     /**
@@ -12,7 +18,9 @@ public:
     *   R�wnie� klasa odpowiada za prawid�owy przebieg rozgrywki - jest w niej g��wna p�tla gry.
     */
 
-    static void mainLoop();
+    void mainLoop();
+
+    void netRoleSelector(int argCount, char** argStrings);
 
     /**
     *   \brief Czy�ci konsol� z informacji na niej wy�wietlanych.

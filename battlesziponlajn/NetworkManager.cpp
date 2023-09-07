@@ -414,6 +414,19 @@ void Network::disconnect()
     }
 }
 
+bool NetworkHost::connectDialog()
+{
+    std::cout << "Your local IP address is: " << getLocalIP() << std::endl;
+    std::cout << "Waiting for connection. \n";
+
+    if (waitForConnection())
+    {
+        std::cout << "Connected \n";
+
+        return true;
+    }
+}
+
 std::string NetworkHost::getLocalIP()
 {
     /// Zmienna przechowuj¹ca IP.
@@ -482,6 +495,42 @@ NetworkHost::NetworkHost() : acceptor(context, asio::ip::tcp::v4())
     acceptor.set_option(asio::ip::tcp::acceptor::reuse_address(true));
 }
 
+bool NetworkGuest::connectDialog()
+{
+    std::string tempIP;
+
+    if (argCount > 2)
+    {
+        tempIP = argStrings[2];
+        std::cout << argStrings[2] << std::endl;
+    }
+    else
+    {
+        std::cout << "Host IP address [127.0.0.1]: ";
+        std::getline(std::cin, tempIP);
+    }
+
+    try
+    {
+        asio::ip::make_address_v4(tempIP);
+
+        ipAddr = tempIP;
+    }
+    catch (const std::exception& exception)
+    {
+        std::cout << "Bad IP Address, reverting to default. \n";
+    }
+
+    if (guest->connect(ipAddr))
+    {
+        std::cout << "Connected to: " << ipAddr << std::endl;
+
+        myTurn = true;
+
+        return true;
+    }
+}
+
 bool NetworkGuest::connect(const std::string hostIP, uint16_t hostPort)
 {
     /// Nawi¹zuje po³¹czenie.
@@ -490,11 +539,6 @@ bool NetworkGuest::connect(const std::string hostIP, uint16_t hostPort)
         endpoint = asio::ip::tcp::endpoint(asio::ip::make_address_v4(hostIP), hostPort);
 
         socket.connect(endpoint);
-
-#ifdef DEBUG
-        std::cout << "Local port: " << socket.local_endpoint().port() << std::endl;
-#endif
-
     }
     /// £apanie b³êdów.
     catch (const std::exception& exception)

@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "Game.hpp"
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -11,11 +13,63 @@
 #pragma comment(lib, "winmm.lib")
 #endif
 
-#include "Game.hpp"
+Game::~Game()
+{
+    delete netObject; 
+}
 
 void Game::mainLoop()
 {
 
+}
+
+void Game::netRoleSelector(int argCount, char** argStrings)
+{
+    char inputChar; 
+
+    if (argCount > 1 && (strcmp(argStrings[1], "-h") == 0 || strcmp(argStrings[1], "--host") == 0))
+    {
+        netRole = Network::NetRole::host;
+    }
+    else if (argCount > 1 && (strcmp(argStrings[1], "-g") == 0 || strcmp(argStrings[1], "--guest") == 0))
+    {
+        netRole = Network::NetRole::guest;
+    }
+    else
+    {
+        while (true)
+        {
+            try
+            {
+                std::cout << "Select host [h] or guest [g]: ";
+                std::cin >> inputChar;
+                std::cin.ignore();
+
+                netRole = static_cast<Network::NetRole>(inputChar);
+            }
+            catch (const std::bad_cast& except)
+            {
+                std::cerr << "Invalid input: " << except.what() << std::endl;
+
+                continue; 
+            }
+
+            break; 
+        }
+    }
+
+    if (netRole == Network::NetRole::host)
+    {
+        hostRunner();
+    }
+    else if (netRole == Network::NetRole::host)
+    {
+        guestRunner();
+    }
+    else
+    {
+        std::cout << "Bad argument, exiting. \n";
+    }
 }
 
 void Game::clearConsole()

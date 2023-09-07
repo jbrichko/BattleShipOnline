@@ -191,9 +191,15 @@ public:
     asio::ip::tcp::endpoint endpoint;
     asio::ip::tcp::socket socket;
 
-
+    enum NetRole : char
+    {
+        host = 'h',
+        guest = 'g',
+    };
 
     Network() : socket(context) {}
+
+    virtual bool connectDialog();
 
     /**
     *	\brief Sprawdza status po��czenia.
@@ -228,6 +234,9 @@ public:
 
     asio::ip::tcp::acceptor acceptor;
 
+    NetworkHost();
+    bool connectDialog();
+
     /**
     *	\brief Odbiera informacje od innego gracza.
     *	\return Zwraca inforamcj� czy informacja zosta�a odebrana.
@@ -243,13 +252,14 @@ public:
     /**
     *	\brief Domyślny konstruktor.
     */
-    NetworkHost();
 
 };
 
 class NetworkGuest : public Network
 {
 public:
+
+    bool connectDialog();
 
     /**
     *	\brief Nawiązuje połącznie z hostem.

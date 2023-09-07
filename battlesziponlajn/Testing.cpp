@@ -152,6 +152,7 @@ bool Testing::hostRunner()
     netObject = host; 
 
     std::cout << "Your local IP address is: " << host->getLocalIP() << std::endl;
+    std::cout << "Waiting for connection. \n"; 
 
     if (host->waitForConnection())
     {
@@ -196,7 +197,7 @@ bool Testing::guestRunner()
 
     if (guest->connect(ipAddr))
     {
-        std::cout << "Connected to " << ipAddr << std::endl;
+        std::cout << "Connected to: " << ipAddr << std::endl;
 
         myTurn = true; 
 
