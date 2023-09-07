@@ -84,7 +84,7 @@ void Game::netRoleSelector(int argCount, char** argStrings)
     {
         hostConnectDialog();
     }
-    else 
+    else if (netRole == Network::NetRole::host)
     {
         guestConnectDialog(argCount, argStrings);
     }

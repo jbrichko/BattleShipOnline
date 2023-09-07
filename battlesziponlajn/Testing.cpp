@@ -307,14 +307,13 @@ void Testing::gameStartScenario()
     EnemyBoard enemyBoard;
     PlayerBoard playerBoard;
 
-#ifdef _WIN32
-    Game::loadMenuGraphic();
-    Music::playMenuMusic();
-    Game::getButtonPress();
-    Game::clearConsole();
-    Music::stopMusic();
-    Music::playGameMusic();
-#endif
+    //Game::loadMenuGraphic();
+    //Music::playMenuMusic();
+    // Game::getButtonPress();
+    //Game::clearConsole();
+    //Music::stopMusic();
+    //Music::playGameMusic();
+
     enemyBoard.print();
 
     playerBoard.placeShips();
