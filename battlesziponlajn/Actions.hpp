@@ -25,31 +25,30 @@ public:
     */
 
     /**
-    *   Wsp�rz�dne strza�u gracza.
-    */
-    static unsigned int shootCoordX;
-    static unsigned int shootCoordY;
-
-    /**
     *   Pobiera od gracza wsp�rz�dne strza�u za pomoc� klawiatury. Iteracje nast�puj� do momentu otrzymania od gracza
     *   prawid�owych danych. Wspo�rz�dna musi by� wi�ksza, r�wna 0 i mniejsza ni� d�ugo�� boku planszy.
     */
-    static void getShootCoords()
+    static void getShootCoords(uint8_t& shootCoordX, uint8_t& shootCoordY)
     {
+        unsigned int x, y;
+
         /// Estetyka rozgrywki.
         std::cout << std::endl << "WHAT ARE COORDINATES OF YOUR SHOT? " << std::endl;
         std::cout << "X: ";
         /// Podanie wsp�rz�dnej X.
         while (shootCoordX < Board::size && shootCoordX >= 0)
         {
-            std::cin >> shootCoordX;
+            std::cin >> x;
         }
         std::cout << " Y: ";
         /// Podanie wsp�rz�dnej Y.
         while (shootCoordY < Board::size && shootCoordY >= 0)
         {
-            std::cin >> shootCoordY;
+            std::cin >> y;
         }
+
+        shootCoordX = static_cast<uint8_t>(x); 
+        shootCoordY = static_cast<uint8_t>(y); 
     }
 
     static void playerShot()

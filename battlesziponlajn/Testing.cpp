@@ -25,11 +25,11 @@ void Testing::shootingOverNetScenario()
 
 void Testing::yourTurn()
 {
-    std::vector<uint8_t> resCoordX, resCoordY; 
+    std::vector<uint8_t> resCoordX(1), resCoordY(1);
     Board::FieldStatus fieldStatus; 
 
-    Actions::getShootCoords(); 
-    Message::sendShot(netObject, Actions::shootCoordX, Actions::shootCoordY); 
+    Actions::getShootCoords(resCoordX[0], resCoordY[0]);
+    Message::sendShot(netObject, resCoordX[0], resCoordY[0]);
 
     Message::reciveResponse(netObject, fieldStatus, resCoordX, resCoordY); 
 
