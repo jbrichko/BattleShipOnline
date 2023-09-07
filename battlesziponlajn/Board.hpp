@@ -1,31 +1,32 @@
 #pragma once
 
 #include <vector>
+#include <cinttypes>
 
 #include "Ship.hpp"
 
 /*!	\class Board
-*	\brief Jest to klasa, która jest odpowiedzialna za planszê gry.
+*	\brief Jest to klasa, ktï¿½ra jest odpowiedzialna za planszï¿½ gry.
 */
 class Board
 {
 public:
 
 	/**
-	*	Klasa ta posiada najwa¿niesze informacje o tym co znajduje siê w danym polu planszy oraz
-	*	drukuje planszê w terminalu.
+	*	Klasa ta posiada najwaï¿½niesze informacje o tym co znajduje siï¿½ w danym polu planszy oraz
+	*	drukuje planszï¿½ w terminalu.
 	*/
 
 
 	/**
-	*	D³ugoœæ mapy - sta³a wartoœc równa 10.
+	*	Dï¿½ugoï¿½ï¿½ mapy - staï¿½a wartoï¿½c rï¿½wna 10.
 	*/
 	static const int size = { 10 };
 
 	/**
 	*	\enum FieldStatus
-	*	Enumerator opisuj¹cy wszystkie mo¿liwe opcje jakie mo¿e przybraæ pole planszy. W danym momencie pole mo¿e 
-	*	mieæ przypisan¹ tylko jedn¹ opcjê.
+	*	Enumerator opisujï¿½cy wszystkie moï¿½liwe opcje jakie moï¿½e przybraï¿½ pole planszy. W danym momencie pole moï¿½e 
+	*	mieï¿½ przypisanï¿½ tylko jednï¿½ opcjï¿½.
 	*/
 	enum FieldStatus : char
 	{
@@ -44,100 +45,100 @@ public:
 	int shipsRemaining; 
 
 	/**
-	*	\brief Drukuje planszê.
-	*	\param title Tytu³ danej planszy, "YOUR SHIPS" lub "YOUR SHOTS".
-	*	Metoda macierzysta, która drukuje planszê w terminalu. Jest rozbudowywana w klasach pochodnych.
+	*	\brief Drukuje planszï¿½.
+	*	\param title Tytuï¿½ danej planszy, "YOUR SHIPS" lub "YOUR SHOTS".
+	*	Metoda macierzysta, ktï¿½ra drukuje planszï¿½ w terminalu. Jest rozbudowywana w klasach pochodnych.
 	*/
 	void print(const char* title);
 
 	/**
-	*	Domyœlny konstruktor obiektów tej klasy.
+	*	Domyï¿½lny konstruktor obiektï¿½w tej klasy.
 	*/
 	Board();
 
 	/**
-	*	Domyœlny dekonstruktor obiektów tej klasy.
+	*	Domyï¿½lny dekonstruktor obiektï¿½w tej klasy.
 	*/
 	~Board();
 };
 
 
 /*!	\class PlayerBoard
-*	\brief Jest to pochodna klasy Board. Odpowiada g³ównie za prawid³owe umieszczenie statków na planszy.
+*	\brief Jest to pochodna klasy Board. Odpowiada gï¿½ï¿½wnie za prawidï¿½owe umieszczenie statkï¿½w na planszy.
 */
 class PlayerBoard : public Board
 {
 public: 
 
 	/**
-	*	Klasa ta umieszcza odpowiada za odpowiednie u³o¿enie statków na planszy, tj. nie mog¹ siê na siebie
-	*	nak³adaæ lub dotykaæ. Nastêpnie wedle tego warunku ustawia statki na planszy. W klasie tej jest równie¿
-	*	metoda, która zlicza niezatopione statki gracza.
+	*	Klasa ta umieszcza odpowiada za odpowiednie uï¿½oï¿½enie statkï¿½w na planszy, tj. nie mogï¿½ siï¿½ na siebie
+	*	nakï¿½adaï¿½ lub dotykaï¿½. Nastï¿½pnie wedle tego warunku ustawia statki na planszy. W klasie tej jest rï¿½wnieï¿½
+	*	metoda, ktï¿½ra zlicza niezatopione statki gracza.
 	*/
 
 	/**
-	*	Sta³e opisuj¹ce iloœæ statków danego typu.
+	*	Staï¿½e opisujï¿½ce iloï¿½ï¿½ statkï¿½w danego typu.
 	*/
 	static const int NO_OF_BATTLESHIPS = { 2 };
 	static const int NO_OF_CRUISERS = { 3 };
 	static const int NO_OF_DESTROYERS = { 4 };
 
 	/**
-	*	WskaŸnik na wskaŸnik do obiektu klasy Ship.
+	*	Wskaï¿½nik na wskaï¿½nik do obiektu klasy Ship.
 	*/
 	Ship** ships;
 
 	/**
-	*	Sumaryczna iloœæ statków jednego gracza wraz z zatopionymi.
+	*	Sumaryczna iloï¿½ï¿½ statkï¿½w jednego gracza wraz z zatopionymi.
 	*/
 	int noOfShips;
 
 	/**
-	*	Drukuje w terminalu planszê ze statkami gracza.
+	*	Drukuje w terminalu planszï¿½ ze statkami gracza.
 	*/
 	void print();
 
 	/**
-	*	\brief Liczy iloœæ niezatopionych statków gracza na planszy.
-	*	\return Zwraca liczbê statków niezatopionych.
+	*	\brief Liczy iloï¿½ï¿½ niezatopionych statkï¿½w gracza na planszy.
+	*	\return Zwraca liczbï¿½ statkï¿½w niezatopionych.
 	*/
 	int getShipsCount();
 
 	/**
-	*	Umieszcza statki na planszy pseudolosowym po³o¿eniu za pomoc¹ pêtli. Warunkiem dobrego po³o¿enia jest 
+	*	Umieszcza statki na planszy pseudolosowym poï¿½oï¿½eniu za pomocï¿½ pï¿½tli. Warunkiem dobrego poï¿½oï¿½enia jest 
 	*	metoda "isPlacementGood".
 	*/
 	void placeShips();
 
 	/**
-	*	\brief Sprawdza wylosowane wspó³rzêdne i orientacje statku pod k¹tem poprawnoœci umieszczenia na planszy.
+	*	\brief Sprawdza wylosowane wspï¿½rzï¿½dne i orientacje statku pod kï¿½tem poprawnoï¿½ci umieszczenia na planszy.
 	*	\param currentShipID Indywidulany numer danego statku.
-	*	\return Zwraca "false" w przypadku b³êdnego umieszczenia.
+	*	\return Zwraca "false" w przypadku bï¿½ï¿½dnego umieszczenia.
 	*/
 	bool isPlacementGood(int currentShipID);
 
 	void checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY);
 	
 	/**
-	*	Domyœlny konstruktor obiektów tej klasy.
+	*	Domyï¿½lny konstruktor obiektï¿½w tej klasy.
 	*/
 	PlayerBoard();
 
 	/**
-	*	Domyœlny dekonstruktor obiektów tej klasy.
+	*	Domyï¿½lny dekonstruktor obiektï¿½w tej klasy.
 	*/
 	~PlayerBoard();
 };
 
 /*!	\class EnemyBoard
-*	\brief Jest to pochodna klasy Board. Odpowiada g³ównie za obs³ugê planszy ze statkami wroga - strza³ami gracza.
+*	\brief Jest to pochodna klasy Board. Odpowiada gï¿½ï¿½wnie za obsï¿½ugï¿½ planszy ze statkami wroga - strzaï¿½ami gracza.
 */
 class EnemyBoard : public Board	
 {
 public: 
 
 	/**
-	*	Drukuje w terminalu planszê ze statkami wroga - strza³ami gracza.
+	*	Drukuje w terminalu planszï¿½ ze statkami wroga - strzaï¿½ami gracza.
 	*/
 	void print(); 
 
