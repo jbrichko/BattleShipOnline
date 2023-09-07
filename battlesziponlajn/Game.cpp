@@ -38,8 +38,10 @@ void Game::mainLoop(int argCount, char** argStrings)
             enemyTurn(); 
         }
 
-        if (isEndingCondition())  
-            return; 
+        if (isEndingCondition())
+        {
+            return;
+        }
     }
 }
 
@@ -148,12 +150,63 @@ bool Game::guestConnectDialog(int argCount, char** argStrings)
 
 void Game::playerTurn()
 {
-
+    messageCoordX.resize(1);
+    messageCoordY.resize(1);
 }
 
 void Game::enemyTurn() 
 {
+    messageCoordX.resize(1);
+    messageCoordY.resize(1);
 
+    Message::reciveShot(netObject, messageCoordX[0], messageCoordY[0]);
+
+    playerBoard.checkShotStatus(messageFieldStatus, messageCoordX, messageCoordY);
+
+    switch (messageFieldStatus)
+    {
+    case Board::FieldStatus::miss:
+        isPlayerTurn = true;
+
+        std::cout << "Without a scrach! \n";
+        break;
+    case Board::FieldStatus::hit:
+        std::cout << "Your ship got hit! \n";
+        break;
+    case Board::FieldStatus::sunk:
+        playerBoard.shipsRemaining--;
+
+        std::cout << "One ship less! \n";
+        break;
+    }
+
+    Message::sendResponse(netObject, messageFieldStatus, messageCoordX, messageCoordY);
+}
+
+void Game::inputShootCords(uint8_t& shootCoordX, uint8_t& shootCoordY)
+{
+    int x, y;
+
+    std::cout << "Where do you want to shoot? \n";
+
+    while (true)
+    {
+        std::cout << "Enter coordinates in following format: X Y \n";
+
+        if (std::cin >> x >> y && 0 < x && x < Board::size && 0 < y && y < Board::size)
+        {
+            shootCoordX = static_cast<uint8_t>(x);
+            shootCoordY = static_cast<uint8_t>(y);
+
+            return;
+        }
+        else
+        {
+            std::cin.clear(); //clear bad input flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //discard input
+            std::cout << "Invalid input. Please try again. \n";
+        }
+    }
 }
 
 bool Game::isEndingCondition()

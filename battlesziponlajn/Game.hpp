@@ -12,10 +12,13 @@ private:
     Network::NetRole netRole; 
     Network* netObject; 
 
-    bool isPlayerTurn = false; 
+    std::vector<uint8_t> messageCoordX, messageCoordY;
+    Board::FieldStatus messageFieldStatus;
 
     EnemyBoard enemyBoard;
     PlayerBoard playerBoard;
+
+    bool isPlayerTurn = false;
 
 public:
 
@@ -35,7 +38,8 @@ public:
 
     void playerTurn();
     void enemyTurn(); 
-    
+    void inputShootCords(uint8_t& shootCoordX, uint8_t& shootCoordY);
+
     bool isEndingCondition();
 
     /**
