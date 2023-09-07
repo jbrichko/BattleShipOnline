@@ -41,6 +41,7 @@ public:
     void roleSelector();
     bool hostRunner();
     bool guestRunner(); 
+    void newRandomScenario(); 
     
 
     static void gameStartScenario();

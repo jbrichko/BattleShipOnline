@@ -1,8 +1,8 @@
 #include "Ship.hpp"
 
 #include <cstdlib>
-#include <ctime>
 #include <iostream>
+#include <chrono>
 
 #include "Board.hpp"
 
@@ -34,7 +34,7 @@ void Ship::randomPlace(int boardSize)
 	if(didSrandExecute == false)
 	{
 		///	Wywo³anie funkcji srand(), po jej wykonaniu zmienia wartoœæ znacznika didSrandExecute na true. Oznacza to, ¿e funkcja ta zosta³a wywo³ana.
-		srand(time(nullptr)); 
+		srand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 		didSrandExecute = true; 
 	}
 

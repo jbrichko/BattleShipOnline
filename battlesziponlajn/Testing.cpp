@@ -187,6 +187,22 @@ bool Testing::guestRunner()
     return false; 
 }
 
+void Testing::newRandomScenario()
+{
+    try 
+    {
+        playerBoard.placeShips();
+    }
+    catch (const std::exception& exception)
+    {
+        std::cerr << "Exception: " << exception.what() << std::endl;
+
+        return; 
+    }
+
+    playerBoard.print();
+}
+
 void Testing::convertResponseScenario()
 {
     std::vector<uint8_t> payload;

@@ -222,8 +222,8 @@ void PlayerBoard::checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cor
 
 		for (unsigned int i = 1; i < ships[hitShipID]->size; i++)
 		{
-			cordsX.push_back(cordsX[0] + i * ships[hitShipID]->orientation);
-			cordsY.push_back(cordsY[0] + i * (!ships[hitShipID]->orientation));
+			cordsX.push_back(cordsX[0] + i * static_cast<unsigned int>(ships[hitShipID]->orientation));
+			cordsY.push_back(cordsY[0] + i * static_cast<unsigned int>(!ships[hitShipID]->orientation));
 		}
 
 		return; 
