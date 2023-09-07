@@ -111,111 +111,141 @@ bool Message::sendEndGame(Network* netObject)
 
 bool Message::reciveEmpty(Network* netObject)
 {
+    /// Tworzenie headera
     Header header;
 
+    /// Jak nie otrzyma to zwróci false.
     if (netObject->recive(header) != true)
     {
         return false;
     }
 
+    /// Jak otrzyma z³y header to zwróci false.
     if (header.type != Message::empty)
     {
         std::cerr << "Received message does not match expected type. \n";
         return false;
     }
 
+    /// Prawid³owe otrzymanie pustej wiadomoœci.
     return true;
 }
 
 bool Message::reciveString(Network* netObject, std::string& string)
 {
+    /// Tworzenie headera.
     Header header;
+    /// Tworzenie wektora.
     std::vector<uint8_t> payload;
 
+    /// Jak nie otrzyma to zwróci false.
     if (netObject->recive(header, payload) != true)
     {
         return false;
     }
 
+    /// Jak otrzyma z³y header to zwróci false.
     if (header.type != Message::string)
     {
         std::cerr << "Received message does not match expected type. \n";
         return false;
     }
 
+    /// Przepisuje otrzymane informacje z wektora do string.
     string.resize(static_cast<size_t>(payload.size()));
     std::copy(payload.begin(), payload.end(), string.begin());
 
+    /// Prawid³owe otrzymanie wiadomoœci.
     return true;
 }
 
 bool Message::reciveGameStart(Network* netObject)
 {
+    /// Tworzenie headera.
     Header header;
 
+    /// Jak nie otrzyma to zwróci false.
     if (netObject->recive(header) != true)
     {
         return false;
     }
 
+    /// Jak otrzyma z³y header to zwróci false.
     if (header.type != Message::game_start)
     {
         std::cerr << "Received message does not match expected type. \n";
         return false;
     }
 
+    /// Prawid³owe otrzymanie informacji o rozpoczêciu gry.
     return true;
 }
 
 bool Message::reciveShot(Network* netObject, uint8_t& x, uint8_t& y)
 {
+    /// Tworzenie headera.
     Header header;
+    /// Tworzenie wektora.
     std::vector<uint8_t> payload;
 
+    /// Jak nie otrzyma to zwróci false.
     if (netObject->recive(header, payload) != true)
     {
         return false;
     }
 
+    /// Jak otrzyma z³y rodzaj danych to zwróci false.
     if (header.type != Message::shot || header.payloadSize != sizeof(ShotPayload))
     {
         std::cerr << "Received message does not match expected type. \n";
         return false;
     }
 
+    /// Tworzenie struktury ShotPayload.
     ShotPayload recStruct;
+    /// Przepisanie z wektora do struktury.
     std::copy(payload.begin(), payload.end(), reinterpret_cast<uint8_t*>(&recStruct));
 
+    /// Odpowiednie przypisanie danych.
     x = recStruct.x;
     y = recStruct.y;
 
+    /// Prawid³owe otrzymanie informacji o strzale.
     return true;
 }
 
 bool Message::reciveResponse(Network* netObject, Board::FieldStatus& status, std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY)
 {
+    /// Tworzenie headera.
     Header header;
+    /// Tworzenie wektora.
     std::vector<uint8_t> payload;
 
+    /// Jak nie otrzyma to zwróci false.
     if (netObject->recive(header, payload) != true)
     {
         return false;
     }
 
+    /// Jak otrzyma z³y rodzaj danych to zwróci false.
     if (header.type != Message::response || header.payloadSize < sizeof(Board::FieldStatus))
     {
         std::cerr << "Received message does not match expected type. \n";
         return false;
     }
 
+    /// Obliczenie nowego rozmiaru wspó³rzêdnych i zamiana tego rozmiaru.
     size_t vecSize = (header.payloadSize - sizeof(Board::FieldStatus)) / 2;
     cordsX.resize(vecSize);
     cordsY.resize(vecSize);
 
+    /// Tworzenie iteratora "it" dla wektora i ustawienie go na jego pocz¹tku.
     std::vector<uint8_t>::iterator it = payload.begin();
 
+    /// Kopiowanie z Payload do status informacji o polu planszy.
     std::copy(it, it + sizeof(Board::FieldStatus), reinterpret_cast<uint8_t*>(&status));
 
+    /// Kopiowanie informacji o wspó³rzêdnych pola planszy.
     if (vecSize > 0)
     {
         it += sizeof(Board::FieldStatus);
@@ -224,24 +254,29 @@ bool Message::reciveResponse(Network* netObject, Board::FieldStatus& status, std
         std::copy(it, it + vecSize, cordsY.begin());
     }
 
+    /// Prawid³owe otrzymanie odpowiedzi.
     return true;
 }
 
 bool Message::reciveEndGame(Network* netObject)
 {
+    /// Tworzenie headera.
     Header header;
 
+    /// Jak nie otrzyma to zwróci false.
     if (netObject->recive(header) != true)
     {
         return false;
     }
 
+    /// Jak otrzyma z³y rodzaj danych to zwróci false.
     if (header.type != Message::end_game)
     {
         std::cerr << "Received message does not match expected type. \n";
         return false;
     }
 
+    /// Prawid³owe otrzymanie inforamcji o koñcu gry.
     return true;
 }
 
