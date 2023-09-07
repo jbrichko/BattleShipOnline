@@ -18,9 +18,14 @@ public:
     *   R�wnie� klasa odpowiada za prawid�owy przebieg rozgrywki - jest w niej g��wna p�tla gry.
     */
 
+    ~Game(); 
+
     void mainLoop();
 
     void netRoleSelector(int argCount, char** argStrings);
+
+    bool hostConnectDialog();
+    bool guestConnectDialog(int argCount, char** argStrings);
 
     /**
     *   \brief Czy�ci konsol� z informacji na niej wy�wietlanych.

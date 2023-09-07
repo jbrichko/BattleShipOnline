@@ -280,6 +280,20 @@ bool Message::reciveEndGame(Network* netObject)
     return true;
 }
 
+bool Network::isValidIP(std::string ip)
+{
+    try
+    {
+        asio::ip::make_address_v4(ip);
+    }
+    catch (const std::exception& exception)
+    {
+        return false; 
+    }
+
+    return true;
+}
+
 /// Sprwadzenie po³¹czenia.
 bool Network::isConnected()
 {
@@ -414,19 +428,6 @@ void Network::disconnect()
     }
 }
 
-bool NetworkHost::connectDialog()
-{
-    std::cout << "Your local IP address is: " << getLocalIP() << std::endl;
-    std::cout << "Waiting for connection. \n";
-
-    if (waitForConnection())
-    {
-        std::cout << "Connected \n";
-
-        return true;
-    }
-}
-
 std::string NetworkHost::getLocalIP()
 {
     /// Zmienna przechowuj¹ca IP.
@@ -495,42 +496,6 @@ NetworkHost::NetworkHost() : acceptor(context, asio::ip::tcp::v4())
     acceptor.set_option(asio::ip::tcp::acceptor::reuse_address(true));
 }
 
-bool NetworkGuest::connectDialog()
-{
-    std::string tempIP;
-
-    if (argCount > 2)
-    {
-        tempIP = argStrings[2];
-        std::cout << argStrings[2] << std::endl;
-    }
-    else
-    {
-        std::cout << "Host IP address [127.0.0.1]: ";
-        std::getline(std::cin, tempIP);
-    }
-
-    try
-    {
-        asio::ip::make_address_v4(tempIP);
-
-        ipAddr = tempIP;
-    }
-    catch (const std::exception& exception)
-    {
-        std::cout << "Bad IP Address, reverting to default. \n";
-    }
-
-    if (guest->connect(ipAddr))
-    {
-        std::cout << "Connected to: " << ipAddr << std::endl;
-
-        myTurn = true;
-
-        return true;
-    }
-}
-
 bool NetworkGuest::connect(const std::string hostIP, uint16_t hostPort)
 {
     /// Nawi¹zuje po³¹czenie.
@@ -550,5 +515,3 @@ bool NetworkGuest::connect(const std::string hostIP, uint16_t hostPort)
 
     return true;
 }
-
-

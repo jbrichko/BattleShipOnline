@@ -60,16 +60,70 @@ void Game::netRoleSelector(int argCount, char** argStrings)
 
     if (netRole == Network::NetRole::host)
     {
-        hostRunner();
+        hostConnectDialog();
     }
     else if (netRole == Network::NetRole::host)
     {
-        guestRunner();
+        guestConnectDialog(argCount, argStrings);
+    }
+}
+
+bool Game::hostConnectDialog()
+{
+    NetworkHost* host = new NetworkHost;
+    netObject = host;
+
+    std::cout << "Your local IP address is: " << host->getLocalIP() << std::endl;
+    std::cout << "Waiting for connection. \n";
+
+    if (host->waitForConnection())
+    {
+        std::cout << "Connected! \n";
+
+        return true;
+    }
+
+    delete host;
+
+    return false; 
+}
+
+bool Game::guestConnectDialog(int argCount, char** argStrings)
+{
+    NetworkGuest* guest = new NetworkGuest;
+    netObject = guest;
+
+    std::string ipAddr; 
+
+    if (argCount > 2)
+    {
+        ipAddr = argStrings[2];
+        std::cout << argStrings[2] << std::endl;
     }
     else
     {
-        std::cout << "Bad argument, exiting. \n";
+        std::cout << "Host IP address [" << Network::DEFAULT_HOST_IP << "]: ";
+        std::getline(std::cin, ipAddr);
     }
+
+    if (Network::isValidIP(ipAddr) == false)
+    {
+        if(ipAddr.empty() == false)
+            std::cout << "Wrong IP Address, reverting to default. \n";
+
+        ipAddr = Network::DEFAULT_HOST_IP; 
+    }
+
+    if (guest->connect(ipAddr))
+    {
+        std::cout << "Connected to: " << ipAddr << std::endl;
+
+        return true;
+    }
+
+    delete guest;
+
+    return false;
 }
 
 void Game::clearConsole()

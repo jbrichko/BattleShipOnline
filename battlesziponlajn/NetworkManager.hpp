@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+
 #ifdef _WIN32
 #define _WIN32_WINNT 0x0A00
 #endif  
@@ -184,7 +185,9 @@ public:
     */
 
     /// Domyślny port służący do bycia hostem.
-    const static uint32_t DEFAULT_HOST_PORT = { 62137 };
+    static const uint32_t DEFAULT_HOST_PORT = { 62137 };
+    static constexpr const char* DEFAULT_HOST_IP = "127.0.0.1";
+
 
     asio::io_context context;
 
@@ -199,8 +202,7 @@ public:
 
     Network() : socket(context) {}
 
-    virtual bool connectDialog();
-
+    static bool isValidIP(std::string ip);
     /**
     *	\brief Sprawdza status po��czenia.
     *	\return Zwraca informacj� czy zosta�o zawarte po��czenie.
@@ -231,11 +233,9 @@ public:
 class NetworkHost : public Network
 {
 public:
-
     asio::ip::tcp::acceptor acceptor;
 
     NetworkHost();
-    bool connectDialog();
 
     /**
     *	\brief Odbiera informacje od innego gracza.
@@ -258,8 +258,6 @@ public:
 class NetworkGuest : public Network
 {
 public:
-
-    bool connectDialog();
 
     /**
     *	\brief Nawiązuje połącznie z hostem.
