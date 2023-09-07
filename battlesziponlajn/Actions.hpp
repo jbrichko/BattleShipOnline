@@ -41,7 +41,7 @@ public:
             std::cin >> x;
         } while (x >= Board::size); 
 
-        std::cout << " Y: ";
+        std::cout << "Y: ";
         /// Podanie wsp�rz�dnej Y.
         do
         {
