@@ -173,6 +173,13 @@ void PlayerBoard::checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cor
 
 	while (true)
 	{
+		if (hitShipID >= noOfShips)
+		{
+			status = FieldStatus::miss;
+
+			return;
+		}
+
 		if (ships[hitShipID]->orientation == Ship::Orientation::horizontal && ships[hitShipID]->locationY == cordsY[0])
 		{
 			hitDeckID = ships[hitShipID]->locationX - cordsX[0]; 
@@ -192,14 +199,7 @@ void PlayerBoard::checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cor
 			}
 		}
 
-		if (hitShipID >= noOfShips)
-		{
-			status = FieldStatus::miss; 
-
-			return; 
-		}
-
-		hitShipID++; 
+		hitShipID++;
 	}
 
 	if (ships[hitShipID]->deck[hitDeckID] != FieldStatus::ship)
