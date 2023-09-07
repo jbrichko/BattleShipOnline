@@ -22,14 +22,14 @@ void Testing::shootingOverNetScenario()
 
         if (playerBoard.shipsRemaining <= 0)
         {
-            std::cout << "You lose! \n"; 
+            std::cout << "You lost! \n"; 
 
             return; 
         }
 
         if (enemyBoard.shipsRemaining <= 0)
         {
-            std::cout << "You win! Congratulations! \n";
+            std::cout << "You won! Congratulations! \n";
 
             return;
         }
