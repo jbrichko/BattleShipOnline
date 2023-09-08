@@ -11,6 +11,7 @@ class Game
 private: 
     Network::NetRole netRole; 
     Network* netObject; 
+    std::string ipAddr = ""; 
 
     std::vector<uint8_t> messageCoordX, messageCoordY;
     Board::FieldStatus messageFieldStatus;
@@ -20,10 +21,14 @@ private:
 
     bool isPlayerTurn = false;
 
-    void netRoleSelector(int argCount, char** argStrings);
+    /// flagi dla handleArgs
+    bool skipNetRoleSelect = false; 
+    bool skipGetIP = false; 
+
+    void netRoleSelector();
 
     bool hostConnectDialog();
-    bool guestConnectDialog(int argCount, char** argStrings);
+    bool guestConnectDialog();
 
     void playerTurn();
     void enemyTurn();
@@ -55,6 +60,8 @@ public:
 
     ~Game(); 
 
-    void run(int argCount, char** argStrings);
+    void run();
+
+    bool handleArgs(int argCount, char** argStrings); 
 };
 

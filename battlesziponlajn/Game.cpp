@@ -1,6 +1,4 @@
-﻿#pragma once
-
-#include "Game.hpp"
+﻿#include "Game.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -13,20 +11,12 @@
 #pragma comment(lib, "winmm.lib")
 #endif
 
-void Game::netRoleSelector(int argCount, char** argStrings)
+void Game::netRoleSelector()
 {
-    char inputChar; 
+    if (skipNetRoleSelect == false)
+    {
+        char inputChar;
 
-    if (argCount > 1 && (strcmp(argStrings[1], "-h") == 0 || strcmp(argStrings[1], "--host") == 0))
-    {
-        netRole = Network::NetRole::host;
-    }
-    else if (argCount > 1 && (strcmp(argStrings[1], "-g") == 0 || strcmp(argStrings[1], "--guest") == 0))
-    {
-        netRole = Network::NetRole::guest;
-    }
-    else
-    {
         while (true)
         {
             try
@@ -37,14 +27,14 @@ void Game::netRoleSelector(int argCount, char** argStrings)
 
                 netRole = static_cast<Network::NetRole>(inputChar);
             }
-            catch (const std::bad_cast& except)
+            catch (const std::bad_cast &except)
             {
                 std::cerr << "Invalid input: " << except.what() << std::endl;
 
-                continue; 
+                continue;
             }
 
-            break; 
+            break;
         }
     }
 
@@ -52,16 +42,16 @@ void Game::netRoleSelector(int argCount, char** argStrings)
     {
         hostConnectDialog();
     }
-    else 
+    else
     {
         isPlayerTurn = true;
-        guestConnectDialog(argCount, argStrings);
+        guestConnectDialog();
     }
 }
 
 bool Game::hostConnectDialog()
 {
-    NetworkHost* host = new NetworkHost;
+    NetworkHost *host = new NetworkHost;
     netObject = host;
 
     std::cout << "Your local IP address is: " << host->getLocalIP() << std::endl;
@@ -76,33 +66,26 @@ bool Game::hostConnectDialog()
 
     delete host;
 
-    return false; 
+    return false;
 }
 
-bool Game::guestConnectDialog(int argCount, char** argStrings)
+bool Game::guestConnectDialog()
 {
-    NetworkGuest* guest = new NetworkGuest;
+    NetworkGuest *guest = new NetworkGuest;
     netObject = guest;
 
-    std::string ipAddr; 
-
-    if (argCount > 2)
-    {
-        ipAddr = argStrings[2];
-        std::cout << argStrings[2] << std::endl;
-    }
-    else
+    if (skipGetIP == false)
     {
         std::cout << "Host IP address [" << Network::DEFAULT_HOST_IP << "]: ";
         std::getline(std::cin, ipAddr);
-    }
 
-    if (Network::isValidIP(ipAddr) == false)
-    {
-        if(ipAddr.empty() == false)
-            std::cout << "Wrong IP Address, reverting to default. \n";
+        if (Network::isValidIP(ipAddr) == false)
+        {
+            if (ipAddr.empty() == false)
+                std::cout << "Wrong IP Address, reverting to default. \n";
 
-        ipAddr = Network::DEFAULT_HOST_IP; 
+            ipAddr = Network::DEFAULT_HOST_IP;
+        }
     }
 
     if (guest->connect(ipAddr))
@@ -147,7 +130,7 @@ void Game::playerTurn()
     }
 }
 
-void Game::enemyTurn() 
+void Game::enemyTurn()
 {
     messageCoordX.resize(1);
     messageCoordY.resize(1);
@@ -176,7 +159,7 @@ void Game::enemyTurn()
     Message::sendResponse(netObject, messageFieldStatus, messageCoordX, messageCoordY);
 }
 
-void Game::inputShootCords(uint8_t& shootCoordX, uint8_t& shootCoordY)
+void Game::inputShootCords(uint8_t &shootCoordX, uint8_t &shootCoordY)
 {
     int x, y;
 
@@ -195,8 +178,8 @@ void Game::inputShootCords(uint8_t& shootCoordX, uint8_t& shootCoordY)
         }
         else
         {
-            std::cin.clear(); //clear bad input flag
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //discard input
+            std::cin.clear();                                                   // clear bad input flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // discard input
             std::cout << "Invalid input. Please try again. \n";
         }
     }
@@ -218,7 +201,7 @@ bool Game::isEndingCondition()
         return true;
     }
 
-    return false; 
+    return false;
 }
 
 void Game::clearConsole()
@@ -243,16 +226,19 @@ void Game::loadMenuGraphic()
 {
     std::ifstream file("resources/cover-art-2.txt"); // nazwa pliku .txt
 
-    if (file.is_open()) {
+    if (file.is_open())
+    {
         std::string line;
 
-        while (std::getline(file, line)) {
+        while (std::getline(file, line))
+        {
             std::cout << line << '\n';
         }
 
         file.close();
     }
-    else {
+    else
+    {
         std::cout << "nie mo�na otworzy� pliku.\n";
     }
 }
@@ -262,9 +248,9 @@ Game::~Game()
     delete netObject;
 }
 
-void Game::run(int argCount, char** argStrings)
+void Game::run()
 {
-    netRoleSelector(argCount, argStrings);
+    netRoleSelector();
 
     playerBoard.placeShips();
 
@@ -287,4 +273,36 @@ void Game::run(int argCount, char** argStrings)
             return;
         }
     }
+}
+
+bool Game::handleArgs(int argCount, char **argStrings)
+{
+    for (int i = 1; i < argCount; i++)
+    {
+        if (strcmp(argStrings[i], "-h") == 0 || strcmp(argStrings[i], "--host") == 0)
+        {
+            netRole = Network::NetRole::host;
+            skipNetRoleSelect = true;
+        }
+        else if (strcmp(argStrings[i], "-g") == 0 || strcmp(argStrings[i], "--guest") == 0)
+        {
+            netRole = Network::NetRole::guest;
+            skipNetRoleSelect = true;
+
+            if (i + 1 < argCount && Network::isValidIP(argStrings[i + 1]))
+            {
+                i++;
+                ipAddr = argStrings[i];
+                skipGetIP = true;
+            }
+        }
+        else
+        {
+            std::cout << "Bad input argument. \n"; 
+
+            return false;
+        }
+    }
+
+    return true;
 }
