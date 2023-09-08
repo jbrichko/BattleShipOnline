@@ -243,7 +243,7 @@ void Game::loadMenuGraphic()
     }
     else
     {
-        std::cout << "nie mo�na otworzy� pliku.\n";
+        std::cout << "Could not open file.\n";
     }
 }
 
