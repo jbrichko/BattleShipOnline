@@ -100,15 +100,17 @@ bool Game::guestConnectDialog()
     return false;
 }
 
-void Game::playerTurn()
+bool Game::playerTurn()
 {
     messageCoordX.resize(1);
     messageCoordY.resize(1);
 
     inputShootCords(messageCoordX[0], messageCoordY[0]);
-    Message::sendShot(netObject, messageCoordX[0], messageCoordY[0]);
+    if (Message::sendShot(netObject, messageCoordX[0], messageCoordY[0]) == false)
+        return false;
 
-    Message::reciveResponse(netObject, messageFieldStatus, messageCoordX, messageCoordY);
+    if (Message::reciveResponse(netObject, messageFieldStatus, messageCoordX, messageCoordY) == false)
+        return false;
 
     enemyBoard.update(messageFieldStatus, messageCoordX, messageCoordY);
 
@@ -130,14 +132,17 @@ void Game::playerTurn()
         std::cout << "Sunk! \n";
         break;
     }
+
+    return true;
 }
 
-void Game::enemyTurn()
+bool Game::enemyTurn()
 {
     messageCoordX.resize(1);
     messageCoordY.resize(1);
 
-    Message::reciveShot(netObject, messageCoordX[0], messageCoordY[0]);
+    if (Message::reciveShot(netObject, messageCoordX[0], messageCoordY[0]) == false)
+        return false;
 
     playerBoard.checkShotStatus(messageFieldStatus, messageCoordX, messageCoordY);
 
@@ -160,7 +165,10 @@ void Game::enemyTurn()
         break;
     }
 
-    Message::sendResponse(netObject, messageFieldStatus, messageCoordX, messageCoordY);
+    if (Message::sendResponse(netObject, messageFieldStatus, messageCoordX, messageCoordY) == false)
+        return false;
+
+    return true;
 }
 
 void Game::inputShootCords(uint8_t &shootCoordX, uint8_t &shootCoordY)
@@ -274,11 +282,13 @@ void Game::run()
 
         if (isPlayerTurn)
         {
-            playerTurn();
+            if (playerTurn() == false)
+                break;
         }
         else
         {
-            enemyTurn();
+            if (enemyTurn() == false)
+                break;
         }
 
         if (isEndingCondition())
@@ -286,10 +296,13 @@ void Game::run()
             return;
         }
     }
-    Music::stopMusic();
+
+    throw std::runtime_error("Connection failed. Exiting. ");
+
+    \\Music::stopMusic();
 }
 
-bool Game::handleArgs(int argCount, char **argStrings)
+void Game::handleArgs(int argCount, char **argStrings)
 {
     for (int i = 1; i < argCount; i++)
     {
@@ -312,11 +325,7 @@ bool Game::handleArgs(int argCount, char **argStrings)
         }
         else
         {
-            std::cout << "Bad input argument. \n"; 
-
-            return false;
+            throw std::runtime_error("Bad input argument."); 
         }
     }
-
-    return true;
 }

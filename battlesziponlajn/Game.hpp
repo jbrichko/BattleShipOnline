@@ -31,8 +31,8 @@ private:
     bool hostConnectDialog();
     bool guestConnectDialog();
 
-    void playerTurn();
-    void enemyTurn();
+    bool playerTurn();
+    bool enemyTurn();
     void inputShootCords(uint8_t& shootCoordX, uint8_t& shootCoordY);
 
     bool isEndingCondition();
@@ -63,6 +63,6 @@ public:
 
     void run();
 
-    bool handleArgs(int argCount, char** argStrings); 
+    void handleArgs(int argCount, char** argStrings); 
 };
 
