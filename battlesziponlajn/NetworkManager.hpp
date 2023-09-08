@@ -19,6 +19,46 @@ class Network;
 
 class Message
 {
+private: 
+
+    struct Payload {};
+
+    /*!
+  *   \struct StringPayload
+  *   \brief Struktura posiadaj�ca wszelkie dane by wys�a� lub odczyta� informacje tekstowe.
+  */
+    struct StringPayload : Payload
+    {
+        /// Przetwarzany tekst.
+        std::string string;
+    };
+
+    /*!
+    *   \struct ShotPayload
+    *   \brief Struktura posiadaj�ca wszelkie dane by wys�a� lub odczyta� informacje o strzale.
+    */
+    struct ShotPayload : Payload
+    {
+        /// Wsp�rz�dna X strza�u.
+        uint8_t x;
+        /// Wsp�rz�dna Y strza�u.
+        uint8_t y;
+    };
+
+    /*!
+    *   \struct ResponsePayload
+    *   \brief Struktura posiadaj�ca wszelkie dane by wys�a� lub odczyta� informacje o skutku strzału.
+    */
+    struct ResponsePayload : Payload
+    {
+        /// Aktualny status danego pola planszy.
+        Board::FieldStatus status;
+        /// Współrzędna X pola planszy.
+        std::vector<uint8_t> cordsX;
+        /// Współrzędna Y pola planszy.
+        std::vector<uint8_t> cordsY;
+    };
+
 public: 
     /**
     *	\enum Type
@@ -51,44 +91,6 @@ public:
         Type type = empty;
         /// Rozmiar informacji.
         uint16_t payloadSize = 0;
-    };
-
-    struct Payload {};
-
-    /*!
-  *   \struct StringPayload
-  *   \brief Struktura posiadaj�ca wszelkie dane by wys�a� lub odczyta� informacje tekstowe.
-  */
-    struct StringPayload : Payload
-    {
-        /// Przetwarzany tekst.
-        std::string string; 
-    };
-
-    /*!
-    *   \struct ShotPayload
-    *   \brief Struktura posiadaj�ca wszelkie dane by wys�a� lub odczyta� informacje o strzale.
-    */
-    struct ShotPayload : Payload
-    {
-        /// Wsp�rz�dna X strza�u.
-        uint8_t x;
-        /// Wsp�rz�dna Y strza�u.
-        uint8_t y;
-    };
-
-    /*!
-    *   \struct ResponsePayload
-    *   \brief Struktura posiadaj�ca wszelkie dane by wys�a� lub odczyta� informacje o skutku strzału.
-    */
-    struct ResponsePayload : Payload
-    {
-        /// Aktualny status danego pola planszy.
-        Board::FieldStatus status; 
-        /// Współrzędna X pola planszy.
-        std::vector<uint8_t> cordsX;
-        /// Współrzędna Y pola planszy.
-        std::vector<uint8_t> cordsY; 
     };
 
     /**
