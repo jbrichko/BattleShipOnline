@@ -218,7 +218,7 @@ void Game::inputShootCords(uint8_t& shootCoordX, uint8_t& shootCoordY)
     {
         std::cout << "Enter coordinates in following format: X Y \n";
 
-        if (std::cin >> x >> y && 0 < x && x < Board::size && 0 < y && y < Board::size)
+        if (std::cin >> x >> y && 0 <= x && x < Board::size && 0 <= y && y < Board::size)
         {
             shootCoordX = static_cast<uint8_t>(x);
             shootCoordY = static_cast<uint8_t>(y);
