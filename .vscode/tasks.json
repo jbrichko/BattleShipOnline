@@ -12,6 +12,7 @@
                 "${workspaceFolder}/battlesziponlajn/NetworkManager.cpp",
                 "${workspaceFolder}/battlesziponlajn/Ship.cpp",
                 "${workspaceFolder}/battlesziponlajn/Testing.cpp",
+                "${workspaceFolder}/battlesziponlajn/Game.cpp",
                 // Add all other source files here"-o",
                 "-o",
                 "${workspaceFolder}/battleszipgame",
