@@ -234,26 +234,6 @@ void Game::getButtonPress()
     std::cin.get();
 }
 
-void Game::loadMenuGraphic()
-{
-    std::ifstream file("resources/cover-art-2.txt"); // nazwa pliku .txt
-
-    if (file.is_open())
-    {
-        std::string line;
-
-        while (std::getline(file, line))
-        {
-            std::cout << line << '\n';
-        }
-
-        file.close();
-    }
-    else
-    {
-        std::cout << "Could not open file.\n";
-    }
-}
 
 Game::~Game()
 {
@@ -262,16 +242,16 @@ Game::~Game()
 
 void Game::run()
 {
-    loadMenuGraphic();
-    Music::playMenuMusic();
+    AudioVisual::loadMenuGraphic();
+    AudioVisual::playMenuMusic();
     getButtonPress();
     clearConsole();
-    Music::stopMusic();
+    AudioVisual::stopMusic();
 
     netRoleSelector();
     playerBoard.placeShips();
 
-    Music::playGameMusic();
+    AudioVisual::playGameMusic();
     clearConsole();
 
     while (true)
@@ -299,7 +279,7 @@ void Game::run()
 
     throw std::runtime_error("Connection failed. Exiting. ");
 
-    \\Music::stopMusic();
+    AudioVisual::stopMusic();
 }
 
 void Game::handleArgs(int argCount, char **argStrings)

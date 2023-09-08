@@ -9,6 +9,7 @@
 
 bool Ship::checkIfSinking(void)
 {
+	///	Sprawdzenie czy 
 	for (unsigned int i = 0; i < size; i++)
 	{
 		if (deck[i] == Board::FieldStatus::ship)

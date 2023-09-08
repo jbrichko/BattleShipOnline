@@ -7,7 +7,7 @@
 #include "Ship.hpp"
 #include "NetworkManager.hpp"   
 #include "Game.hpp"
-#include "Actions.hpp"
+#include "AudioVisual.hpp"
 
 
 #include <string>
@@ -19,6 +19,7 @@
 #include <cstdio>
 
 //Klasa u�ywana do testowania i debugowania kodu
+/*
 class Testing
 {
 private: 
@@ -55,3 +56,4 @@ public:
         delete netObject; 
     }
 };
+*/

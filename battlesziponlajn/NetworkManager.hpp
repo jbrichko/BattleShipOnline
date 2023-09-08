@@ -186,6 +186,7 @@ public:
 
     /// Domyślny port służący do bycia hostem.
     static const uint32_t DEFAULT_HOST_PORT = { 62137 };
+    /// Domyślny adres IP dla hosta.
     static constexpr const char* DEFAULT_HOST_IP = "127.0.0.1";
 
 

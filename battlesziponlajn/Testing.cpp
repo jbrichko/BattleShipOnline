@@ -1,5 +1,5 @@
 #include "Testing.hpp"
-
+/*
 void Testing::shootingOverNetScenario()
 {
     roleSelector(); 
@@ -44,7 +44,7 @@ void Testing::communicationScenario()
 
     if (myTurn)
     {
-        Actions::getShootCoords(x, y);
+        AudioVisual::getShootCoords(x, y);
         Message::sendShot(netObject, x, y);
         netObject->disconnect(); 
     }
@@ -60,7 +60,7 @@ void Testing::yourTurn()
     std::vector<uint8_t> resCoordX(1), resCoordY(1);
     Board::FieldStatus fieldStatus; 
 
-    Actions::getShootCoords(resCoordX[0], resCoordY[0]);
+    AudioVisual::getShootCoords(resCoordX[0], resCoordY[0]);
     Message::sendShot(netObject, resCoordX[0], resCoordY[0]);
 
     Message::reciveResponse(netObject, fieldStatus, resCoordX, resCoordY); 
@@ -331,3 +331,4 @@ void Testing::gameStartScenario()
     }
 
 }
+*/
