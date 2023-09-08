@@ -7,7 +7,6 @@
 void Board::print(const char* title)
 {
 	///	Formatowanie
-	std::cout << std::endl << std::endl;
 	std::cout << "\t" << title << std::endl;
 	std::cout << "\t" << "    0  1  2  3  4  5  6  7  8  9" << std::endl;
 

@@ -112,6 +112,8 @@ void Game::playerTurn()
 
     enemyBoard.update(messageFieldStatus, messageCoordX, messageCoordY);
 
+    clearConsole();
+
     switch (messageFieldStatus)
     {
     case Board::FieldStatus::miss:
@@ -138,6 +140,8 @@ void Game::enemyTurn()
     Message::reciveShot(netObject, messageCoordX[0], messageCoordY[0]);
 
     playerBoard.checkShotStatus(messageFieldStatus, messageCoordX, messageCoordY);
+
+    clearConsole();
 
     switch (messageFieldStatus)
     {
@@ -250,12 +254,21 @@ Game::~Game()
 
 void Game::run()
 {
-    netRoleSelector();
+    loadMenuGraphic();
+    Music::playMenuMusic();
+    getButtonPress();
+    clearConsole();
+    Music::stopMusic();
 
+    netRoleSelector();
     playerBoard.placeShips();
+
+    Music::playGameMusic();
+    clearConsole();
 
     while (true)
     {
+
         enemyBoard.print();
         playerBoard.print();
 
@@ -273,6 +286,7 @@ void Game::run()
             return;
         }
     }
+    Music::stopMusic();
 }
 
 bool Game::handleArgs(int argCount, char **argStrings)

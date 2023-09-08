@@ -194,6 +194,10 @@ public:
     asio::ip::tcp::endpoint endpoint;
     asio::ip::tcp::socket socket;
 
+    /**
+    *	\enum NetRole
+    *	Enumerator słuzący do określenia statusu gracza. Czy jest hostem czy guestem rozgrywki.
+    */
     enum NetRole : char
     {
         host = 'h',
@@ -202,6 +206,11 @@ public:
 
     Network() : socket(context) {}
 
+    /**
+    *	\brief Sprawdza poprawność podanego adresu IP
+    *   \param ip Sprawdzany adres IP.
+    *	\return Zwraca true jeśli adres jest prawidłowy.
+    */
     static bool isValidIP(std::string ip);
     /**
     *	\brief Sprawdza status po��czenia.

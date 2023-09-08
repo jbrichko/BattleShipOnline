@@ -2,6 +2,7 @@
 
 #include "NetworkManager.hpp"
 #include "Board.hpp"
+#include "Actions.hpp"
 
 /*! \class Game
 *   \brief Jest to klasa odpowiedzialna za g��wn� p�tl� gry.
