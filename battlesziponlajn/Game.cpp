@@ -13,38 +13,6 @@
 #pragma comment(lib, "winmm.lib")
 #endif
 
-Game::~Game()
-{
-    delete netObject; 
-}
-
-void Game::run(int argCount, char** argStrings)
-{
-    netRoleSelector(argCount, argStrings);
-
-    playerBoard.placeShips();
-
-    while (true)
-    {
-        enemyBoard.print();
-        playerBoard.print();
-
-        if (isPlayerTurn)
-        {
-            playerTurn();
-        }
-        else
-        {
-            enemyTurn(); 
-        }
-
-        if (isEndingCondition())
-        {
-            return;
-        }
-    }
-}
-
 void Game::netRoleSelector(int argCount, char** argStrings)
 {
     char inputChar; 
@@ -286,5 +254,37 @@ void Game::loadMenuGraphic()
     }
     else {
         std::cout << "nie mo�na otworzy� pliku.\n";
+    }
+}
+
+Game::~Game()
+{
+    delete netObject;
+}
+
+void Game::run(int argCount, char** argStrings)
+{
+    netRoleSelector(argCount, argStrings);
+
+    playerBoard.placeShips();
+
+    while (true)
+    {
+        enemyBoard.print();
+        playerBoard.print();
+
+        if (isPlayerTurn)
+        {
+            playerTurn();
+        }
+        else
+        {
+            enemyTurn();
+        }
+
+        if (isEndingCondition())
+        {
+            return;
+        }
     }
 }
