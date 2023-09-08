@@ -3,10 +3,16 @@
 
 int main(int argc, char **argv)
 {
-	Game game;
-	if (!game.handleArgs(argc, argv))
-		return 0;
-	game.run();
+	try
+	{
+		Game game;
+		game.handleArgs(argc, argv);
+		game.run();
+	}
+	catch (const std::exception &exception)
+	{
+		std::cerr << exception.what() << '\n';
+	}
 
 	return 0;
 }
