@@ -9,17 +9,19 @@
 
 bool Ship::checkIfSinking(void)
 {
-	///	Sprawdzenie czy 
+	///	Sprawdzenie statusu pola planszy i opowiednia reakcja.
 	for (unsigned int i = 0; i < size; i++)
 	{
 		if (deck[i] == Board::FieldStatus::ship)
 		{
+			///	Badane pole jest statkiem.
 			return false; 
 		}
 	}
 
 	for (unsigned int i = 0; i < size; i++)
 	{
+		///	Badane pole jest zatopionym statkiem.
 		deck[i] = Board::FieldStatus::sunk; 
 	}
 
