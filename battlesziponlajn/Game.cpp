@@ -29,13 +29,17 @@ void Game::netRoleSelector()
 
     if (netRole == Network::NetRole::host)
     {
-        hostConnectDialog();
+        if (hostConnectDialog())
+            return; 
     }
     else
     {
         isPlayerTurn = true;
-        guestConnectDialog();
+        if (guestConnectDialog())
+            return; 
     }
+
+    throw std::runtime_error("Connection failed. Exiting. ");
 }
 
 bool Game::hostConnectDialog()
@@ -52,8 +56,6 @@ bool Game::hostConnectDialog()
 
         return true;
     }
-
-    delete host;
 
     return false;
 }
@@ -83,8 +85,6 @@ bool Game::guestConnectDialog()
 
         return true;
     }
-
-    delete guest;
 
     return false;
 }
@@ -223,7 +223,6 @@ void Game::getButtonPress()
     std::cin.get();
 }
 
-
 Game::~Game()
 {
     delete netObject;
@@ -265,8 +264,6 @@ void Game::run()
             return;
         }
     }
-
-    AudioVisual::stopMusic();
 
     throw std::runtime_error("Connection failed. Exiting. ");
 }
