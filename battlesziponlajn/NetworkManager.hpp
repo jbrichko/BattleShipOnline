@@ -174,26 +174,25 @@ public:
 */
 class Network
 {
-public:
-
     /**
     *   Klasa posiada metody, struktury i enumerator s�u��c� do prawid�owego przebiegu gry przez sie�.
-    *   
+    *
     *   Modu� sieciowy gry statki wykorzystuje bibliotek� ASIO do multiplatformowej obs�ugi operacji sieciowych.
     *   ASIO (Asynchronous Input/Output) to pot�na biblioteka C++, kt�ra umo�liwia asynchroniczn� obs�ug�
     *   operacji wej�cia/wyj�cia, co jest kluczowe dla wydajnej komunikacji sieciowej w grze.
     */
+protected:
+    asio::io_context context;
+
+    asio::ip::tcp::endpoint endpoint;
+    asio::ip::tcp::socket socket;
+
+public:
 
     /// Domyślny port służący do bycia hostem.
     static const uint32_t DEFAULT_HOST_PORT = { 62137 };
     /// Domyślny adres IP dla hosta.
     static constexpr const char* DEFAULT_HOST_IP = "127.0.0.1";
-
-
-    asio::io_context context;
-
-    asio::ip::tcp::endpoint endpoint;
-    asio::ip::tcp::socket socket;
 
     /**
     *	\enum NetRole
@@ -219,16 +218,16 @@ public:
     */
     bool isConnected();
     /**
-    *	\brief Wysy�a informacje do innego gracza.
-    *	\return Zwraca inforamcj� czy informacja zosta�a wys�ana.
-    */
+ *	\brief Wysy�a informacje do innego gracza.
+ *	\return Zwraca inforamcj� czy informacja zosta�a wys�ana.
+ */
     bool send(Message::Header& header);
     bool send(Message::Header& header, std::vector<uint8_t>& message);
     /**
     *	\brief Odbiera informacje od innego gracza.
     *	\return Zwraca inforamcj� czy informacja zosta�a odebrana.
      */
-    bool recive(Message::Header& header); 
+    bool recive(Message::Header& header);
     bool recive(Message::Header& header, std::vector<uint8_t>& message);
     /**
      *	\brief Zamyka po��czenie pomi�dzy graczami.
@@ -242,9 +241,14 @@ public:
 */
 class NetworkHost : public Network
 {
-public:
+protected:
     asio::ip::tcp::acceptor acceptor;
 
+public:
+    
+    /**
+    *	\brief Domyślny konstruktor.
+    */
     NetworkHost();
 
     /**
@@ -258,11 +262,6 @@ public:
     *	\return Zwraca inforamcj� czy zostało nawiązane połączenie.
     */
     bool waitForConnection(uint16_t port = DEFAULT_HOST_PORT);
-
-    /**
-    *	\brief Domyślny konstruktor.
-    */
-
 };
 
 class NetworkGuest : public Network
@@ -274,6 +273,5 @@ public:
     *	\return Zwraca inforamcj� czy zostało nawiązane połączenie.
     */
     bool connect(const std::string hostIP, uint16_t hostPort = DEFAULT_HOST_PORT);
-
 };
 
