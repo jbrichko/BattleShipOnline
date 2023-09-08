@@ -86,6 +86,7 @@ void Game::netRoleSelector(int argCount, char** argStrings)
     }
     else 
     {
+        isPlayerTurn = true;
         guestConnectDialog(argCount, argStrings);
     }
 }
