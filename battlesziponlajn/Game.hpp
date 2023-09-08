@@ -17,7 +17,6 @@ class Game
 private: 
     Network::NetRole netRole; 
     Network* netObject; 
-    std::string ipAddr = ""; 
 
     std::vector<uint8_t> messageCoordX, messageCoordY;
     Board::FieldStatus messageFieldStatus;

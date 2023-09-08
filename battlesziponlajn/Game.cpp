@@ -15,26 +15,15 @@ void Game::netRoleSelector()
 {
     if (skipNetRoleSelect == false)
     {
-        char inputChar;
+        char inputChar = '\n';
 
-        while (true)
+        while (inputChar != 'h' && inputChar != 'g')
         {
-            try
-            {
-                std::cout << "Select host [h] or guest [g]: ";
-                std::cin >> inputChar;
-                std::cin.ignore();
+            std::cout << "Select host [h] or guest [g]: ";
+            std::cin >> inputChar;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-                netRole = static_cast<Network::NetRole>(inputChar);
-            }
-            catch (const std::bad_cast &except)
-            {
-                std::cerr << "Invalid input: " << except.what() << std::endl;
-
-                continue;
-            }
-
-            break;
+            netRole = static_cast<Network::NetRole>(inputChar);
         }
     }
 
@@ -277,9 +266,9 @@ void Game::run()
         }
     }
 
-    throw std::runtime_error("Connection failed. Exiting. ");
-
     AudioVisual::stopMusic();
+
+    throw std::runtime_error("Connection failed. Exiting. ");
 }
 
 void Game::handleArgs(int argCount, char **argStrings)
