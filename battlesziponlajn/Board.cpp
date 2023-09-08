@@ -166,7 +166,7 @@ void PlayerBoard::checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cor
 {
 	if (cordsX.size() != 1 || cordsY.size() != 1)
 	{
-		std::cerr << "Bad shot size \n"; 
+		throw std::runtime_error("In checkShotStatus: Bad shot size."); 
 	}
 
 	board[cordsX[0]][cordsY[0]] = FieldStatus::miss; 
