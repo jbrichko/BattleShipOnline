@@ -297,9 +297,9 @@ bool Network::isValidIP(std::string ip)
     return true;
 }
 
-/// Sprwadzenie po³¹czenia.
 bool Network::isConnected()
 {
+    /// Sprwadzenie po³¹czenia.
     return socket.is_open();
 }
 

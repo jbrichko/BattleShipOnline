@@ -118,10 +118,10 @@ public:
 	bool isPlacementGood(int currentShipID);
 
 	/**
-	*	\brief 
-	*	\param status
-	*	\param cordsX
-	*	\param cordsY
+	*	\brief Sprawdza oraz zmienia status planszy po strzale.
+	*	\param status Wyjściowy status.
+	*	\param cordsX Współrzędna wejściowa X.
+	*	\param cordsY Współrzędna wejściowa Y
 	*/
 	void checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY);
 	
