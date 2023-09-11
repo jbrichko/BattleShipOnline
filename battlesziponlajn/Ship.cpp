@@ -11,6 +11,21 @@ Ship::ShipSize Ship::getSize()
 	return size;
 }
 
+int Ship::getLocationX()
+{
+	return locationX; 
+}
+
+int Ship::getLocationY()
+{
+	return locationY; 
+}
+
+Ship::Orientation Ship::getOrientation()
+{
+	return orientation; 
+}
+
 bool Ship::checkIfSinking(void)
 {
 	///	Sprawdzenie statusu pola planszy i opowiednia reakcja.

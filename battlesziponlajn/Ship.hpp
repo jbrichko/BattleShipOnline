@@ -34,6 +34,9 @@ public:
 	};
 
 	ShipSize getSize(); 
+	int getLocationX();
+	int getLoactionY();
+	Orientation getOrientation(); 
 
 	/**
 	*	\brief Pseudolosowo dobiera wspó³rzêdne po³o¿enia pocz¹tku statku oraz jego orientacjê.
