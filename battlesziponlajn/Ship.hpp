@@ -35,7 +35,7 @@ public:
 
 	ShipSize getSize(); 
 	int getLocationX();
-	int getLoactionY();
+	int getLocationY();
 	Orientation getOrientation(); 
 
 	/**

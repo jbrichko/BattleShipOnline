@@ -59,10 +59,10 @@ void PlayerBoard::print()
 	///	Podwójna pêtla, która przechodzi po wszystkich statkach i ich polach i wy³uskuje z nich dane o statku.
 	for (int i = 0; i < noOfShips; i++)
 	{
-		for (int j = 0; j < ships[i]->Ship::getSize(); j++)
+		for (int j = 0; j < ships[i]->getSize(); j++)
 		{
-			x = ships[i]->locationX + j * static_cast<int>(ships[i]->orientation); 
-			y = ships[i]->locationY + j * static_cast<int>(!ships[i]->orientation); 
+			x = ships[i]->getLocationX() + j * static_cast<int>(ships[i]->getOrientation());
+			y = ships[i]->getLocationY() + j * static_cast<int>(!ships[i]->getOrientation());
 
 			board[x][y] = static_cast<FieldStatus>( ships[i]->deck[j] ); 
 		}
@@ -112,41 +112,41 @@ bool PlayerBoard::isPlacementGood(int currentShipID)
 	bool separatedX, separatedY; 
 
 	///	Przypisanie pocz¹tkowych wartoœci dla statku 1.
-	minX1 = maxX1 = ships[currentShipID]->locationX;
-	minY1 = maxY1 = ships[currentShipID]->locationY;
+	minX1 = maxX1 = ships[currentShipID]->getLocationX();
+	minY1 = maxY1 = ships[currentShipID]->getLocationY();
 
 #ifdef DEBUG
 	std::cout << "placementGood:  id = " << currentShipID << std::endl; 
 #endif // DEBUG
 
 	///	Sprawdzenie orientacji
-	if (ships[currentShipID]->orientation == Ship::horizontal)
+	if (ships[currentShipID]->getOrientation() == Ship::horizontal)
 	{
 		///	Jeœli pozioma to dodanie d³ugoœci statku - 1 w celu ustalenia maksymalnego po³o¿enia w osi X.
-		maxX1 += ships[currentShipID]->Ship::getSize() - 1;
+		maxX1 += ships[currentShipID]->getSize() - 1;
 	}
 	else
 	{
 		///	Jeœli pozioma to dodanie d³ugoœci statku - 1 w celu ustalenia maksymalnego po³o¿enia w osi Y.
-		maxY1 += ships[currentShipID]->Ship::getSize() - 1;
+		maxY1 += ships[currentShipID]->getSize() - 1;
 	}
 
 	///	Pêtla po iteruj¹ca po wczeœniej po³o¿onych statkach.
 	for (int i = 0; i < currentShipID; i++)
 	{
 		///	Przypisanie pocz¹tkowych wartoœci dla statku 2.
-		minX2 = maxX2 = ships[i]->locationX;
-		minY2 = maxY2 = ships[i]->locationY;
+		minX2 = maxX2 = ships[i]->getLocationX();
+		minY2 = maxY2 = ships[i]->getLocationY();
 
-		if (ships[i]->orientation == Ship::horizontal)
+		if (ships[i]->Ship::getOrientation() == Ship::horizontal)
 		{
 			///	Jeœli pozioma to dodanie d³ugoœci statku - 1 w celu ustalenia maksymalnego po³o¿enia w osi X.
-			maxX2 += ships[i]->Ship::getSize() - 1;
+			maxX2 += ships[i]->getSize() - 1;
 		}
 		else
 		{
 			///	Jeœli pozioma to dodanie d³ugoœci statku - 1 w celu ustalenia maksymalnego po³o¿enia w osi Y.
-			maxY2 += ships[i]->Ship::getSize() - 1;
+			maxY2 += ships[i]->getSize() - 1;
 		}
 
 		/// Sprawdzenie w osi X warunku separacji i przypisanie go to tej wartoœci.
@@ -183,20 +183,20 @@ void PlayerBoard::checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cor
 			return;
 		}
 
-		if (ships[hitShipID]->orientation == Ship::Orientation::horizontal && ships[hitShipID]->locationY == cordsY[0])
+		if (ships[hitShipID]->getOrientation() == Ship::Orientation::horizontal && ships[hitShipID]->getLocationY() == cordsY[0])
 		{
-			hitDeckID = static_cast<int>(cordsX[0]) - ships[hitShipID]->locationX;
+			hitDeckID = static_cast<int>(cordsX[0]) - ships[hitShipID]->getLocationX();;
 
-			if (hitDeckID >= 0 && hitDeckID < ships[hitShipID]->Ship::getSize())
+			if (hitDeckID >= 0 && hitDeckID < ships[hitShipID]->getSize())
 			{
 				break; 
 			}
 		}
-		else if (ships[hitShipID]->orientation == Ship::Orientation::vertical && ships[hitShipID]->locationX == cordsX[0])
+		else if (ships[hitShipID]->getOrientation() == Ship::Orientation::vertical && ships[hitShipID]->getLocationX() == cordsX[0])
 		{
-			hitDeckID = static_cast<int>(cordsY[0]) - ships[hitShipID]->locationY;
+			hitDeckID = static_cast<int>(cordsY[0]) - ships[hitShipID]->getLocationY();
 
-			if (hitDeckID >= 0 && hitDeckID < ships[hitShipID]->Ship::getSize())
+			if (hitDeckID >= 0 && hitDeckID < ships[hitShipID]->getSize())
 			{
 				break; 
 			}
@@ -220,13 +220,13 @@ void PlayerBoard::checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cor
 	{
 		status = FieldStatus::sunk;
 
-		cordsX[0] = ships[hitShipID]->locationX;
-		cordsY[0] = ships[hitShipID]->locationY; 
+		cordsX[0] = ships[hitShipID]->getLocationX();;
+		cordsY[0] = ships[hitShipID]->getLocationY();
 
-		for (unsigned int i = 1; i < ships[hitShipID]->Ship::getSize(); i++)
+		for (unsigned int i = 1; i < ships[hitShipID]->getSize(); i++)
 		{
-			cordsX.push_back(cordsX[0] + i * static_cast<unsigned int>(ships[hitShipID]->orientation));
-			cordsY.push_back(cordsY[0] + i * static_cast<unsigned int>(!ships[hitShipID]->orientation));
+			cordsX.push_back(cordsX[0] + i * static_cast<unsigned int>(ships[hitShipID]->getOrientation()));
+			cordsY.push_back(cordsY[0] + i * static_cast<unsigned int>(!ships[hitShipID]->getOrientation()));
 		}
 
 		return; 
