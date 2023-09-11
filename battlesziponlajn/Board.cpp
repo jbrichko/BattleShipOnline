@@ -59,7 +59,7 @@ void PlayerBoard::print()
 	///	Podwójna pêtla, która przechodzi po wszystkich statkach i ich polach i wy³uskuje z nich dane o statku.
 	for (int i = 0; i < noOfShips; i++)
 	{
-		for (int j = 0; j < ships[i]->size; j++)
+		for (int j = 0; j < ships[i]->Ship::getSize(); j++)
 		{
 			x = ships[i]->locationX + j * static_cast<int>(ships[i]->orientation); 
 			y = ships[i]->locationY + j * static_cast<int>(!ships[i]->orientation); 
@@ -123,12 +123,12 @@ bool PlayerBoard::isPlacementGood(int currentShipID)
 	if (ships[currentShipID]->orientation == Ship::horizontal)
 	{
 		///	Jeœli pozioma to dodanie d³ugoœci statku - 1 w celu ustalenia maksymalnego po³o¿enia w osi X.
-		maxX1 += ships[currentShipID]->size - 1;
+		maxX1 += ships[currentShipID]->Ship::getSize() - 1;
 	}
 	else
 	{
 		///	Jeœli pozioma to dodanie d³ugoœci statku - 1 w celu ustalenia maksymalnego po³o¿enia w osi Y.
-		maxY1 += ships[currentShipID]->size - 1;
+		maxY1 += ships[currentShipID]->Ship::getSize() - 1;
 	}
 
 	///	Pêtla po iteruj¹ca po wczeœniej po³o¿onych statkach.
@@ -141,12 +141,12 @@ bool PlayerBoard::isPlacementGood(int currentShipID)
 		if (ships[i]->orientation == Ship::horizontal)
 		{
 			///	Jeœli pozioma to dodanie d³ugoœci statku - 1 w celu ustalenia maksymalnego po³o¿enia w osi X.
-			maxX2 += ships[i]->size - 1;
+			maxX2 += ships[i]->Ship::getSize() - 1;
 		}
 		else
 		{
 			///	Jeœli pozioma to dodanie d³ugoœci statku - 1 w celu ustalenia maksymalnego po³o¿enia w osi Y.
-			maxY2 += ships[i]->size - 1;
+			maxY2 += ships[i]->Ship::getSize() - 1;
 		}
 
 		/// Sprawdzenie w osi X warunku separacji i przypisanie go to tej wartoœci.
@@ -187,7 +187,7 @@ void PlayerBoard::checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cor
 		{
 			hitDeckID = static_cast<int>(cordsX[0]) - ships[hitShipID]->locationX;
 
-			if (hitDeckID >= 0 && hitDeckID < ships[hitShipID]->size)
+			if (hitDeckID >= 0 && hitDeckID < ships[hitShipID]->Ship::getSize())
 			{
 				break; 
 			}
@@ -196,7 +196,7 @@ void PlayerBoard::checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cor
 		{
 			hitDeckID = static_cast<int>(cordsY[0]) - ships[hitShipID]->locationY;
 
-			if (hitDeckID >= 0 && hitDeckID < ships[hitShipID]->size)
+			if (hitDeckID >= 0 && hitDeckID < ships[hitShipID]->Ship::getSize())
 			{
 				break; 
 			}
@@ -223,7 +223,7 @@ void PlayerBoard::checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cor
 		cordsX[0] = ships[hitShipID]->locationX;
 		cordsY[0] = ships[hitShipID]->locationY; 
 
-		for (unsigned int i = 1; i < ships[hitShipID]->size; i++)
+		for (unsigned int i = 1; i < ships[hitShipID]->Ship::getSize(); i++)
 		{
 			cordsX.push_back(cordsX[0] + i * static_cast<unsigned int>(ships[hitShipID]->orientation));
 			cordsY.push_back(cordsY[0] + i * static_cast<unsigned int>(!ships[hitShipID]->orientation));
