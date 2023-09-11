@@ -6,6 +6,10 @@
 
 #include "Board.hpp"
 
+Ship::ShipSize Ship::getSize()
+{
+	return size;
+}
 
 bool Ship::checkIfSinking(void)
 {

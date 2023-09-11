@@ -5,12 +5,12 @@
 */
 class Ship
 {
-public:
-
 	/**
 	*	Klasa ta zawiera wszelkie potrzebne informacje, które s¹ potrzebne do prawid³owego umieszczenia statku
 	*	na planszy.
 	*/
+
+public: 
 
 	/**
 	*	\enum Ship_size
@@ -23,13 +23,9 @@ public:
 		DESTROYER_SIZE = 2,
 	};
 
-
-	static int srandInitCunt; //todo
-
 	/**
 	*	\enum Orientation
 	*	Enumerator s³uz¹cy do okreœlenia orientacji statku na mapie - poziomo lub pionowo.
-	* 
 	*/
 	enum Orientation : bool
 	{
@@ -37,22 +33,13 @@ public:
 		vertical = false,
 	};
 
-	/**
-	*	D³ugoœæ statku.
-	*/
-	const ShipSize size;
-	
-	/**
-	*	Informacja o stanie jednego pola statku, czy jest ca³y, trafiony lub zatopiony.
-	*/
-	char* deck;
+	ShipSize getSize(); 
 
 	/**
-	*	Wspó³rzêdne po³o¿enia pocz¹tku statku oraz jego orientacja na mapie.
+	*	\brief Pseudolosowo dobiera wspó³rzêdne po³o¿enia pocz¹tku statku oraz jego orientacjê.
+	*	\param boardSize D³ugoœæ boku mapy.
 	*/
-	int locationX, locationY;
-	Orientation orientation;
-
+	void randomPlace(int boardSize);
 	/**
 	*	\brief Jest to funkcja, która sprawdza czy dany statek nie zosta³ zatopiony.
 	*	\return Zwraca jedynkê w przypadku zatopionego statku.
@@ -60,22 +47,32 @@ public:
 	bool checkIfSinking();
 
 	/**
-	*	\brief Pseudolosowo dobiera wspó³rzêdne po³o¿enia pocz¹tku statku oraz jego orientacjê.
-	*	\param boardSize D³ugoœæ boku mapy.
-	*/
-	void randomPlace(int boardSize);
-
-	/**
 	*	\brief Konstruktor obiektów klasy Ship.
 	*	\param length D³ugoœæ statku.
 	*/
 	Ship(ShipSize length);
-
 	/**
 	*	\brief Destruktor obiektów klasy Ship.
 	*/
 	~Ship();
 
+private:
+
+	/**
+*	D³ugoœæ statku.
+*/
+	const ShipSize size;
+
+	/**
+*	Informacja o stanie jednego pola statku, czy jest ca³y, trafiony lub zatopiony.
+*/
+	char* deck;
+
+	/**
+	*	Wspó³rzêdne po³o¿enia pocz¹tku statku oraz jego orientacja na mapie.
+	*/
+	int locationX, locationY;
+	Orientation orientation;
 };
 
 
