@@ -236,13 +236,13 @@ void Game::run()
 
         if (playMusic)
             AudioVisual::playMenuMusic();
-    }
-    
-    getButtonPress();
-    clearConsole();
 
-    if (showMenu && playMusic)
-        AudioVisual::stopMusic();
+        getButtonPress();
+        clearConsole();
+
+        if (playMusic)
+            AudioVisual::stopMusic();
+    }
 
     netRoleSelector();
     playerBoard.placeShips();
