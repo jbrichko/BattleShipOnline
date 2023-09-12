@@ -38,7 +38,7 @@ public:
 	/**
 	*	\brief Metoda zwracaj¹ca wielkoœæ statku.
 	*/
-	ShipSize getSize();
+	virtual ShipSize getSize() = 0;
 	/**
 	*	\brief Metoda zwracaj¹ca status pól statku.
 	*/
@@ -129,6 +129,11 @@ public:
 	*	Klasa pochodna, która konstruuje obiekt Ship, ale o d³ugoœci statku typu: Battleship.
 	*/
 
+	ShipSize getSize()
+	{
+		return BATTLESHIP_SIZE; 
+	}
+
 	Battleship()
 		: Ship(BATTLESHIP_SIZE)
 	{
@@ -146,6 +151,11 @@ public:
 	*	Klasa pochodna, która konstruuje obiekt Ship, ale o d³ugoœci statku typu: Cruiser.
 	*/
 
+	ShipSize getSize()
+	{
+		return CRUISER_SIZE; 
+	}
+
 	Cruiser()
 		: Ship(CRUISER_SIZE)
 	{
@@ -162,6 +172,11 @@ public:
 	/**
 	*	Klasa pochodna, która konstruuje obiekt Ship, ale o d³ugoœci statku typu: Destroyer.
 	*/
+
+	ShipSize getSize()
+	{
+		return DESTROYER_SIZE; 
+	}
 
 	Destroyer()
 		: Ship(DESTROYER_SIZE)

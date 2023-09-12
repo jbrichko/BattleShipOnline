@@ -6,10 +6,12 @@
 
 #include "Board.hpp"
 
+/*
 Ship::ShipSize Ship::getSize()
 {
 	return size;
 }
+*/
 
 std::vector<char> Ship::getDeck()
 {
