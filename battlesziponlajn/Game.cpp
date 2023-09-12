@@ -70,9 +70,12 @@ bool Game::guestConnectDialog()
         std::cout << "Host IP address [" << Network::getDefaultIP() << "]: ";
         std::getline(std::cin, ipAddr);
 
-        ipAddr = Network::getDefaultIP();
+        //ipAddr = Network::getDefaultIP();
 
-        /*
+        
+        /// Poniższy warunek musi być zakomentowany i powyższy odkomentowany gdy wybierze się ręczne wybieranie pozycji statków.
+        /// Występuje BUG i się program crashuje. - błąd podczas modyfikacji kodu podczas obrony projektu.
+        /// Brak czasu na debugowanie.
         if (Network::isValidIP(ipAddr) == false)
         {
             if (ipAddr.empty() == false)
@@ -80,7 +83,7 @@ bool Game::guestConnectDialog()
 
             ipAddr = Network::getDefaultIP();
         }
-        */
+        
     }
 
     if (guest->connect(ipAddr))
