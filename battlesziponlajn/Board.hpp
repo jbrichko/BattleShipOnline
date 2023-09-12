@@ -37,8 +37,17 @@ public:
 	*/
 	void print(const char* title);
 
-	static int getSize(); 
+	/**
+	*	\brief Metoda zwracająca długość boku planszy.
+	*/
+	static int getSize();
+	/**
+	*	\brief Metoda zwracająca ilość pozostałych, niezatopionych staków na planszy.
+	*/
 	int getRemainingShips();
+	/**
+	*	\brief Metoda zmniejszająca o 1 informację o ilości niezatopionych statków na planszy.
+	*/
 	void oneShipLess(); 
 
 	/**
@@ -67,7 +76,9 @@ protected:
 	*	Status pola planszy.
 	*/
 	FieldStatus** board;
-
+	/**
+	*	Ilość pozostałych statków na planszy.
+	*/
 	int shipsRemaining;
 };
 
