@@ -116,7 +116,7 @@ bool Game::playerTurn()
         std::cout << "Hit! \n";
         break;
     case Board::FieldStatus::sunk:
-        enemyBoard.shipsRemaining--;
+        enemyBoard.oneShipLess();
 
         std::cout << "Sunk! \n";
         break;
@@ -148,7 +148,7 @@ bool Game::enemyTurn()
         std::cout << "Your ship got hit! \n";
         break;
     case Board::FieldStatus::sunk:
-        playerBoard.shipsRemaining--;
+        playerBoard.oneShipLess();
 
         std::cout << "One ship less! \n";
         break;
@@ -170,7 +170,7 @@ void Game::inputShootCords(uint8_t &shootCoordX, uint8_t &shootCoordY)
     {
         std::cout << "Enter coordinates in following format: X Y \n";
 
-        if (std::cin >> x >> y && 0 <= x && x < Board::size && 0 <= y && y < Board::size)
+        if (std::cin >> x >> y && 0 <= x && x < Board::getSize() && 0 <= y && y < Board::getSize())
         {
             shootCoordX = static_cast<uint8_t>(x);
             shootCoordY = static_cast<uint8_t>(y);
@@ -188,14 +188,14 @@ void Game::inputShootCords(uint8_t &shootCoordX, uint8_t &shootCoordY)
 
 bool Game::isEndingCondition()
 {
-    if (playerBoard.shipsRemaining <= 0)
+    if (playerBoard.getRemainingShips() <= 0)
     {
         std::cout << "You lost! \n";
 
         return true;
     }
 
-    if (enemyBoard.shipsRemaining <= 0)
+    if (enemyBoard.getRemainingShips() <= 0)
     {
         std::cout << "You won! Congratulations! \n";
 

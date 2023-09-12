@@ -10,19 +10,12 @@
 */
 class Board
 {
-public:
-
 	/**
 	*	Klasa ta posiada najwa�niesze informacje o tym co znajduje si� w danym polu planszy oraz
 	*	drukuje plansz� w terminalu.
 	*/
 
-
-	/**
-	*	D�ugo�� mapy - sta�a warto�c r�wna 10.
-	*/
-	static const int size = { 10 };
-
+public:
 	/**
 	*	\enum FieldStatus
 	*	Enumerator opisuj�cy wszystkie mo�liwe opcje jakie mo�e przybra� pole planszy. W danym momencie pole mo�e 
@@ -38,43 +31,30 @@ public:
 	}; 
 
 	/**
-	*	Status pola planszy.
-	*/
-	FieldStatus** board;
-
-	int shipsRemaining; 
-
-	/**
 	*	\brief Drukuje plansz�.
 	*	\param title Tytu� danej planszy, "YOUR SHIPS" lub "YOUR SHOTS".
 	*	Metoda macierzysta, kt�ra drukuje plansz� w terminalu. Jest rozbudowywana w klasach pochodnych.
 	*/
 	void print(const char* title);
 
+	static int getSize(); 
+	int getRemainingShips();
+	void oneShipLess(); 
+
 	/**
 	*	Domy�lny konstruktor obiekt�w tej klasy.
 	*/
 	Board();
-
 	/**
 	*	Domy�lny destruktor obiekt�w tej klasy.
 	*/
 	~Board();
-};
 
-
-/*!	\class PlayerBoard
-*	\brief Jest to pochodna klasy Board. Odpowiada g��wnie za prawid�owe umieszczenie statk�w na planszy.
-*/
-class PlayerBoard : public Board
-{
-public: 
-
+protected: 
 	/**
-	*	Klasa ta umieszcza odpowiada za odpowiednie u�o�enie statk�w na planszy, tj. nie mog� si� na siebie
-	*	nak�ada� lub dotyka�. Nast�pnie wedle tego warunku ustawia statki na planszy. W klasie tej jest r�wnie�
-	*	metoda, kt�ra zlicza niezatopione statki gracza.
+	*	D�ugo�� mapy - sta�a warto�c r�wna 10.
 	*/
+	static const int size = { 10 };
 
 	/**
 	*	Sta�e opisuj�ce ilo�� statk�w danego typu.
@@ -83,6 +63,27 @@ public:
 	static const int NO_OF_CRUISERS = { 3 };
 	static const int NO_OF_DESTROYERS = { 4 };
 
+	/**
+	*	Status pola planszy.
+	*/
+	FieldStatus** board;
+
+	int shipsRemaining;
+};
+
+
+/*!	\class PlayerBoard
+*	\brief Jest to pochodna klasy Board. Odpowiada g��wnie za prawid�owe umieszczenie statk�w na planszy.
+*/
+class PlayerBoard : public Board
+{
+	/**
+	*	Klasa ta umieszcza odpowiada za odpowiednie u�o�enie statk�w na planszy, tj. nie mog� si� na siebie
+	*	nak�ada� lub dotyka�. Nast�pnie wedle tego warunku ustawia statki na planszy. W klasie tej jest r�wnie�
+	*	metoda, kt�ra zlicza niezatopione statki gracza.
+	*/
+
+private: 
 	/**
 	*	Wska�nik na wska�nik do obiektu klasy Ship.
 	*/
@@ -94,28 +95,23 @@ public:
 	int noOfShips;
 
 	/**
+	*	\brief Sprawdza wylosowane wsp�rz�dne i orientacje statku pod k�tem poprawno�ci umieszczenia na planszy.
+	*	\param currentShipID Indywidulany numer danego statku.
+	*	\return Zwraca "false" w przypadku b��dnego umieszczenia.
+	*/
+	bool isPlacementGood(int currentShipID);
+
+public: 
+	/**
 	*	Drukuje w terminalu plansz� ze statkami gracza.
 	*/
 	void print();
-
-	/**
-	*	\brief Liczy ilo�� niezatopionych statk�w gracza na planszy.
-	*	\return Zwraca liczb� statk�w niezatopionych.
-	*/
-	int getShipsCount();
 
 	/**
 	*	Umieszcza statki na planszy pseudolosowym po�o�eniu za pomoc� p�tli. Warunkiem dobrego po�o�enia jest 
 	*	metoda "isPlacementGood".
 	*/
 	void placeShips();
-
-	/**
-	*	\brief Sprawdza wylosowane wsp�rz�dne i orientacje statku pod k�tem poprawno�ci umieszczenia na planszy.
-	*	\param currentShipID Indywidulany numer danego statku.
-	*	\return Zwraca "false" w przypadku b��dnego umieszczenia.
-	*/
-	bool isPlacementGood(int currentShipID);
 
 	/**
 	*	\brief Sprawdza oraz zmienia status planszy po strzale.

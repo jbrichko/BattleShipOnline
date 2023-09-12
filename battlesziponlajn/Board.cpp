@@ -38,7 +38,7 @@ Board::Board()
 			board[i][j] = empty;
 	}
 
-	shipsRemaining = PlayerBoard::NO_OF_BATTLESHIPS + PlayerBoard::NO_OF_CRUISERS + PlayerBoard::NO_OF_DESTROYERS; 
+	shipsRemaining = NO_OF_BATTLESHIPS + NO_OF_CRUISERS + NO_OF_DESTROYERS; 
 }
 
 ///	Usuniêcie z pamiêci planszy. Definicja destruktora klasy.
@@ -72,20 +72,19 @@ void PlayerBoard::print()
 	Board::print("YOUR SHIPS: ");
 }
 
-///	Liczy statki niezatopione.
-int PlayerBoard::getShipsCount(void)
+int Board::getSize()
 {
-	/// Pocz¹tkowa iloœæ niezatopionych statków.
-	int shipCount = 0;
+	return size; 
+}
 
-	///	Pêtla for przechodz¹ca po statkach i sprawdzaj¹ca ich status.
-	for (int i = 0; i < noOfShips; i++)
-	{
-		if (ships[i]->isSinking() == false) shipCount++; 
-	}
+int Board::getRemainingShips()
+{
+	return shipsRemaining; 
+}
 
-	///	Zwraca iloœæ statków niezatopionych.
-	return shipCount; 
+void Board::oneShipLess()
+{
+	shipsRemaining--;
 }
 
 ///	Ustawia statki na planszy.
