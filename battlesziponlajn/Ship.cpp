@@ -80,11 +80,11 @@ void Ship::randomPlace(int boardSize)
 
 bool Ship::isInShip(int& deckID, unsigned int x, unsigned int y)
 {
-	if (orientation == horizontal && locationY == y)
+	if ((orientation == horizontal) && (locationY == y))
 	{
 		deckID = x - locationX;
 	}
-	else if (orientation == vertical && locationX == x)
+	else if ((orientation == vertical) && (locationX == x))
 	{
 		deckID = y - locationY;
 	}

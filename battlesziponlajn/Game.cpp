@@ -230,16 +230,26 @@ Game::~Game()
 
 void Game::run()
 {
-    AudioVisual::loadMenuGraphic();
-    AudioVisual::playMenuMusic();
+    if (showMenu)
+    {
+        AudioVisual::loadMenuGraphic();
+
+        if (playMusic)
+            AudioVisual::playMenuMusic();
+    }
+    
     getButtonPress();
     clearConsole();
-    AudioVisual::stopMusic();
+
+    if (showMenu && playMusic)
+        AudioVisual::stopMusic();
 
     netRoleSelector();
     playerBoard.placeShips();
 
-    AudioVisual::playGameMusic();
+    if (playMusic)
+        AudioVisual::playGameMusic();
+
     clearConsole();
 
     while (true)

@@ -33,6 +33,8 @@ private:
     /// Flagi dla handleArgs
     bool skipNetRoleSelect = false; 
     bool skipGetIP = false; 
+    bool playMusic = false; 
+    bool showMenu = false;
 
     /**
     *   \brief Wybór roli: host czy guest.
