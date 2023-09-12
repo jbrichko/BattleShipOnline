@@ -48,15 +48,15 @@ void Ship::getAllCords(std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cords
 	}
 }
 
-///	Funkcja losuj¹ca pseudolosowe wspó³rzêdne pocz¹tku statku.
+///	Funkcja losujÄ…ca pseudolosowe wspÃ³Å‚rzÄ™dne poczÄ…tku statku.
 void Ship::randomPlace(int boardSize)
 {
-	///	Zmienna, która okreœla czy funkcja srand() zosta³a ju¿ wykonana. Pocz¹tkowo ustalona na wartoœæ false.
+	///	Zmienna, ktÃ³ra okreÅ›la czy funkcja srand() zostaÅ‚a juÅ¼ wykonana. PoczÄ…tkowo ustalona na wartoÅ›Ä‡ false.
 	static bool didSrandExecute = false;
 
 	if (didSrandExecute == false)
 	{
-		///	Wywo³anie funkcji srand(), po jej wykonaniu zmienia wartoœæ znacznika didSrandExecute na true. Oznacza to, ¿e funkcja ta zosta³a wywo³ana.
+		///	WywoÅ‚anie funkcji srand(), po jej wykonaniu zmienia wartoÅ›Ä‡ znacznika didSrandExecute na true. Oznacza to, Å¼e funkcja ta zostaÅ‚a wywoÅ‚ana.
 		srand(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 		didSrandExecute = true;
 	}
@@ -64,7 +64,7 @@ void Ship::randomPlace(int boardSize)
 	///	Losowanie orientacji statku.
 	orientation = static_cast<Orientation>(rand() % 2);
 
-	///	Losowanie wspó³rzêdnych w zale¿noœci od orientacji statku.
+	///	Losowanie wspÃ³Å‚rzÄ™dnych w zaleÅ¼noÅ›ci od orientacji statku.
 	if (orientation == horizontal)
 	{
 		locationX = rand() % (boardSize - size + 1);
@@ -134,13 +134,54 @@ bool Ship::isSinking(void)
 	return true;
 }
 
-///	Domyœlny konstruktor klasy Ship. Tworzony jest w nim statek o polu "S".
+void Ship::inputShipCords(int boardSize)
+{
+	char inputChar = '\n';
+
+	std::cout << "Current ship size is: " << size << std::endl; 
+
+	while (inputChar != 'h' && inputChar != 'v')
+	{
+		std::cout << "Enter ship orientation: horizontal [h] or vertical [v]: ";
+		std::cin >> inputChar;
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	}
+
+	if (inputChar == 'h')
+	{
+		orientation = Orientation::horizontal;
+	}
+	else
+	{
+		orientation = Orientation::vertical;
+	}
+
+	while (true)
+	{
+		std::cout << "Enter ship coordinates in following format: X Y \n";
+
+		if (std::cin >> locationX >> locationY && 0 <= locationX && locationX < boardSize + static_cast<int>(orientation) * (1 - size) && 0 <= locationY && locationY < boardSize + static_cast<int>(!orientation) * (1 - size))
+		{
+			return;
+		}
+		else
+		{
+			std::cin.clear();                                                   // clear bad input flag
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // discard input
+			std::cout << "Invalid input or wrong coordinates. Please try again. \n";
+		}
+	}
+
+	std::cin.ignore(); 
+}
+
+///	DomyÅ›lny konstruktor klasy Ship. Tworzony jest w nim statek o polu "S".
 Ship::Ship(ShipSize length)
 	: size(length)
 {
 	deck.resize(length, Board::FieldStatus::ship);
 
-	///	Przypisuje wartoœci, które s¹ nieprawid³owe w kontekœcie planszy gry.
+	///	Przypisuje wartoÅ›ci, ktÃ³re sÄ… nieprawidÅ‚owe w kontekÅ›cie planszy gry.
 	locationX = -1;
 	locationY = -1;
 }

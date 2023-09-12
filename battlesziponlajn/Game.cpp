@@ -70,6 +70,9 @@ bool Game::guestConnectDialog()
         std::cout << "Host IP address [" << Network::getDefaultIP() << "]: ";
         std::getline(std::cin, ipAddr);
 
+        ipAddr = Network::getDefaultIP();
+
+        /*
         if (Network::isValidIP(ipAddr) == false)
         {
             if (ipAddr.empty() == false)
@@ -77,6 +80,7 @@ bool Game::guestConnectDialog()
 
             ipAddr = Network::getDefaultIP();
         }
+        */
     }
 
     if (guest->connect(ipAddr))
@@ -246,6 +250,7 @@ void Game::run()
 
     netRoleSelector();
     playerBoard.placeShips();
+    //playerBoard.placeShipsByPlayer();
 
     if (playMusic)
         AudioVisual::playGameMusic();

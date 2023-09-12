@@ -89,6 +89,8 @@ public:
 	*/
 	bool isSinking();
 
+	void inputShipCords(int boardSize);
+
 	/**
 	*	\brief Konstruktor obiektów klasy Ship.
 	*	\param length D³ugoœæ statku.

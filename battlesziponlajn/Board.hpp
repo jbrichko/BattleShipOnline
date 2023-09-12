@@ -123,6 +123,7 @@ public:
 	*	metoda "isPlacementGood".
 	*/
 	void placeShips();
+	void placeShipsByPlayer(); 
 
 	/**
 	*	\brief Sprawdza oraz zmienia status planszy po strzale.
