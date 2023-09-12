@@ -280,6 +280,16 @@ bool Message::reciveEndGame(Network* netObject)
     return true;
 }
 
+uint32_t Network::getDefaultPort()
+{
+    return DEFAULT_HOST_PORT; 
+}
+
+const char* Network::getDefaultIP()
+{
+    return DEFAULT_HOST_IP; 
+}
+
 bool Network::isValidIP(std::string ip)
 {
     /// Sprawdzenie poprawnoœci adresu IP

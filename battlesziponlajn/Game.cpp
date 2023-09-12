@@ -67,7 +67,7 @@ bool Game::guestConnectDialog()
 
     if (skipGetIP == false)
     {
-        std::cout << "Host IP address [" << Network::DEFAULT_HOST_IP << "]: ";
+        std::cout << "Host IP address [" << Network::getDefaultIP() << "]: ";
         std::getline(std::cin, ipAddr);
 
         if (Network::isValidIP(ipAddr) == false)
@@ -75,7 +75,7 @@ bool Game::guestConnectDialog()
             if (ipAddr.empty() == false)
                 std::cout << "Wrong IP Address, reverting to default. \n";
 
-            ipAddr = Network::DEFAULT_HOST_IP;
+            ipAddr = Network::getDefaultIP();
         }
     }
 

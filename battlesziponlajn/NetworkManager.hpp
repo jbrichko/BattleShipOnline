@@ -167,7 +167,6 @@ public:
     *   \param netObject Wskaźnik do obiektu klasy Network.
     */
     static bool reciveEndGame(Network* netObject);
-
 }; 
 
 
@@ -189,13 +188,12 @@ protected:
     asio::ip::tcp::endpoint endpoint;
     asio::ip::tcp::socket socket;
 
-public:
-
     /// Domyślny port służący do bycia hostem.
     static const uint32_t DEFAULT_HOST_PORT = { 62137 };
     /// Domyślny adres IP dla hosta.
     static constexpr const char* DEFAULT_HOST_IP = "127.0.0.1";
 
+public:
     /**
     *	\enum NetRole
     *	Enumerator słuzący do określenia statusu gracza. Czy jest hostem czy guestem rozgrywki.
@@ -207,6 +205,9 @@ public:
     };
 
     Network() : socket(context) {}
+
+    static uint32_t getDefaultPort();
+    static const char* getDefaultIP();
 
     /**
     *	\brief Sprawdza poprawność podanego adresu IP
@@ -243,7 +244,7 @@ public:
 */
 class NetworkHost : public Network
 {
-protected:
+private:
     asio::ip::tcp::acceptor acceptor;
 
 public:
@@ -274,6 +275,6 @@ public:
     *	\brief Nawiązuje połącznie z hostem.
     *	\return Zwraca inforamcj� czy zostało nawiązane połączenie.
     */
-    bool connect(const std::string hostIP, uint16_t hostPort = DEFAULT_HOST_PORT);
+    bool connect(const std::string hostIP = DEFAULT_HOST_IP, uint16_t hostPort = DEFAULT_HOST_PORT);
 };
 
