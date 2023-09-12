@@ -35,7 +35,7 @@ public:
 	*	\param title Tytu� danej planszy, "YOUR SHIPS" lub "YOUR SHOTS".
 	*	Metoda macierzysta, kt�ra drukuje plansz� w terminalu. Jest rozbudowywana w klasach pochodnych.
 	*/
-	void print(const char* title);
+	virtual void print(const char* title);
 
 	/**
 	*	\brief Metoda zwracająca długość boku planszy.
