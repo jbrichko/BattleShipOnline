@@ -35,12 +35,33 @@ public:
 		vertical = false,
 	};
 
-	ShipSize getSize(); 
-	std::vector<char> getDeck(); 
+	/**
+	*	\brief Metoda zwracaj¹ca wielkoœæ statku.
+	*/
+	ShipSize getSize();
+	/**
+	*	\brief Metoda zwracaj¹ca status pól statku.
+	*/
+	std::vector<char> getDeck();
+	/**
+	*	\brief Metoda zwracaj¹ca wartoœæ pola statku.
+	*/
 	char getDeck(unsigned int position);
+	/**
+	*	\brief Metoda zwracaj¹ca wspó³rzêdn¹ X.
+	*/
 	int getLocationX();
+	/**
+	*	\brief Metoda zwracaj¹ca wspó³rzêdn¹ Y.
+	*/
 	int getLocationY();
+	/**
+	*	\brief Metoda zwracaj¹ca orientacjê statku..
+	*/
 	Orientation getOrientation(); 
+	/**
+	*	\brief Metoda zwracaj¹ca przez referencjê wartoœci wspó³rzêdnych.
+	*/
 	void getAllCords(std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY);
 
 	/**
@@ -48,7 +69,19 @@ public:
 	*	\param boardSize D³ugoœæ boku mapy.
 	*/
 	void randomPlace(int boardSize);
-	bool isInShip(int& deckID, unsigned int x, unsigned int y); 
+	/**
+	*	\brief Metoda zwracaj¹ca informacjê czy podana wspó³rzêdna znajduje siê w statku.
+	*	\param deckID ID danego pola.
+	*	\param x Wspó³rzêdna X.
+	*	\param y Wspó³rzêdna Y.
+	*	\return Zwraca inforamcjê czy w polu o podanych wspó³rzêdnych znajduje siê statek i zmienia wartoœæ deckID jeœli jest to prawda.
+	*/
+	bool isInShip(int& deckID, unsigned int x, unsigned int y);
+	/**
+	*	\brief Metoda zmieniaj¹ca wartoœæ pola na Hit.
+	*	\param deckID ID danego pola.
+	*	\return Przy trafieniu w statek zwraca true.
+	*/
 	bool isHit(int deckID);
 	/**
 	*	\brief Jest to funkcja, która sprawdza czy dany statek nie zosta³ zatopiony.

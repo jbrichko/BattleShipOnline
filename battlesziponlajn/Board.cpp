@@ -54,17 +54,17 @@ Board::~Board()
 void PlayerBoard::print()
 {
 	///	Wspó³rzêdne planszy, które bêd¹ modyfikowane.
-	int x, y; 
+	unsigned int x, y; 
 
 	///	Podwójna pêtla, która przechodzi po wszystkich statkach i ich polach i wy³uskuje z nich dane o statku.
-	for (int i = 0; i < noOfShips; i++)
+	for (unsigned int i = 0; i < noOfShips; i++)
 	{
-		for (int j = 0; j < ships[i]->getSize(); j++)
+		for (unsigned int j = 0; j < ships[i]->getSize(); j++)
 		{
 			x = ships[i]->getLocationX() + j * static_cast<int>(ships[i]->getOrientation());
 			y = ships[i]->getLocationY() + j * static_cast<int>(!ships[i]->getOrientation());
 
-			board[x][y] = static_cast<FieldStatus>( ships[i]->deck[j] ); 
+			board[x][y] = static_cast<FieldStatus>( ships[i]->getDeck(j)); 
 		}
 	}
 
