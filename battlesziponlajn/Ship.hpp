@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 /*!	\class Ship
 *	\brief Jest to klasa, w której s¹ przechowywane najwa¿niejsze informacje o statkach.
 */
@@ -34,30 +36,31 @@ public:
 	};
 
 	ShipSize getSize(); 
+	std::vector<char> getDeck(); 
+	char getDeck(unsigned int position);
 	int getLocationX();
 	int getLocationY();
 	Orientation getOrientation(); 
+	void getAllCords(std::vector<uint8_t>& cordsX, std::vector<uint8_t>& cordsY);
 
 	/**
 	*	\brief Pseudolosowo dobiera wspó³rzêdne po³o¿enia pocz¹tku statku oraz jego orientacjê.
 	*	\param boardSize D³ugoœæ boku mapy.
 	*/
 	void randomPlace(int boardSize);
+	bool isInShip(int& deckID, unsigned int x, unsigned int y); 
+	bool isHit(int deckID);
 	/**
 	*	\brief Jest to funkcja, która sprawdza czy dany statek nie zosta³ zatopiony.
 	*	\return Zwraca jedynkê w przypadku zatopionego statku.
 	*/
-	bool checkIfSinking();
+	bool isSinking();
 
 	/**
 	*	\brief Konstruktor obiektów klasy Ship.
 	*	\param length D³ugoœæ statku.
 	*/
 	Ship(ShipSize length);
-	/**
-	*	\brief Destruktor obiektów klasy Ship.
-	*/
-	~Ship();
 
 private:
 
@@ -69,7 +72,8 @@ private:
 	/**
 *	Informacja o stanie jednego pola statku, czy jest ca³y, trafiony lub zatopiony.
 */
-	char* deck;
+	std::vector<char> deck; 
+
 
 	/**
 	*	Wspó³rzêdne po³o¿enia pocz¹tku statku oraz jego orientacja na mapie.

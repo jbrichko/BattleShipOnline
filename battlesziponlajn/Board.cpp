@@ -81,7 +81,7 @@ int PlayerBoard::getShipsCount(void)
 	///	Pêtla for przechodz¹ca po statkach i sprawdzaj¹ca ich status.
 	for (int i = 0; i < noOfShips; i++)
 	{
-		if (ships[i]->checkIfSinking() == false) shipCount++; 
+		if (ships[i]->isSinking() == false) shipCount++; 
 	}
 
 	///	Zwraca iloœæ statków niezatopionych.
@@ -166,46 +166,29 @@ void PlayerBoard::checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cor
 {
 	if (cordsX.size() != 1 || cordsY.size() != 1)
 	{
-		throw std::runtime_error("In checkShotStatus: Bad shot size."); 
-	}
+		throw std::runtime_error("In checkShotStatus: Bad shot vector size."); 
+	} 
 
-	board[cordsX[0]][cordsY[0]] = FieldStatus::miss; 
-
-	unsigned int hitShipID = 0;
-	int hitDeckID = 0; 
+	unsigned int shipID = 0;
+	int deckID = 0; 
 
 	while (true)
 	{
-		if (hitShipID >= noOfShips)
-		{
-			status = FieldStatus::miss;
+		if (ships[shipID]->isInShip(deckID, cordsX[0], cordsY[0]) == true)
+			break; 
 
-			return;
+		if (shipID >= noOfShips)
+		{
+			status = FieldStatus::miss; 
+			board[cordsX[0]][cordsY[0]] = FieldStatus::miss;
+
+			return; 
 		}
 
-		if (ships[hitShipID]->getOrientation() == Ship::Orientation::horizontal && ships[hitShipID]->getLocationY() == cordsY[0])
-		{
-			hitDeckID = static_cast<int>(cordsX[0]) - ships[hitShipID]->getLocationX();;
-
-			if (hitDeckID >= 0 && hitDeckID < ships[hitShipID]->getSize())
-			{
-				break; 
-			}
-		}
-		else if (ships[hitShipID]->getOrientation() == Ship::Orientation::vertical && ships[hitShipID]->getLocationX() == cordsX[0])
-		{
-			hitDeckID = static_cast<int>(cordsY[0]) - ships[hitShipID]->getLocationY();
-
-			if (hitDeckID >= 0 && hitDeckID < ships[hitShipID]->getSize())
-			{
-				break; 
-			}
-		}
-
-		hitShipID++;
+		shipID++; 
 	}
 
-	if (ships[hitShipID]->deck[hitDeckID] != FieldStatus::ship)
+	if (ships[shipID]->isHit(deckID) == false)
 	{
 		status = FieldStatus::miss; 
 		cordsX.clear();
@@ -214,20 +197,10 @@ void PlayerBoard::checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cor
 		return; 
 	}
 
-	ships[hitShipID]->deck[hitDeckID] = FieldStatus::hit; 
-
-	if (ships[hitShipID]->checkIfSinking())
+	if (ships[shipID]->isSinking())
 	{
 		status = FieldStatus::sunk;
-
-		cordsX[0] = ships[hitShipID]->getLocationX();;
-		cordsY[0] = ships[hitShipID]->getLocationY();
-
-		for (unsigned int i = 1; i < ships[hitShipID]->getSize(); i++)
-		{
-			cordsX.push_back(cordsX[0] + i * static_cast<unsigned int>(ships[hitShipID]->getOrientation()));
-			cordsY.push_back(cordsY[0] + i * static_cast<unsigned int>(!ships[hitShipID]->getOrientation()));
-		}
+		ships[shipID]->getAllCords(cordsX, cordsY); 
 
 		return; 
 	}
@@ -236,7 +209,6 @@ void PlayerBoard::checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cor
 
 	return; 
 }
-
 
 ///	Domyœlny konstruktor klasy PlayerBoard. Tworzone s¹ w nim kolejne obiekty - statki.
 PlayerBoard::PlayerBoard()
