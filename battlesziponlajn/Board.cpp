@@ -173,16 +173,16 @@ void PlayerBoard::checkShotStatus(FieldStatus& status, std::vector<uint8_t>& cor
 
 	while (true)
 	{
-		if (ships[shipID]->isInShip(deckID, cordsX[0], cordsY[0]) == true)
-			break; 
-
 		if (shipID >= noOfShips)
 		{
-			status = FieldStatus::miss; 
+			status = FieldStatus::miss;
 			board[cordsX[0]][cordsY[0]] = FieldStatus::miss;
 
-			return; 
+			return;
 		}
+
+		if (ships[shipID]->isInShip(deckID, cordsX[0], cordsY[0]) == true)
+			break; 
 
 		shipID++; 
 	}
